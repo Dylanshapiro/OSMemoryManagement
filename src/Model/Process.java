@@ -5,8 +5,8 @@ import java.util.Optional;
 
 public class Process{
 
-    int procId;
-    Long startTime;
+    int procId; //int not random unique number
+    Long startTime; //
     ProcState state;
     Long size;
     Optional<Long> baseAddress;
@@ -19,10 +19,10 @@ public class Process{
      * @param size
      * @param baseAddress
      */
-    public Process(int procId, Long startTime, ProcState state, Long size, Optional<Long> baseAddress) {
+    public Process(int procId, Long startTime, Long size, Optional<Long> baseAddress) {
         this.procId = procId;
         this.startTime = startTime;
-        this.state = state;
+        this.state = state.READY;
         this.size = size;
         this.baseAddress = baseAddress;
     }
