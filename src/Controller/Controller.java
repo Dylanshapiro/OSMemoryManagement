@@ -36,6 +36,6 @@ public class Controller implements Observer {
     }
 
     void run(){
-
+        this.source.simProcess();
     }
 }
