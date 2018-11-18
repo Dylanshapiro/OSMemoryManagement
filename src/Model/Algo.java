@@ -1,4 +1,6 @@
 package Model;
 
-public class Algo {
+public interface Algo {
+
+    public Long allocPs(Process unallocated);
 }
