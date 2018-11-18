@@ -28,17 +28,22 @@ public class MemoryManager {
     }
     public boolean allocate(Process p){
         //TODO change based on implemenatation
-        if(memoryAlgo.allocPs(processes, memSize,p)!=null){
+
+        if(!processes.contains(p)&&memoryAlgo.allocPs(p)!=null){
             processes.add(p);
+            notifyObservers();
             return true;
         }
         return false;
     }
     public boolean deallocate(Process p){
-        return processes.remove(p);
+        notifyObservers();
+        if(processes.contains(p))
+            return processes.remove(p);
+        return false;
     }
     private static Algo defaultAlgo(){
-        return new FirstFitAlgo();
+        return new FirstFitAlgo(memSize);
     }
     private static long defaultMemSize() {
         return 1024;
