@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.LinkedList;
+import java.util.Optional;
 
 public class FirstFitAlgo implements Algo {
 
@@ -22,7 +23,7 @@ public class FirstFitAlgo implements Algo {
                open++;
                if(open >= procsize){
                    filler(start, open,true);
-                   unallocated.setStart(start + 1);
+                   unallocated.setStartTime(start + 1);
                    return new Long (start + 1);
                }
             } else {
@@ -35,10 +36,10 @@ public class FirstFitAlgo implements Algo {
     }
 
     public boolean deallocate(Process allocated){
-       int base = allocated.getStart();
+       Optional<Integer> base = allocated.getBaseAddress();
        int size = allocated.getSize();
 
-       filler(base-1,size,false);
+       filler(base.get()-1,size,false);
        return true;
     }
 
