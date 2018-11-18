@@ -1,4 +1,11 @@
 package Model;
 
-public class ProcessSource {
+import java.util.List;
+
+public interface ProcessSource {
+
+    public Process getProcess(int i);
+
+    public List<Process> getAll();
+    
 }
