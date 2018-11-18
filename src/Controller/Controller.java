@@ -6,7 +6,7 @@ import View.*;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller extends Observer {
+public class Controller implements Observer {
 
     private ProcessSource source;
     private Display view;
