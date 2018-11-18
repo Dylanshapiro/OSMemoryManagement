@@ -3,6 +3,7 @@ package Controller;
 import Model.*;
 import View.*;
 
+import java.util.Observable;
 import java.util.Observer;
 
 public class Controller extends Observer {
@@ -26,7 +27,7 @@ public class Controller extends Observer {
         this.view.updateDisplay(config);
     }
 
-    public void update(Observer, Object MemEvent){
+    public void update(Observable obs, Object MemEvent){
 
     }
 
