@@ -41,7 +41,7 @@ public class SimSource implements ProcessSource{
         int memSize = 0;
 
         for(int i = 1; i <= numOfProcess; i++) {
-            memSize = getRandomIntBetweenRange(1, 10000);
+            memSize = getRandomIntBetweenRange(1, 5000);
             processList.add(new Process(i, i, memSize));
         }
     }

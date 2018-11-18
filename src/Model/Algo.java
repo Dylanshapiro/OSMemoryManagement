@@ -2,5 +2,5 @@ package Model;
 
 public interface Algo {
 
-    public Long allocPs(Process unallocated);
+    public Integer allocPs(Process unallocated);
 }
