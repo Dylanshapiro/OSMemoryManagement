@@ -5,33 +5,32 @@ import java.util.Optional;
 
 public class Process{
 
-    int procId; //int not random unique number
-    Long startTime; //
+    int procId;
+    int startTime;
     ProcState state;
-    Long size;
-    Optional<Long> baseAddress;
-    
+    int size;
+    Optional<Integer> baseAddress;
+
     /**
-     * constructor 
+     * constructor
      * @param procId
      * @param startTime
-     * @param state
      * @param size
-     * @param baseAddress
      */
-    public Process(int procId, Long startTime, Long size, Optional<Long> baseAddress) {
+    public Process(int procId, int startTime, int size) {
         this.procId = procId;
         this.startTime = startTime;
         this.state = state.READY;
         this.size = size;
-        this.baseAddress = baseAddress;
+        this.baseAddress = null;
     }
+
 
     /**
      * this gets the size of the process
      * @return Long
      */
-    public Long getSize() {
+    public int getSize() {
         return size;
     }
 
@@ -39,7 +38,7 @@ public class Process{
      *  this sets the size of the process
      * @param size
      */
-    public void setSize(long size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
@@ -49,7 +48,7 @@ public class Process{
      * caution: base address can be null
      * @return Optional</long>
      */
-    public Optional<Long> getBaseAddress() {
+    public Optional<Integer> getBaseAddress() {
         return baseAddress;
     }
 
@@ -59,7 +58,7 @@ public class Process{
      *  caution: base address can be null
      * @param baseAddress
      */
-    public void setBaseAddress(Optional<Long> baseAddress) {
+    public void setBaseAddress(Optional<Integer> baseAddress) {
         this.baseAddress = baseAddress;
     }
 
@@ -67,7 +66,7 @@ public class Process{
      * retunrs the start time for this process
      * @return long
      */
-    public Long getStartTime() {
+    public int getStartTime() {
         return startTime;
     }
 
@@ -75,7 +74,7 @@ public class Process{
      * ets the start time for the process
      * @param startTime
      */
-    public void setStartTime(long startTime) {
+    public void setStartTime(int startTime) {
         this.startTime = startTime;
     }
 
