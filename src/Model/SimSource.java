@@ -50,7 +50,7 @@ public class SimSource implements ProcessSource{
     public void showList()
     {
         for(int i = 0; i < processList.size(); i++) {
-            System.out.println("ID: " + processList.get(i).getProcID() + " Size: " + processList.get(i).getSize());
+            System.out.println("ID: " + processList.get(i).getProcId() + " Size: " + processList.get(i).getSize());
         }
     }
 }
