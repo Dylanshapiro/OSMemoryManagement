@@ -1,4 +1,8 @@
 package Model;
 
-public class ProcState {
+public enum ProcState {
+    SUSPENDED,
+    RUNNING,
+    READY,
+    DEAD
 }
