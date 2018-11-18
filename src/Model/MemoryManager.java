@@ -37,9 +37,11 @@ public class MemoryManager {
         return false;
     }
     public boolean deallocate(Process p){
-        notifyObservers();
-        if(processes.contains(p))
-            return processes.remove(p);
+        if(processes.contains(p)) {
+            boolean result= processes.remove(p);
+            notifyObservers();
+            return result;
+        }
         return false;
     }
     private static Algo defaultAlgo(){
