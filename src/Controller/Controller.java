@@ -36,6 +36,13 @@ public class Controller implements Observer {
     }
 
     void run(){
-        this.source.simProcess();
+          this.source.simProcess();
+          for (Model.Process p : this.source.getAll()){
+              this.manager.allocate(p);
+          }
+
+          this.manager.getAllProc()
+                  .forEach(proc -> System.out.println("Process: " +
+                          proc.getProcId() + ", "+ proc.getSize()));
     }
 }

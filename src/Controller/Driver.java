@@ -14,7 +14,7 @@ public class Driver {
         MemoryManager memMan = MemoryManager.getInstance();
 
         Controller controller = new Controller(
-                    new SimSource(1),
+                    new SimSource(20),
                     new Display(),
                     memMan
             );

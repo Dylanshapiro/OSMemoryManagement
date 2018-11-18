@@ -26,6 +26,12 @@ public class MemoryManager {
         return memoryManager;
 
     }
+
+    public List<Process> getAllProc(){
+        return this.processes;
+    }
+
+
     public boolean allocate(Process p){
         //TODO change based on implemenatation
 
