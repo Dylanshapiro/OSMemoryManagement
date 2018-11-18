@@ -24,18 +24,18 @@ public class Controller implements Observer {
 
     // TODO make Config class to set to display
     public void setDisplay(String config){
-        this.view.updateDisplay(config);
+        this.view.updateDisplay();
     }
 
     public void update(Observable obs, Object MemEvent){
 
     }
 
-    void killProc(Process pid){
+    void killProc(Model.Process pid){
         manager.deallocate(pid);
     }
 
     void run(){
-
+        this.source.simProcess();
     }
 }
