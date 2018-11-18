@@ -10,7 +10,15 @@ public class Process{
     ProcState state;
     Long size;
     Optional<Long> baseAddress;
-
+    
+    /**
+     * constructor 
+     * @param procId
+     * @param startTime
+     * @param state
+     * @param size
+     * @param baseAddress
+     */
     public Process(int procId, Long startTime, ProcState state, Long size, Optional<Long> baseAddress) {
         this.procId = procId;
         this.startTime = startTime;
