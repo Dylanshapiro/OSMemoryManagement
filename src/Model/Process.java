@@ -11,7 +11,13 @@ public class Process{
     Long size;
     Optional<Long> baseAddress;
 
-
+    public Process(int procId, Long startTime, ProcState state, Long size, Optional<Long> baseAddress) {
+        this.procId = procId;
+        this.startTime = startTime;
+        this.state = state;
+        this.size = size;
+        this.baseAddress = baseAddress;
+    }
 
     /**
      * this gets the size of the process
