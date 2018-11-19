@@ -54,7 +54,7 @@ public class MemoryManager {
         return new FirstFitAlgo(memSize);
     }
     private static int defaultMemSize() {
-        return 1024;
+        return 655360;
     }
 
     public void setAlgo(Algo memoryAlgo) {
