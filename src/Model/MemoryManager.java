@@ -1,5 +1,8 @@
 package Model;
 
+import Model.Algos.Algo;
+import Model.Algos.FirstFitAlgo;
+
 import java.util.ArrayList;
 import java.util.List;
 

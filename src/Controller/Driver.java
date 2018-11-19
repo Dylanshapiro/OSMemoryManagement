@@ -1,7 +1,7 @@
 package Controller;
 
-import Controller.*;
 import Model.*;
+import Model.Algos.FirstFitAlgo;
 import View.*;
 
 import java.util.concurrent.ExecutorService;

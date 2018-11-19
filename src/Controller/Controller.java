@@ -1,13 +1,12 @@
 package Controller;
 
 import Model.*;
+import Model.Algos.FirstFitAlgo;
 import Model.Process;
 import View.*;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

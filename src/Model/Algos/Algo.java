@@ -1,4 +1,6 @@
-package Model;
+package Model.Algos;
+
+import Model.Process;
 
 public interface Algo {
 
