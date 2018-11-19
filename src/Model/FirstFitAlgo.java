@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class FirstFitAlgo implements Algo {
 
-    static final int KILOBYTE = 1024;
+    public static final int KILOBYTE = 1024;
     boolean[] memory;
 
     //divides total memory to make into kilobytes.

@@ -46,7 +46,8 @@ public class Controller implements MemoryObserver {
                                 proc.getProcId(),
                                 proc.getBaseAddress().get().intValue(),
                                 proc.getBaseAddress().get().intValue() +
-                                        ((proc.getSize() > 1024) ? proc.getSize() / 1024 : 1)));
+                                        ((proc.getSize() > FirstFitAlgo.KILOBYTE) ? proc.getSize() /
+                                                           FirstFitAlgo.KILOBYTE : 1)));
     }
 
     void killProc(Model.Process pid){
