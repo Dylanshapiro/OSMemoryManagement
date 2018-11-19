@@ -5,22 +5,17 @@ import java.util.Optional;
 
 
 
-public class FirstFitAlgo implements Algo {
+public class FirstFitAlgo extends FitAlgo {
 
-    public static final int KILOBYTE = 1024;
-    boolean[] memory;
 
     //divides total memory to make into kilobytes.
     public FirstFitAlgo(int totalmem){
-        memory = new boolean[totalmem/KILOBYTE];
+        super(totalmem);
     }
 
     // Implements Firstfit algorithm
     public Integer allocPs(Process unallocated){
-        long procsize = (unallocated.getSize() % KILOBYTE == 0 )
-                ? unallocated.getSize()/ KILOBYTE: (unallocated.getSize()/KILOBYTE) + 1;
-
-
+        long procsize = getProcessSize(unallocated);
         int start = 0;
         int open = 0;
 
@@ -41,17 +36,7 @@ public class FirstFitAlgo implements Algo {
         return null;
     }
 
-    public boolean deallocate(Process allocated){
-       Optional<Integer> base = allocated.getBaseAddress();
-       int size = allocated.getSize();
 
-       filler(base.get(),size,false);
-       return true;
-    }
 
-    private void filler(int index, int size, boolean change){
-        for(;index < size ;index++){
-            memory[index] = change;
-        }
-    }
+
 }
