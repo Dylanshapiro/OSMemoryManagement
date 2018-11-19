@@ -12,6 +12,7 @@ public class Driver {
 
     public static void init(){
         MemoryManager memMan = MemoryManager.getInstance();
+        memMan.setAlgo(new FirstFitAlgo(memMan.getMemSize()));
 
         Controller controller = new Controller(
                     new SimSource(20),

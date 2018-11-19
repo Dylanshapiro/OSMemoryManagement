@@ -3,8 +3,11 @@ package Model;
 import java.util.LinkedList;
 import java.util.Optional;
 
+
+
 public class FirstFitAlgo implements Algo {
 
+    static final Integer KILOBYTE = new Integer(1024);
     boolean[] memory;
 
     //divides total memory to make into kilobytes.
@@ -14,7 +17,10 @@ public class FirstFitAlgo implements Algo {
 
     // Implements Firstfit algorithm
     public Integer allocPs(Process unallocated){
-        long procsize = unallocated.getSize()/1024;
+        long procsize = (unallocated.getSize() % KILOBYTE.intValue() == 0 )
+                ? unallocated.getSize()/1024 : (unallocated.getSize()/1024) + 1;
+
+
         int start = 0;
         int open = 0;
 
