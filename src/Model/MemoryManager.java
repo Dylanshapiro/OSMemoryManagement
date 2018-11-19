@@ -9,11 +9,11 @@ public class MemoryManager {
     private static Algo memoryAlgo;
     private static List<Process> processes;
     //size in bytes
-    public static long memSize;
+    public static int memSize;
     private static MemoryManager memoryManager;
     private Observable obs;
 
-    private MemoryManager(Algo algo,long memSize){
+    private MemoryManager(Algo algo,int memSize){
         this.memoryAlgo=algo;
         this.memSize=memSize;
         obs=new Observable();
@@ -53,7 +53,7 @@ public class MemoryManager {
     private static Algo defaultAlgo(){
         return new FirstFitAlgo(memSize);
     }
-    private static long defaultMemSize() {
+    private static int defaultMemSize() {
         return 1024;
     }
 
@@ -61,11 +61,11 @@ public class MemoryManager {
         this.memoryAlgo = memoryAlgo;
     }
 
-    public long getMemSize() {
+    public int getMemSize() {
         return memSize;
     }
 
-    public void setMemSize(long memSize) {
+    public void setMemSize(int memSize) {
         MemoryManager.memSize = memSize;
     }
     public void addObserver(Observer obs){
@@ -79,9 +79,9 @@ public class MemoryManager {
     }
     public class MemoryEvent{
         private List<Process> processes;
-        public long memSize;
+        public int memSize;
 
-        public MemoryEvent(List<Process> processes, long memSize) {
+        public MemoryEvent(List<Process> processes, int memSize) {
             this.processes = processes;
             this.memSize = memSize;
         }
@@ -90,7 +90,7 @@ public class MemoryManager {
             return processes;
         }
 
-        public long getMemSize() {
+        public int getMemSize() {
             return memSize;
         }
     }

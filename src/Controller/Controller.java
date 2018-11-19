@@ -37,6 +37,9 @@ public class Controller implements Observer {
 
     void run(){
           this.source.simProcess();
+
+
+
           for (Model.Process p : this.source.getAll()){
               this.manager.allocate(p);
           }
