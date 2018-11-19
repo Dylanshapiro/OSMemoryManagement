@@ -1,10 +1,16 @@
 package Controller;
 
 import Model.*;
+import Model.Process;
 import View.*;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Controller implements MemoryObserver {
 
@@ -28,24 +34,44 @@ public class Controller implements MemoryObserver {
     }
 
     public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent){
+        List<Process> procs = ((MemoryManager) obs).getAllProc();
 
+        procs.stream()
+                .sorted(Comparator.comparingInt(p -> p.getBaseAddress().get()))
+                .skip(procs.size() - 1)
+                .forEach(proc ->
+                        System.out.printf("#%4d, %s%-2s [ %-4d %-4d ] \n",
+                                procs.size(),
+                                "Id: ",
+                                proc.getProcId(),
+                                proc.getBaseAddress().get().intValue(),
+                                proc.getBaseAddress().get().intValue() +
+                                        ((proc.getSize() > FirstFitAlgo.KILOBYTE) ? proc.getSize() /
+                                                           FirstFitAlgo.KILOBYTE : 1)));
     }
 
     void killProc(Model.Process pid){
         manager.deallocate(pid);
     }
 
-    void run(){
-          this.source.simProcess();
+    public static final int GEN_DELAY = 500;
 
+    public void run() {
+        ScheduledExecutorService schedExec =
+                Executors.newScheduledThreadPool(1);
 
+        schedExec.scheduleWithFixedDelay(() -> {
+            source.simProcess();
+            manager.allocate(source.getAll()
+                    .stream()
+                    .skip(source.getAll()
+                            .size() -1)
+                    .findFirst()
+                    .get());  // Need Easier way to gen one unique process
+                              // on the spot
+        }, 0, GEN_DELAY, TimeUnit.MILLISECONDS);
 
-          for (Model.Process p : this.source.getAll()){
-              this.manager.allocate(p);
-          }
-
-          this.manager.getAllProc()
-                  .forEach(proc -> System.out.println("Process: " +
-                          proc.getProcId() + ", "+ proc.getSize()));
     }
+
+
 }

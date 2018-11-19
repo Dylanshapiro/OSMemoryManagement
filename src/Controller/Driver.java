@@ -4,6 +4,9 @@ import Controller.*;
 import Model.*;
 import View.*;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Driver {
 
     public static void main(String[] args){
@@ -11,16 +14,23 @@ public class Driver {
     }
 
     public static void init(){
-        MemoryManager memMan = MemoryManager.getInstance();
-        memMan.setAlgo(new FirstFitAlgo(memMan.getMemSize()));
+        ExecutorService executor = Executors.newFixedThreadPool(3);
 
-        Controller controller = new Controller(
-                    new SimSource(20),
-                    new Display(),
-                    memMan
-            );
+        Display view = new Display();
 
-        controller.run();
+        executor.execute(
+                () -> {
+                    MemoryManager memMan = MemoryManager.getInstance();
+                    memMan.setAlgo(new FirstFitAlgo(memMan.getMemSize()));
+                    ProcessSource source = new SimSource(1);
+
+                    Controller controller = new Controller(
+                            source,
+                            view,
+                            memMan);
+
+                    controller.run();
+                });
     }
 
 }
