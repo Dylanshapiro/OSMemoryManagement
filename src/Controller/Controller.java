@@ -6,7 +6,7 @@ import View.*;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Controller implements Observer {
+public class Controller implements MemoryObserver {
 
     private ProcessSource source;
     private Display view;
@@ -27,7 +27,7 @@ public class Controller implements Observer {
         this.view.updateDisplay();
     }
 
-    public void update(Observable obs, Object MemEvent){
+    public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent){
 
     }
 

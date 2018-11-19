@@ -2,21 +2,20 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
-public class MemoryManager {
+
+public class MemoryManager extends MemoryObservable {
     private static Algo memoryAlgo;
     private static List<Process> processes;
     //size in bytes
     public static int memSize;
     private static MemoryManager memoryManager;
-    private Observable obs;
+
 
     private MemoryManager(Algo algo,int memSize){
+        super();
         this.memoryAlgo=algo;
         this.memSize=memSize;
-        obs=new Observable();
         processes=new ArrayList<>();
     }
     public static MemoryManager getInstance(){
@@ -68,14 +67,8 @@ public class MemoryManager {
     public void setMemSize(int memSize) {
         MemoryManager.memSize = memSize;
     }
-    public void addObserver(Observer obs){
-        this.obs.addObserver(obs);
-    }
-    public void removeObserver(Observer obs){
-        this.obs.deleteObserver(obs);
-    }
     private void notifyObservers(){
-        this.obs.notifyObservers(new MemoryEvent(processes,memSize));
+        this.notifyObservers(new MemoryEvent(processes,memSize));
     }
     public class MemoryEvent{
         private List<Process> processes;
