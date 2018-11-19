@@ -7,18 +7,18 @@ import java.util.Optional;
 
 public class FirstFitAlgo implements Algo {
 
-    static final Integer KILOBYTE = new Integer(1024);
+    static final int KILOBYTE = 1024;
     boolean[] memory;
 
     //divides total memory to make into kilobytes.
     public FirstFitAlgo(int totalmem){
-        memory = new boolean[totalmem/1024];
+        memory = new boolean[totalmem/KILOBYTE];
     }
 
     // Implements Firstfit algorithm
     public Integer allocPs(Process unallocated){
-        long procsize = (unallocated.getSize() % KILOBYTE.intValue() == 0 )
-                ? unallocated.getSize()/1024 : (unallocated.getSize()/1024) + 1;
+        long procsize = (unallocated.getSize() % KILOBYTE == 0 )
+                ? unallocated.getSize()/ KILOBYTE: (unallocated.getSize()/KILOBYTE) + 1;
 
 
         int start = 0;
