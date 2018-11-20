@@ -18,6 +18,8 @@ public class Driver {
 
         Display view = new Display();
 
+        // Pass a function that instantiates everything to
+        // executor to be run within its thread pool
         executor.execute(
                 () -> {
                     MemoryManager memMan = MemoryManager.getInstance();

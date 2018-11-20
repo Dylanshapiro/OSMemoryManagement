@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Controller implements MemoryObserver {
 
+    public static final int GEN_DELAY = 500;
+
     private ProcessSource source;
     private Display view;
     private MemoryManager manager;
@@ -27,7 +29,7 @@ public class Controller implements MemoryObserver {
         this.manager.addObserver(this);
     }
 
-    // TODO make Config class to set to display
+    // TODO pass info to display to update somehow
     public void setDisplay(String config){
         this.view.updateDisplay();
     }
@@ -35,6 +37,10 @@ public class Controller implements MemoryObserver {
     public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent){
         List<Process> procs = ((MemoryManager) obs).getAllProc();
 
+        /* This call -> prints out the process with the highest base address
+         inside of MemoryManager's proc list.
+         Should show all processes in the same order as they are positioned
+         in memory */
         procs.stream()
                 .sorted(Comparator.comparingInt(p -> p.getBaseAddress().get()))
                 .skip(procs.size() - 1)
@@ -53,12 +59,16 @@ public class Controller implements MemoryObserver {
         manager.deallocate(pid);
     }
 
-    public static final int GEN_DELAY = 500;
-
     public void run() {
         ScheduledExecutorService schedExec =
                 Executors.newScheduledThreadPool(1);
 
+        /* Careful! Does work in a different thread,
+         We already have Controller running in a dif thread,
+         You cant schedule a thread with a fixed delay on
+         a reg thread pool so we use a seperate scheduled one here
+         Just be aware that this function being scheduled is on a
+         different thread than controller as a result */
         schedExec.scheduleWithFixedDelay(() -> {
             source.simProcess();
             manager.allocate(source.getAll()
@@ -71,6 +81,4 @@ public class Controller implements MemoryObserver {
         }, 0, GEN_DELAY, TimeUnit.MILLISECONDS);
 
     }
-
-
 }
