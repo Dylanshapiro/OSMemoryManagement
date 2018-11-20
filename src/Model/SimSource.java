@@ -22,7 +22,7 @@ public class SimSource implements ProcessSource{
         numOfProcess = num;
         //Prepare process name bank
         try {
-           procNames = Files.readAllLines(Paths.get("names.txt"), StandardCharsets.UTF_8);
+           procNames = Files.readAllLines(Paths.get("Resources\\names.txt"), StandardCharsets.UTF_8);
 
         } catch (IOException ex) {
             System.out.println("Process \"names.txt\" not found!");
@@ -64,8 +64,8 @@ public class SimSource implements ProcessSource{
     public void showList()
     {
         for(int i = 0; i < processList.size(); i++) {
-            System.out.println("ID: " + processList.get(i).getProcId() + " Size: " + processList.get(i).getSize()
-                              + "Name: " + processList.get(i).getName());
+            System.out.println("Name: " + processList.get(i).getName() + "ID: " + processList.get(i).getProcId()
+                             + " Size: " + processList.get(i).getSize());
         }
     }
 
