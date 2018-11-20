@@ -5,10 +5,11 @@ import java.util.Optional;
 
 public class Process{
 
-    int procId;
-    int startTime;
-    ProcState state;
-    int size;
+    private int procId;
+    private int startTime;
+    private ProcState state;
+    private int size;
+    private String name;
     Optional<Integer> baseAddress;
 
     /**
@@ -17,7 +18,8 @@ public class Process{
      * @param startTime
      * @param size
      */
-    public Process(int procId, int startTime, int size) {
+    public Process(String name, int procId, int startTime, int size) {
+        this.name = name;
         this.procId = procId;
         this.startTime = startTime;
         this.state = state.READY;
@@ -91,6 +93,7 @@ public class Process{
      * @param procId
      */
     public void setProcId(int procId) {
+
         this.procId = procId;
     }
 
@@ -99,13 +102,16 @@ public class Process{
      * @return boolean
      */
     public boolean isAllocated(){
-        if (this.getBaseAddress()== null)
-            return false;
-        else
-            return true;
+        return !(this.getBaseAddress()== null);
     }
 
-
+    /**
+     * Fetch thine name.
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
 
 
 
