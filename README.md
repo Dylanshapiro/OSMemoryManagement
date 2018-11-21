@@ -14,7 +14,7 @@
   </a>
 
   <a href="https://github.com/Dylanshapiro/OSMemoryManagement">
-    <img src="https://img.shields.io/github/size/Dylanshapiro/OSMemoryManagement.svg"
+    <img src="https://img.shields.io/badge/size-138K-blue.svg"
       alt="Size" />
   </a>
 
