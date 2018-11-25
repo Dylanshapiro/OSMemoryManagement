@@ -1,12 +1,13 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 import java.util.Optional;
 
 public class BestFitAlgo extends FitAlgo {
     public BestFitAlgo(int totalmem) {
         super(totalmem);
+        name = "Best Fit";
     }
 
     @Override

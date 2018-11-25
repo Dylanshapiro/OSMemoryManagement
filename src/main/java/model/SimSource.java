@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ public class SimSource implements ProcessSource{
         numOfProcess = num;
         //Prepare process name bank
         try {
-           procNames = Files.readAllLines(Paths.get("./Resources/names.txt"), StandardCharsets.UTF_8);
+           procNames = Files.readAllLines(Paths.get("./src/main/resources/names.txt"), StandardCharsets.UTF_8);
 
         } catch (IOException ex) {
             System.out.println("Process \"names.txt\" not found!");
@@ -49,15 +49,17 @@ public class SimSource implements ProcessSource{
     }
 
     //Create the processes of random size and name
-    public void simProcess()
+    public Process generateProcess()
     {
         Random rand = new Random();
         int memSize = 0;
 
-        for(int i = 1; i <= numOfProcess; i++) {
-            memSize = getRandomIntBetweenRange(1, 5000);
-            processList.add(new Process(procNames.get(rand.nextInt(procNames.size())),i, i, memSize));
-        }
+        memSize = getRandomIntBetweenRange(1, 5000);
+        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), ++numOfProcess,
+                                   System.currentTimeMillis(), memSize);
+        processList.add(proc);
+        return proc;
+
     }
 
     //Prints out the process list for testing

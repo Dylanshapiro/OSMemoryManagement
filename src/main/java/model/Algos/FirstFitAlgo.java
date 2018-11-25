@@ -1,6 +1,6 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 import java.util.Optional;
 
@@ -12,6 +12,7 @@ public class FirstFitAlgo extends FitAlgo {
     //divides total memory to make into kilobytes.
     public FirstFitAlgo(int totalmem){
         super(totalmem);
+        name = "First Fit";
     }
 
     // Implements Firstfit algorithm

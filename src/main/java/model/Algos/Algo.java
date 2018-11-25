@@ -1,9 +1,10 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 public interface Algo {
 
     public Integer allocPs(Process unallocated);
     public boolean deallocate(Process allocated);
+    public String getName();
 }

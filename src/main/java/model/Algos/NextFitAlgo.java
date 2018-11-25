@@ -1,6 +1,6 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 import java.util.Optional;
 
@@ -8,6 +8,7 @@ public class NextFitAlgo extends FitAlgo{
     private int count=0;
     public NextFitAlgo(int totalmem) {
         super(totalmem);
+        name = "Next Fit";
     }
 
     @Override

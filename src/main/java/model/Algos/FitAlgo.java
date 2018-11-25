@@ -1,12 +1,14 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 import java.util.Optional;
 
 public abstract class FitAlgo implements Algo{
     public static final int KILOBYTE = 1024;
     protected boolean[] memory;
+    protected String name;
+
     public FitAlgo(int totalmem){
         memory = new boolean[totalmem/KILOBYTE];
     }
@@ -25,5 +27,9 @@ public abstract class FitAlgo implements Algo{
     protected long getProcessSize(Process unallocated){
         return (unallocated.getSize() % KILOBYTE == 0 )
                 ? unallocated.getSize()/ KILOBYTE: (unallocated.getSize()/KILOBYTE) + 1;
+    }
+
+    public String getName(){
+        return name;
     }
 }

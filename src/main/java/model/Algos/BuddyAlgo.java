@@ -1,15 +1,17 @@
-package Model.Algos;
+package model.Algos;
 
-import Model.Process;
+import model.Process;
 
 import java.util.LinkedList;
 import java.util.Optional;
 
 public class BuddyAlgo implements Algo {
     private LinkedList<Block> memory;
+    private String name;
     public BuddyAlgo(int memSize){
         memory=new LinkedList<>();
         memory.add(new Block(0,memSize));
+        name = "Buddy";
     }
     @Override
     public Integer allocPs(Process unallocated) {
@@ -30,6 +32,12 @@ public class BuddyAlgo implements Algo {
         merge(b);
         return true;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
     private void merge(Block newBlock){
         for(Block b:memory){
             if(b.getBase()==newBlock.getBase()+newBlock.getLength()){
@@ -67,5 +75,6 @@ public class BuddyAlgo implements Algo {
         public void setLength(int length) {
             this.length = length;
         }
+
     }
 }
