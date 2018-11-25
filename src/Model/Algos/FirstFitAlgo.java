@@ -25,7 +25,7 @@ public class FirstFitAlgo extends FitAlgo {
                open++;
                if(open >= procsize){
                    filler(start, start+open,true);
-                   unallocated.setBaseAddress(Optional.of(new Integer(start)));
+                   unallocated.setBaseAddress(start);
                    return new Integer (start);
                }
             } else {
@@ -33,11 +33,6 @@ public class FirstFitAlgo extends FitAlgo {
                start = i+1;
             }
         }
-
         return null;
     }
-
-
-
-
 }

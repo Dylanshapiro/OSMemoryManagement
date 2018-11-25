@@ -22,7 +22,7 @@ public class BestFitAlgo extends FitAlgo {
         for(int i=0;i<memory.length;i++){
             if(memory[i]){
                 if(length==procSize){
-                    unallocated.setBaseAddress(Optional.of(new Integer(start)));
+                    unallocated.setBaseAddress(start);
                     filler(start,length,true);
                     return length;
                 }
@@ -39,7 +39,7 @@ public class BestFitAlgo extends FitAlgo {
             }
         }
         if(bestLength!=-1&&bestStart!=-1){
-            unallocated.setBaseAddress(Optional.of(new Integer(bestStart)));
+            unallocated.setBaseAddress(bestStart);
             filler(bestStart,(int)procSize,true);
             return bestStart;
         }

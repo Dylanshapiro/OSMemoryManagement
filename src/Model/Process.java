@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Process{
+public class Process {
 
     private int procId;
     private int startTime;
@@ -14,6 +14,7 @@ public class Process{
 
     /**
      * constructor
+     *
      * @param procId
      * @param startTime
      * @param size
@@ -24,12 +25,12 @@ public class Process{
         this.startTime = startTime;
         this.state = state.READY;
         this.size = size;
-        this.baseAddress = null;
+        this.baseAddress = Optional.empty();
     }
-
 
     /**
      * this gets the size of the process
+     *
      * @return Long
      */
     public int getSize() {
@@ -37,7 +38,8 @@ public class Process{
     }
 
     /**
-     *  this sets the size of the process
+     * this sets the size of the process
+     *
      * @param size
      */
     public void setSize(int size) {
@@ -48,25 +50,27 @@ public class Process{
      * gets the base address of this process
      * base address is the start point of the process
      * caution: base address can be null
-     * @return Optional</long>
+     *
+     * @return Optional<Integer>
      */
     public Optional<Integer> getBaseAddress() {
         return baseAddress;
     }
 
-
     /**
-     *  sets the base address
-     *  caution: base address can be null
+     * sets the base address
+     * caution: base address can be null
+     *
      * @param baseAddress
      */
-    public void setBaseAddress(Optional<Integer> baseAddress) {
-        this.baseAddress = baseAddress;
+    public void setBaseAddress(int baseAddress) {
+        this.baseAddress = Optional.of(baseAddress);
     }
 
     /**
-     * retunrs the start time for this process
-     * @return long
+     * returns the start time for this process
+     *
+     * @return Integer
      */
     public int getStartTime() {
         return startTime;
@@ -74,6 +78,7 @@ public class Process{
 
     /**
      * ets the start time for the process
+     *
      * @param startTime
      */
     public void setStartTime(int startTime) {
@@ -82,6 +87,7 @@ public class Process{
 
     /**
      * returns process id number
+     *
      * @return int
      */
     public int getProcId() {
@@ -90,6 +96,7 @@ public class Process{
 
     /**
      * sets the procId
+     *
      * @param procId
      */
     public void setProcId(int procId) {
@@ -99,20 +106,20 @@ public class Process{
 
     /**
      * if address is null false if not null true
+     *
      * @return boolean
      */
-    public boolean isAllocated(){
-        return !(this.getBaseAddress()== null);
+    public boolean isAllocated() {
+        return this.baseAddress.isPresent();
     }
 
     /**
      * Fetch thine name.
+     *
      * @return
      */
     public String getName() {
         return name;
     }
-
-
 
 }

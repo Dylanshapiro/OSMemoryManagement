@@ -17,7 +17,7 @@ public class BuddyAlgo implements Algo {
             if(b.getLength()>unallocated.getSize()){
                 int base=b.getBase();
                 b.setBase(b.getBase()+unallocated.getSize());
-                unallocated.setBaseAddress(Optional.of(new Integer(base)));
+                unallocated.setBaseAddress(base);
                 return base;
             }
         }

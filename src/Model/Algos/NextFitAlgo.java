@@ -22,7 +22,7 @@ public class NextFitAlgo extends FitAlgo{
                 if(open >= procsize){
                     filler(start, start+open,true);
                     count=start+open;
-                    unallocated.setBaseAddress(Optional.of(new Integer(start)));
+                    unallocated.setBaseAddress(start);
                     return new Integer (start);
                 }
             } else {

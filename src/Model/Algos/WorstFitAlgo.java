@@ -34,7 +34,7 @@ public class WorstFitAlgo extends FitAlgo {
             }
         }
         if(worstLength!=-1&&worstStart!=-1){
-            unallocated.setBaseAddress(Optional.of(new Integer(worstStart)));
+            unallocated.setBaseAddress(worstStart);
             filler(worstStart,(int)procSize,true);
             return worstStart;
         }
