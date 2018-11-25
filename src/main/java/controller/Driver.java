@@ -1,10 +1,10 @@
-package Controller;
+package controller;
 
-import Model.Algos.FirstFitAlgo;
-import Model.MemoryManager;
-import Model.ProcessSource;
-import Model.SimSource;
-import View.Display;
+import model.Algos.FirstFitAlgo;
+import model.MemoryManager;
+import model.ProcessSource;
+import model.SimSource;
+import view.Display;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +33,7 @@ public class Driver extends Application {
 
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/Controller/view.fxml"));
+                .getResource("/xml/view.fxml"));
         fxmlLoader.setController(view);
         Parent root = fxmlLoader.load();
 

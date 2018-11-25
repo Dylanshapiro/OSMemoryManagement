@@ -1,9 +1,8 @@
-package View;
+package view;
 
-import Controller.Controller;
-import Model.Algos.Algo;
-import Model.MemoryManager;
-import Model.Process;
+import model.Algos.Algo;
+import model.MemoryManager;
+import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +12,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
+import model.Process;
+import model.Algos.Algo;
+import model.Algos.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 

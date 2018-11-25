@@ -1,8 +1,8 @@
-package Model;
+package model;
 
-import Model.Algos.Algo;
-import Model.Algos.*;
-
+import model.Algos.Algo;
+import model.Algos.*;
+import model.Process;
 import java.util.ArrayList;
 import java.util.List;
 

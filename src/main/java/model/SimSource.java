@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ public class SimSource implements ProcessSource{
         numOfProcess = num;
         //Prepare process name bank
         try {
-           procNames = Files.readAllLines(Paths.get("./Resources/names.txt"), StandardCharsets.UTF_8);
+           procNames = Files.readAllLines(Paths.get("./src/main/resources/names.txt"), StandardCharsets.UTF_8);
 
         } catch (IOException ex) {
             System.out.println("Process \"names.txt\" not found!");

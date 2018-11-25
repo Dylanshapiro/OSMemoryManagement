@@ -61,18 +61,16 @@
             <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0">
               <items>
 
-                <TilePane prefColumns="1" vgap="4"  minHeight="0.0" prefTileHeight="30"
-                          minWidth="0.0" prefHeight="251.0" prefWidth="145.0">
-                        <children >
-
+                <SplitPane orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="251.0" prefWidth="145.0">
+                        <items>
                                 <Label  text="Select Algo" />
                                 <ComboBox fx:id="algoCombo" prefWidth="150.0" />
-                                <VBox minHeight="130"></VBox>
+                                <VBox></VBox>
                                 <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" />
                                 <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" />
 
-                        </children>
-                  </TilePane>
+                        </items>
+                  </SplitPane>
 
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>

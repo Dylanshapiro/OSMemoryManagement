@@ -1,10 +1,10 @@
-package Controller;
+package controller;
 
-import Model.Algos.*;
-import Model.*;
-import Model.MemoryManager.MemoryEvent;
-import Model.Process;
-import View.Display;
+import model.Algos.*;
+import model.*;
+import model.MemoryManager.MemoryEvent;
+import model.Process;
+import view.Display;
 
 import java.util.Arrays;
 import java.util.List;
