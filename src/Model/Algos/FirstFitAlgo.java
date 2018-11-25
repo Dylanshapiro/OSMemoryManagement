@@ -12,6 +12,7 @@ public class FirstFitAlgo extends FitAlgo {
     //divides total memory to make into kilobytes.
     public FirstFitAlgo(int totalmem){
         super(totalmem);
+        name = "First Fit";
     }
 
     // Implements Firstfit algorithm

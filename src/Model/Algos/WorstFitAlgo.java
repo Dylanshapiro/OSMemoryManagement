@@ -7,6 +7,7 @@ import java.util.Optional;
 public class WorstFitAlgo extends FitAlgo {
     public WorstFitAlgo(int totalmem) {
         super(totalmem);
+        name = "Worst Fit";
     }
 
     @Override

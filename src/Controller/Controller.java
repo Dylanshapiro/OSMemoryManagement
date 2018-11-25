@@ -1,84 +1,110 @@
 package Controller;
 
 import Model.*;
-import Model.Algos.FirstFitAlgo;
+import Model.Algos.*;
 import Model.Process;
-import View.*;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public class Controller implements MemoryObserver {
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    public static final int GEN_DELAY = 500;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+
+public class Controller implements MemoryObserver, Initializable {
 
     private ProcessSource source;
-    private Display view;
     private MemoryManager manager;
 
-    public Controller(ProcessSource source, Display view,
-                      MemoryManager manager){
+    @FXML
+    private ComboBox<Algo> algoCombo;
 
-        this.source = source;
-        this.view = view;
-        this.manager = manager;
+    @FXML
+    private Button generateButton;
 
+    @FXML
+    private ListView<Process> statusField;
+
+    @FXML
+    private Button killProcessButton;
+
+
+    public Controller() {
+
+        this.source = new SimSource(0);
+        this.manager = MemoryManager.getInstance();
         this.manager.addObserver(this);
+
+
     }
 
-    // TODO pass info to display to update somehow
-    public void setDisplay(String config){
-        this.view.updateDisplay();
+    public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent) {
+
+
+        //update status field
+        statusField.getItems().setAll(MemEvent.getProcesses());
+
     }
 
-    public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent){
-        List<Process> procs = ((MemoryManager) obs).getAllProc();
+    public void killProc(ActionEvent event) {
 
-        /* This call -> prints out the process with the highest base address
-         inside of MemoryManager's proc list.
-         Should show all processes in the same order as they are positioned
-         in memory */
-        procs.stream()
-                .sorted(Comparator.comparingInt(p -> p.getBaseAddress().get()))
-                .skip(procs.size() - 1)
-                .forEach(proc ->
-                        System.out.printf("#%4d, %s%-2s [ %-4d %-4d ] \n",
-                                procs.size(),
-                                "Id: ",
-                                proc.getProcId(),
-                                proc.getBaseAddress().get().intValue(),
-                                proc.getBaseAddress().get().intValue() +
-                                        ((proc.getSize() > FirstFitAlgo.KILOBYTE) ? proc.getSize() /
-                                                           FirstFitAlgo.KILOBYTE : 1)));
+        manager.deallocate((statusField.getSelectionModel().getSelectedItem()));
     }
 
-    void killProc(Model.Process pid){
-        manager.deallocate(pid);
+    public void setAlgo(ActionEvent event) {
+        Algo a = (Algo) event.getSource();
+        manager.setAlgo(a);
     }
 
-    public void run() {
-        ScheduledExecutorService schedExec =
-                Executors.newScheduledThreadPool(1);
+    @FXML
+    public void addProc(ActionEvent event) {
+        manager.allocate(source.generateProcess());
+    }
 
-        /* Careful! Does work in a different thread,
-         We already have Controller running in a dif thread,
-         You cant schedule a thread with a fixed delay on
-         a reg thread pool so we use a seperate scheduled one here
-         Just be aware that this function being scheduled is on a
-         different thread than controller as a result */
-        schedExec.scheduleWithFixedDelay(() -> {
-            source.simProcess();
-            manager.allocate(source.getAll()
-                    .stream()
-                    .skip(source.getAll()
-                            .size() -1)
-                    .findFirst()
-                    .get());  // Need Easier way to gen one unique process
-                              // on the spot
-        }, 0, GEN_DELAY, TimeUnit.MILLISECONDS);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //Generate Process Button
+        generateButton.setOnAction(this::addProc);
+        //Kill Process Button
+        killProcessButton.setOnAction(this::killProc);
+
+        //Algo Combo box
+        algoCombo.getItems().addAll(new FirstFitAlgo(manager.getMemSize()),
+                new BestFitAlgo(manager.getMemSize()),
+                new WorstFitAlgo(manager.getMemSize()),
+                new NextFitAlgo(manager.getMemSize()),
+                new BuddyAlgo(manager.getMemSize()));
+        //Sets up names for Combo Box
+        algoCombo.setCellFactory(listView -> new SimpleTableObjectListCell());
+        algoCombo.setButtonCell(new SimpleTableObjectListCell());
+        algoCombo.getSelectionModel().selectFirst();
+       //stack exchange told me to do this, supposed to make combobox work
+        EventHandler<ActionEvent> handler = algoCombo.getOnAction();
+        algoCombo.setOnAction(null);
+        algoCombo.setItems(algoCombo.getItems());
+        algoCombo.setOnAction(handler);
+
+    }
+
+    /**
+     * This just sets the names for the Algorithms.
+     */
+    private static class SimpleTableObjectListCell extends ListCell<Algo> {
+
+        @Override
+        public void updateItem(Algo item, boolean empty) {
+            super.updateItem(item, empty);
+            if (item != null) {
+
+                setText(item.getName());//return String, actual name of material
+
+            } else {
+                setText(null);
+            }
+        }
 
     }
 }

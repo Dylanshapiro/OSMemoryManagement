@@ -49,15 +49,17 @@ public class SimSource implements ProcessSource{
     }
 
     //Create the processes of random size and name
-    public void simProcess()
+    public Process generateProcess()
     {
         Random rand = new Random();
         int memSize = 0;
 
-        for(int i = 1; i <= numOfProcess; i++) {
-            memSize = getRandomIntBetweenRange(1, 5000);
-            processList.add(new Process(procNames.get(rand.nextInt(procNames.size())),i, i, memSize));
-        }
+        memSize = getRandomIntBetweenRange(1, 5000);
+        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), ++numOfProcess,
+                                   System.currentTimeMillis(), memSize);
+        processList.add(proc);
+        return proc;
+
     }
 
     //Prints out the process list for testing

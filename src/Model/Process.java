@@ -6,7 +6,7 @@ import java.util.Optional;
 public class Process{
 
     private int procId;
-    private int startTime;
+    private long startTime;
     private ProcState state;
     private int size;
     private String name;
@@ -18,7 +18,7 @@ public class Process{
      * @param startTime
      * @param size
      */
-    public Process(String name, int procId, int startTime, int size) {
+    public Process(String name, int procId, long startTime, int size) {
         this.name = name;
         this.procId = procId;
         this.startTime = startTime;
@@ -68,7 +68,7 @@ public class Process{
      * retunrs the start time for this process
      * @return long
      */
-    public int getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
@@ -113,6 +113,8 @@ public class Process{
         return name;
     }
 
-
+    public String toString(){
+        return (name + "\t\t" + procId + "\t\t" + size);
+    }
 
 }

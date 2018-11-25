@@ -8,6 +8,6 @@ public interface ProcessSource {
 
     public List<Process> getAll();
     
-    public void simProcess();
+    public Process generateProcess();
     
 }

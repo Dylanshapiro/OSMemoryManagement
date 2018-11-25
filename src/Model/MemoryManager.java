@@ -1,7 +1,7 @@
 package Model;
 
 import Model.Algos.Algo;
-import Model.Algos.FirstFitAlgo;
+import Model.Algos.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +15,17 @@ public class MemoryManager extends MemoryObservable {
     private static MemoryManager memoryManager;
 
 
-    private MemoryManager(Algo algo,int memSize){
+    private MemoryManager(int memSize, Algo algo){
         super();
-        this.memoryAlgo=algo;
         this.memSize=memSize;
+        this.memoryAlgo=algo;
         processes=new ArrayList<>();
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
-            memoryManager=new MemoryManager(defaultAlgo(),defaultMemSize());
+            int memSize = defaultMemSize();
+            Algo algo = new FirstFitAlgo(memSize);
+            memoryManager=new MemoryManager(memSize,algo);
         }
         return memoryManager;
 
@@ -36,8 +38,7 @@ public class MemoryManager extends MemoryObservable {
 
     public boolean allocate(Process p){
         //TODO change based on implemenatation
-
-        if(!processes.contains(p)&&memoryAlgo.allocPs(p)!=null){
+        if(!processes.contains(p)&& memoryAlgo.allocPs(p)!=null){
             processes.add(p);
             notifyObservers();
             return true;
@@ -55,6 +56,7 @@ public class MemoryManager extends MemoryObservable {
     private static Algo defaultAlgo(){
         return new FirstFitAlgo(memSize);
     }
+
     private static int defaultMemSize() {
         return 655360;
     }
@@ -70,9 +72,11 @@ public class MemoryManager extends MemoryObservable {
     public void setMemSize(int memSize) {
         MemoryManager.memSize = memSize;
     }
+
     private void notifyObservers(){
         this.notifyObservers(new MemoryEvent(processes,memSize));
     }
+
     public class MemoryEvent{
         private List<Process> processes;
         public int memSize;

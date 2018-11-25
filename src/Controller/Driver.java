@@ -1,38 +1,24 @@
 package Controller;
 
-import Model.*;
-import Model.Algos.FirstFitAlgo;
-import View.*;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-public class Driver {
+public class Driver extends Application {
 
     public static void main(String[] args){
-        init();
+        launch(args);
     }
 
-    public static void init(){
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-        Display view = new Display();
-
-        // Pass a function that instantiates everything to
-        // executor to be run within its thread pool
-        executor.execute(
-                () -> {
-                    MemoryManager memMan = MemoryManager.getInstance();
-                    memMan.setAlgo(new FirstFitAlgo(memMan.getMemSize()));
-                    ProcessSource source = new SimSource(1);
-
-                    Controller controller = new Controller(
-                            source,
-                            view,
-                            memMan);
-
-                    controller.run();
-                });
+        Parent root = FXMLLoader.load(getClass().getResource("/Controller/view.fxml"));
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
 }
