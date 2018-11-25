@@ -1,110 +1,57 @@
 package Controller;
 
-import Model.*;
 import Model.Algos.*;
+import Model.*;
+import Model.MemoryManager.MemoryEvent;
 import Model.Process;
+import View.Display;
 
+import java.util.Arrays;
+import java.util.List;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+public class Controller implements MemoryObserver {
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+    private final ProcessSource source;
+    private final MemoryManager manager;
+    private final Display view;
 
-public class Controller implements MemoryObserver, Initializable {
-
-    private ProcessSource source;
-    private MemoryManager manager;
-
-    @FXML
-    private ComboBox<Algo> algoCombo;
-
-    @FXML
-    private Button generateButton;
-
-    @FXML
-    private ListView<Process> statusField;
-
-    @FXML
-    private Button killProcessButton;
-
-
-    public Controller() {
-
-        this.source = new SimSource(0);
-        this.manager = MemoryManager.getInstance();
+    public Controller(MemoryManager manager, Display view, ProcessSource source) {
+        this.source = source;
+        this.manager = manager;
+        this.view = view;
         this.manager.addObserver(this);
-
-
     }
 
-    public void update(MemoryObservable obs, MemoryManager.MemoryEvent MemEvent) {
+    // receive from Observable
+    public void update(MemoryObservable obs, MemoryEvent memEvent) {
 
-
-        //update status field
-        statusField.getItems().setAll(MemEvent.getProcesses());
-
+        this.view.updateDisplay(memEvent); // send update to view
     }
 
-    public void killProc(ActionEvent event) {
+    // utils
+    public List<Algo> getAlgoList() {
+        final int memSize = this.manager.getMemSize();
 
-        manager.deallocate((statusField.getSelectionModel().getSelectedItem()));
+        return Arrays.asList(
+                new FirstFitAlgo(memSize),
+                new BestFitAlgo(memSize),
+                new WorstFitAlgo(memSize),
+                new NextFitAlgo(memSize),
+                new BuddyAlgo(memSize)
+        );
     }
 
-    public void setAlgo(ActionEvent event) {
-        Algo a = (Algo) event.getSource();
-        manager.setAlgo(a);
+    // input api
+    public void killProc(Process p) {
+        this.manager.deallocate(p);
     }
 
-    @FXML
-    public void addProc(ActionEvent event) {
-        manager.allocate(source.generateProcess());
+    public void setAlgo(Algo a) {
+        this.manager.setAlgo(a);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        //Generate Process Button
-        generateButton.setOnAction(this::addProc);
-        //Kill Process Button
-        killProcessButton.setOnAction(this::killProc);
-
-        //Algo Combo box
-        algoCombo.getItems().addAll(new FirstFitAlgo(manager.getMemSize()),
-                new BestFitAlgo(manager.getMemSize()),
-                new WorstFitAlgo(manager.getMemSize()),
-                new NextFitAlgo(manager.getMemSize()),
-                new BuddyAlgo(manager.getMemSize()));
-        //Sets up names for Combo Box
-        algoCombo.setCellFactory(listView -> new SimpleTableObjectListCell());
-        algoCombo.setButtonCell(new SimpleTableObjectListCell());
-        algoCombo.getSelectionModel().selectFirst();
-       //stack exchange told me to do this, supposed to make combobox work
-        EventHandler<ActionEvent> handler = algoCombo.getOnAction();
-        algoCombo.setOnAction(null);
-        algoCombo.setItems(algoCombo.getItems());
-        algoCombo.setOnAction(handler);
-
+    public void addProc() {
+        this.manager.allocate(source.generateProcess());
     }
 
-    /**
-     * This just sets the names for the Algorithms.
-     */
-    private static class SimpleTableObjectListCell extends ListCell<Algo> {
-
-        @Override
-        public void updateItem(Algo item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null) {
-
-                setText(item.getName());//return String, actual name of material
-
-            } else {
-                setText(null);
-            }
-        }
-
-    }
 }

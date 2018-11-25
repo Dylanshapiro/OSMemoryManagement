@@ -12,7 +12,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -57,15 +60,21 @@
       <children>
             <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="251.0" prefWidth="145.0">
-                     <children>
-                        <ComboBox fx:id="algoCombo" layoutX="3.0" layoutY="40.0" prefWidth="150.0" />
-                        <Label layoutX="39.0" layoutY="14.0" text="Select Algo" />
-                        <Button fx:id="generateButton" layoutY="259.0" mnemonicParsing="false" text="Generate Random Process" />
-                        <Button fx:id="killProcessButton" layoutX="31.0" layoutY="300.0" mnemonicParsing="false" text="Kill Process" />
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+
+                <TilePane prefColumns="1" vgap="4"  minHeight="0.0" prefTileHeight="30"
+                          minWidth="0.0" prefHeight="251.0" prefWidth="145.0">
+                        <children >
+
+                                <Label  text="Select Algo" />
+                                <ComboBox fx:id="algoCombo" prefWidth="150.0" />
+                                <VBox minHeight="130"></VBox>
+                                <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" />
+                                <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" />
+
+                        </children>
+                  </TilePane>
+
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
                         <SplitPane dividerPositions="0.5736842105263158" layoutX="-3.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="382.0" prefWidth="480.0">
                           <items>
