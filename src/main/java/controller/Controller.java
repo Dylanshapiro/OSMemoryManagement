@@ -1,6 +1,7 @@
 package controller;
 
 import config.Config;
+import javafx.application.Platform;
 import model.Algos.*;
 import model.*;
 import model.MemoryManager.MemoryEvent;
@@ -41,7 +42,10 @@ public class Controller implements MemoryObserver {
 
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
-        this.view.updateDisplay(memEvent); // send update to view
+        Platform.runLater(()-> {
+            this.view.updateDisplay(memEvent); // send update to view
+        });
+
     }
 
     // utils
