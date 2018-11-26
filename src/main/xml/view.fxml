@@ -68,6 +68,7 @@
                                 <VBox></VBox>
                                 <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" />
                                 <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" />
+                                <Button fx:id="toggleSimButton" mnemonicParsing="false"  text="Run Sim! =)" />
 
                         </items>
                   </SplitPane>

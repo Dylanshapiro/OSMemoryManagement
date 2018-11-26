@@ -12,9 +12,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Controller implements MemoryObserver {
+
+    private ScheduledExecutorService execService;
 
     private final Config config;
     private final ProcessSource source;
@@ -23,6 +30,8 @@ public class Controller implements MemoryObserver {
 
     public Controller(MemoryManager manager, Display view,
                       ProcessSource source, Config config) {
+
+        execService = Executors.newScheduledThreadPool(1);
         this.config = config;
         this.source = source;
         this.manager = manager;
@@ -59,6 +68,29 @@ public class Controller implements MemoryObserver {
 
     public void addProc() {
         this.manager.allocate(source.generateProcess());
+    }
+
+    public void startSim() {
+        this.execService = Executors.newScheduledThreadPool(1);
+
+        int delayMs = getDelay();
+        int delaySpread = getDelaySpread();
+
+        AtomicInteger thisDelay = new AtomicInteger(delayMs);
+
+        this.execService.scheduleWithFixedDelay(() -> {
+
+            thisDelay.set(ThreadLocalRandom.current().nextInt(
+                    (delayMs - delaySpread / 2),
+                    (delayMs + delaySpread / 2)));
+
+            manager.allocate(source.generateProcess());
+        }, 0, thisDelay.get(), TimeUnit.MILLISECONDS);
+
+    }
+
+    public void stopSim(){
+        this.execService.shutdown();
     }
 
     // Config stuff

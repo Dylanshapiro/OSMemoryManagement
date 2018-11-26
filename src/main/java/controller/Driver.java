@@ -47,6 +47,7 @@ public class Driver extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/css/split-pane.css"); // load css
         primaryStage.setScene(scene);
+        primaryStage.setTitle("OSMM");
         primaryStage.show();
     }
 }

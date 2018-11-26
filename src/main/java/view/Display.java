@@ -34,6 +34,10 @@ public class Display implements Initializable {
     @FXML
     private Button killProcessButton;
 
+    @FXML
+    private Button toggleSimButton;
+    private boolean simEnabled;
+
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
@@ -41,10 +45,14 @@ public class Display implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // Buttons
         // Generate Process Button
         generateButton.setOnAction(this::addProc);
         // Kill Process Button
         killProcessButton.setOnAction(this::killProc);
+        // Toggle Sim Button
+        toggleSimButton.setOnAction(this::toggleSim);
 
         // Algo Combo box
         algoCombo.getItems().addAll(this.ctrl.getAlgoList());
@@ -59,7 +67,6 @@ public class Display implements Initializable {
         algoCombo.setOnAction(null);
         algoCombo.setItems(algoCombo.getItems());
         algoCombo.setOnAction(handler);
-
     }
 
     // receive updates
@@ -75,6 +82,19 @@ public class Display implements Initializable {
     public void setAlgo(ActionEvent event) {
         Algo a = (Algo) event.getSource();
         this.ctrl.setAlgo(a);
+    }
+
+    private void toggleSim(ActionEvent actionEvent) {
+        Button button =  (Button)actionEvent.getSource();
+        if (this.simEnabled) {
+            button.setText("Run Sim! =)");
+            this.simEnabled = false;
+            this.ctrl.stopSim();
+        } else {
+            button.setText("Stop Sim! =0");
+            this.simEnabled = true;
+            this.ctrl.startSim();
+        }
     }
 
     @FXML
