@@ -1,5 +1,6 @@
 package controller;
 
+import config.Config;
 import model.Algos.FirstFitAlgo;
 import model.MemoryManager;
 import model.ProcessSource;
@@ -11,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.*;
+
 public class Driver extends Application {
 
     public static void main(String[] args) {
@@ -19,6 +22,9 @@ public class Driver extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        //
+
+        Config config = new Config();
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
@@ -28,7 +34,7 @@ public class Driver extends Application {
         ProcessSource source = new SimSource(1);
 
         Display view = new Display();                           // init view
-        Controller ctrl = new Controller(menMan, view, source); // compose Controller
+        Controller ctrl = new Controller(menMan, view, source, config); // compose Controller
         view.setCtrl(ctrl);                                     // give view the ref it needs
 
         // Load jfx view. Set controller
