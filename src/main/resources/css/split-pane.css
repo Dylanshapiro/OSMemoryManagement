@@ -4,3 +4,31 @@
     -fx-border-color: grey;
     -fx-border-width: 1;
 }
+
+.button {
+    -fx-background-color:
+            linear-gradient(#456b9d, #1d359c);
+        -fx-background-radius: 30;
+        -fx-background-insets: 0,1,2,3,0;
+        -fx-text-fill: #a9a9a9;
+        -fx-font-weight: bold;
+        -fx-font-size: 14px;
+        -fx-padding: 10 20 10 20;
+}
+
+.button:hover {
+    -fx-background-color: #a8dadc;
+}
+
+.button:pressed {
+    -fx-background-color: #f1faee;
+}
+
+.split-pane {
+    -fx-background-color: #a9a9a9;
+}
+
+#statusField {
+    -fx-font-family: "Comic Sans MS";
+    -fx-background-color: #a9a9a9;
+}
