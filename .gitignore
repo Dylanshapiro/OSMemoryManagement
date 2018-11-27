@@ -11,3 +11,14 @@ gradle-app.setting
 .gradletasknamecache
 
 .idea/libraries/*
+
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_STORE
+/build
+/captures
+.externalNativeBuild
+.idea/modules.xml
