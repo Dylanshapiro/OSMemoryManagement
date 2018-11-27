@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OSMemoryManagement.iml" filepath="$PROJECT_DIR$/.idea/modules/OSMemoryManagement.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OSMemoryManagement_main.iml" filepath="$PROJECT_DIR$/.idea/modules/OSMemoryManagement_main.iml" group="OSMemoryManagement" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OSMemoryManagement_test.iml" filepath="$PROJECT_DIR$/.idea/modules/OSMemoryManagement_test.iml" group="OSMemoryManagement" />
       <module fileurl="file://$PROJECT_DIR$/memsim.iml" filepath="$PROJECT_DIR$/memsim.iml" />
     </modules>
   </component>

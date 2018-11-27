@@ -3,3 +3,11 @@ out/*
 .idea/**/cssdialects.xml
 *.json
 *.obj
+
+.gradle
+/build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+.idea/libraries/*

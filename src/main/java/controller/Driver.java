@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.*;
-
 public class Driver extends Application {
 
     public static void main(String[] args) {
@@ -39,13 +37,13 @@ public class Driver extends Application {
 
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("/xml/view.fxml"));
+                .getResource("../xml/view.fxml"));
         fxmlLoader.setController(view);
         Parent root = fxmlLoader.load();
 
         // set scene and show
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("/css/split-pane.css"); // load css
+        scene.getStylesheets().add("css/split-pane.css"); // load css
         primaryStage.setScene(scene);
         primaryStage.setTitle("OSMM");
         primaryStage.show();

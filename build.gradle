@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+group 'edu.rowan.neg1'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.github.oshi:oshi-dist:3.10.0'
+}
+
+task(runMain, dependsOn: 'classes', type: JavaExec) {
+    main = 'controller.Driver'
+    classpath = sourceSets.main.runtimeClasspath
+
+}
