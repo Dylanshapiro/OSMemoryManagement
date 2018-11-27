@@ -1,7 +1,7 @@
 .split-pane-divider {
     -fx-padding: 0;
     -fx-opacity: 20%;
-    -fx-border-color: grey;
+    -fx-border-color: #dcdcdc;
     -fx-border-width: 1;
 }
 
@@ -31,4 +31,34 @@
 #statusField {
     -fx-font-family: "Comic Sans MS";
     -fx-background-color: #a9a9a9;
+}
+
+.anchor-pane {
+    -fx-background-color: black;
+}
+
+.combo-box {
+    -fx-border-width: 0.5px;
+    -fx-border-color: #1d359c;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-font-size: 15px;
+    -fx-padding: 0px;
+    -fx-font-weight: 700;
+    -fx-font-family: "Open Sans";
+}
+
+.combo-box:hover {
+    -fx-text-fill: white;
+}
+
+.combo-box .list-view {
+    -fx-padding: 0px;
+    -fx-font-weight: 700;
+}
+
+.combo-box .list-view .list-ce:filled {
+    -fx-text-fill: black;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
 }
