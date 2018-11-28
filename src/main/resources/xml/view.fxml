@@ -11,11 +11,9 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.TilePane?>
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -61,14 +59,14 @@
             <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0">
               <items>
 
-                <SplitPane orientation="VERTICAL" minHeight="0.0" minWidth="0.0" prefHeight="251.0" prefWidth="145.0">
+                <SplitPane dividerPositions="0.5, 0.5, 0.5, 0.5, 0.5" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0">
                         <items>
-                                <Label  text="Select Algo" />
+                                <Label text="Select Algo" />
                                 <ComboBox fx:id="algoCombo" prefWidth="150.0" />
-                                <VBox></VBox>
+                                <VBox />
                                 <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" />
                                 <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" />
-                                <Button fx:id="toggleSimButton" mnemonicParsing="false"  text="Run Sim! =)" />
+                                <Button fx:id="toggleSimButton" mnemonicParsing="false" text="Run Sim! =)" />
 
                         </items>
                   </SplitPane>
@@ -77,14 +75,15 @@
                      <children>
                         <SplitPane dividerPositions="0.5736842105263158" layoutX="-3.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="382.0" prefWidth="480.0">
                           <items>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="209.0" prefWidth="478.0">
+                            <AnchorPane fx:id="memoryViewPane" minHeight="0.0" minWidth="0.0" prefHeight="209.0" prefWidth="478.0">
                                  <children>
-                                    <Label layoutX="27.0" layoutY="76.0" prefHeight="17.0" prefWidth="389.0" text="Memory Shit Goes Here, bars, graphs, pies, perhaps have tabs for each" />
+                                    <Rectangle fx:id="memoryRect" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="49.0" layoutX="8.0" layoutY="101.0" stroke="BLACK" strokeType="INSIDE" width="462.0" />
+                                    <Label layoutX="188.0" layoutY="39.0" text="Memory " />
                                  </children></AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">
                                  <children>
                                     <ListView fx:id="statusField" layoutY="25.0" prefHeight="141.0" prefWidth="478.0" />
-                                    <Label layoutX="25.0" layoutY="5.0" prefHeight="17.0" prefWidth="380.0" text="Process,       Process ID,      Size      **Needs to be better formatted**" />
+                                    <Label layoutX="25.0" layoutY="5.0" prefHeight="17.0" prefWidth="380.0" text="Process,       Process ID,      Size,      Base Address   **Needs to be better formatted**" />
                                  </children>
                               </AnchorPane>
                           </items>

@@ -26,7 +26,7 @@ public class FirstFitAlgo extends FitAlgo {
                open++;
                if(open >= procsize){
                    filler(start, start+open,true);
-                   unallocated.setBaseAddress(start);
+                   unallocated.setBaseAddress(start * 1024);
                    return new Integer (start);
                }
             } else {

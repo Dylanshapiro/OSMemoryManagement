@@ -40,7 +40,7 @@ public class BestFitAlgo extends FitAlgo {
             }
         }
         if(bestLength!=-1&&bestStart!=-1){
-            unallocated.setBaseAddress(bestStart);
+            unallocated.setBaseAddress(bestStart * 1024);
             filler(bestStart,(int)procSize,true);
             return bestStart;
         }

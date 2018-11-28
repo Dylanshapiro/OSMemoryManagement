@@ -71,7 +71,12 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-        this.manager.allocate(source.generateProcess());
+        Process p = this.source.generateProcess();
+        if(this.manager.allocate(p)) {
+            double size = (double) p.getSize() / (double) manager.getMemSize();
+            double baseAddress = (double) p.getBaseAddress().get() / (double) manager.getMemSize();
+            view.fillChunk(size,baseAddress);
+        }
     }
 
     public void startSim() {

@@ -1,7 +1,10 @@
 package view;
 
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 import model.Algos.Algo;
 import model.MemoryManager;
+import model.Process;
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,9 +15,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
-import model.Process;
-import model.Algos.Algo;
-import model.Algos.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -36,6 +36,13 @@ public class Display implements Initializable {
 
     @FXML
     private Button toggleSimButton;
+
+    @FXML
+    private AnchorPane memoryViewPane;
+
+    @FXML
+    private Rectangle memoryRect;
+
     private boolean simEnabled;
 
     // Init
@@ -62,11 +69,7 @@ public class Display implements Initializable {
         algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
         algoCombo.getSelectionModel().selectFirst();
 
-        // stack exchange told me to do this, supposed to make combobox work
-        EventHandler<ActionEvent> handler = algoCombo.getOnAction();
-        algoCombo.setOnAction(null);
-        algoCombo.setItems(algoCombo.getItems());
-        algoCombo.setOnAction(handler);
+        algoCombo.setOnAction(this::setAlgo);
     }
 
     // receive updates
@@ -76,12 +79,12 @@ public class Display implements Initializable {
 
     // Input Events
     public void killProc(ActionEvent event) {
+        deleteChunk();
         this.ctrl.killProc(statusField.getSelectionModel().getSelectedItem());
     }
 
     public void setAlgo(ActionEvent event) {
-        Algo a = (Algo) event.getSource();
-        this.ctrl.setAlgo(a);
+        this.ctrl.setAlgo(algoCombo.getSelectionModel().getSelectedItem());
     }
 
     private void toggleSim(ActionEvent actionEvent) {
@@ -100,6 +103,22 @@ public class Display implements Initializable {
     @FXML
     public void addProc(ActionEvent event) {
         this.ctrl.addProc();
+    }
+
+    public void fillChunk(double processSize, double processAddress) {
+        Rectangle chunk = new Rectangle();
+
+        chunk.setX(8 + (processAddress * memoryRect.getWidth()));
+        chunk.setY(101);
+        chunk.setHeight(memoryRect.getHeight());
+        chunk.setWidth( processSize * memoryRect.getWidth());
+
+        memoryViewPane.getChildren().add(chunk);
+
+    }
+
+    public void deleteChunk(){
+        //TODO implement way to delete chunks
     }
 
     // This just sets the names for the Algorithms.
