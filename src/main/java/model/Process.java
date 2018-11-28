@@ -124,7 +124,7 @@ public class Process {
 
 
     public String toString() {
-        return (name + "\t\t" + procId + "\t\t" + size);
+        return (name + "\t\t" + procId + "\t\t" + size + "\t\t" + getBaseAddress().get());
     }
 }
 
