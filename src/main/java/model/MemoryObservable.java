@@ -19,6 +19,11 @@ public abstract class MemoryObservable {
             obs.update(this,event);
         }
     }
+    protected void notifyObserversError(String msg){
+        for(MemoryObserver obs:observers){
+            obs.error(msg);
+        }
+    }
 
 
 }

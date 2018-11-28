@@ -12,18 +12,15 @@ public class NextFitAlgo extends FitAlgo{
     }
 
     @Override
-    public Integer allocPs(Process unallocated) {
-        long procsize = getProcessSize(unallocated);
-        int start = 0;
+    public Integer allocPs(long procsize) {
+        int start = count;
         int open = 0;
 
         for(int i = count;i < memory.length; i=(i+1)%memory.length) {
             if(!memory[i]){
                 open++;
                 if(open >= procsize){
-                    filler(start, start+open,true);
                     count=start+open;
-                    unallocated.setBaseAddress(start * 1024);
                     return new Integer (start);
                 }
             } else {

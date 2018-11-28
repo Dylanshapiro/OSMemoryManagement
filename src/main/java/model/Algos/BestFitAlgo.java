@@ -11,40 +11,32 @@ public class BestFitAlgo extends FitAlgo {
     }
 
     @Override
-    public Integer allocPs(Process unallocated) {
-        long procSize=super.getProcessSize(unallocated);
-        if(procSize>memory.length){
-            return null;
-        }
-        int bestStart=-1;
-        int bestLength=-1;
-        int start=0;
-        int length=0;
+    public Integer allocPs(long procSize) {
+        Integer start=0,open=0,bestLength=Integer.MAX_VALUE,bestStart=null;
         for(int i=0;i<memory.length;i++){
-            if(memory[i]){
-                if(length==procSize){
-                    unallocated.setBaseAddress(start);
-                    filler(start,length,true);
-                    return length;
+            if(memory[i]||i==memory.length-1){
+                if(open==procSize){
+                    return start;
                 }
-                if(length>procSize&&length<bestLength){
+                else if(open>procSize&&open<bestLength){
+                    bestLength=open;
                     bestStart=start;
-                    bestLength=length;
                 }
-                start=i+1;
-                length=0;
+                else{
+                    open=0;
+                    start=i+1;
+                }
             }
             else{
-                length++;
-
+                open++;
             }
         }
-        if(bestLength!=-1&&bestStart!=-1){
-            unallocated.setBaseAddress(bestStart * 1024);
-            filler(bestStart,(int)procSize,true);
+        if(bestStart!=null){
             return bestStart;
         }
-        return null;
+        else{
+            return null;
+        }
 
 
     }

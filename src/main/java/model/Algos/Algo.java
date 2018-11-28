@@ -4,7 +4,7 @@ import model.Process;
 
 public interface Algo {
 
-    public Integer allocPs(Process unallocated);
+    public Long allocPs(Process unallocated);
     public boolean deallocate(Process allocated);
     public String getName();
 }

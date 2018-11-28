@@ -2,8 +2,9 @@ package model.Algos;
 
 import model.Process;
 
+import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Optional;
+
 
 public class BuddyAlgo implements Algo {
     private LinkedList<Block> memory;
@@ -14,13 +15,14 @@ public class BuddyAlgo implements Algo {
         name = "Buddy";
     }
     @Override
-    public Integer allocPs(Process unallocated) {
+    public Long allocPs(Process unallocated) {
         for(Block b: memory){
             if(b.getLength()>unallocated.getSize()){
-                int base=b.getBase();
+                long base=b.getBase();
                 b.setBase(b.getBase()+unallocated.getSize());
+                b.setLength(b.getLength()-unallocated.getSize());
                 unallocated.setBaseAddress(base);
-                return base;
+                return new Long(base);
             }
         }
         return null;
@@ -50,31 +52,46 @@ public class BuddyAlgo implements Algo {
             }
         }
         memory.add(newBlock);
+        Collections.sort(memory);
     }
-    private class Block{
-        int base;
-        int length;
+    private class Block implements Comparable{
+        long base;
+        long length;
 
-        public Block(int base, int length) {
+        public Block(long base, long length) {
             this.base = base;
             this.length = length;
         }
 
-        public int getBase() {
+        public long getBase() {
             return base;
         }
 
-        public void setBase(int base) {
+        public void setBase(long base) {
             this.base = base;
         }
 
-        public int getLength() {
+        public long getLength() {
             return length;
         }
 
-        public void setLength(int length) {
+        public void setLength(long length) {
             this.length = length;
         }
 
+        @Override
+        public int compareTo(Object o) {
+            if(!(o instanceof Block)){
+                return 0;
+            }
+            Block newBlock=(Block)o;
+            if(newBlock.getBase()==getBase()){
+                return 0;
+            }
+            if(newBlock.getBase()>getBase()){
+                return -1;
+            }
+            return 1;
+        }
     }
 }
