@@ -43,9 +43,14 @@ public class Controller implements MemoryObserver {
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
         Platform.runLater(()-> {
-            this.view.updateDisplay(memEvent); // send update to view
+            this.view.updateDisplay(memEvent);// send update to view
         });
 
+    }
+
+    @Override
+    public void error(String err) {
+        System.out.println(err);
     }
 
     // utils
@@ -64,18 +69,19 @@ public class Controller implements MemoryObserver {
     // input api
     public void killProc(Process p) {
         this.manager.deallocate(p);
-    }
+     }
 
     public void setAlgo(Algo a) {
+        this.manager.clearProc();
         this.manager.setAlgo(a);
     }
 
     public void addProc() {
         Process p = this.source.generateProcess();
         if(this.manager.allocate(p)) {
-            double size = (double) p.getSize() / (double) manager.getMemSize();
-            double baseAddress = (double) p.getBaseAddress().get() / (double) manager.getMemSize();
-            view.fillChunk(size,baseAddress);
+            //double size = (double) p.getSize() / (double) manager.getMemSize();
+            //double baseAddress = (double) p.getBaseAddress().get() / (double) manager.getMemSize();
+            //view.fillChunk(size,baseAddress);
         }
     }
 

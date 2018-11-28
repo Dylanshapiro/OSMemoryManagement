@@ -16,8 +16,7 @@ public class FirstFitAlgo extends FitAlgo {
     }
 
     // Implements Firstfit algorithm
-    public Integer allocPs(Process unallocated){
-        long procsize = getProcessSize(unallocated);
+    public Integer allocPs(long procsize){
         int start = 0;
         int open = 0;
 
@@ -25,8 +24,6 @@ public class FirstFitAlgo extends FitAlgo {
             if(!memory[i]){
                open++;
                if(open >= procsize){
-                   filler(start, start+open,true);
-                   unallocated.setBaseAddress(start * 1024);
                    return new Integer (start);
                }
             } else {

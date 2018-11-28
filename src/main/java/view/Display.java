@@ -75,11 +75,17 @@ public class Display implements Initializable {
     // receive updates
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         statusField.getItems().setAll(memEvent.getProcesses());
+        this.deleteChunk();
+        for(Process p:memEvent.getProcesses()){
+            double size = (double) p.getSize() / (double) memEvent.getMemSize();
+            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
+            fillChunk(size,baseAddress);
+        }
+
     }
 
     // Input Events
     public void killProc(ActionEvent event) {
-        deleteChunk();
         this.ctrl.killProc(statusField.getSelectionModel().getSelectedItem());
     }
 
@@ -115,10 +121,11 @@ public class Display implements Initializable {
 
         memoryViewPane.getChildren().add(chunk);
 
+
     }
 
     public void deleteChunk(){
-        //TODO implement way to delete chunks
+        memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
     }
 
     // This just sets the names for the Algorithms.

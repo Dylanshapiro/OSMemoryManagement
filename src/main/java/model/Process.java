@@ -7,9 +7,9 @@ public class Process {
     private int procId;
     private long startTime;
     private ProcState state;
-    private int size;
+    private Long size;
     private String name;
-    Optional<Integer> baseAddress;
+    Optional<Long> baseAddress;
 
     /**
      * constructor
@@ -18,7 +18,7 @@ public class Process {
      * @param startTime
      * @param size
      */
-    public Process(String name, int procId, long startTime, int size) {
+    public Process(String name, int procId, long startTime, Long size) {
         this.name = name;
         this.procId = procId;
         this.startTime = startTime;
@@ -32,7 +32,7 @@ public class Process {
      *
      * @return Long
      */
-    public int getSize() {
+    public Long getSize() {
         return size;
     }
 
@@ -41,7 +41,7 @@ public class Process {
      *
      * @param size
      */
-    public void setSize(int size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -52,7 +52,7 @@ public class Process {
      *
      * @return Optional<Integer>
      */
-    public Optional<Integer> getBaseAddress() {
+    public Optional<Long> getBaseAddress() {
         return baseAddress;
     }
 
@@ -62,7 +62,7 @@ public class Process {
      *
      * @param baseAddress
      */
-    public void setBaseAddress(int baseAddress) {
+    public void setBaseAddress(Long baseAddress) {
         this.baseAddress = Optional.of(baseAddress);
     }
 
