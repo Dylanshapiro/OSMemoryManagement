@@ -1,7 +1,13 @@
 package view;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Algos.Algo;
 import model.MemoryManager;
 import model.Process;
@@ -10,15 +16,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Display implements Initializable {
+
+    @FXML
+    private VBox rootBox;
+
+
     @FXML
     private Controller ctrl;
 
@@ -43,6 +51,10 @@ public class Display implements Initializable {
     @FXML
     private Rectangle memoryRect;
 
+
+    @FXML
+    private MenuItem launchPrefs;
+
     private boolean simEnabled;
 
     // Init
@@ -64,6 +76,8 @@ public class Display implements Initializable {
         // Algo Combo box
         algoCombo.getItems().addAll(this.ctrl.getAlgoList());
 
+        // launch prefs window
+        launchPrefs.setOnAction(this::launchPrefsWindow);
         // Sets up names for Combo Box
         algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
         algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
@@ -141,4 +155,25 @@ public class Display implements Initializable {
             }
         }
     }
+
+    private void launchPrefsWindow(ActionEvent actionEvent) {
+        Parent prefsWindow;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            prefsWindow = (AnchorPane) loader.load(getClass().getResource("../xml/prefs.fxml"));
+
+            Scene prefScene = new Scene(prefsWindow);
+            Stage curStage = (Stage) rootBox.getScene().getWindow();
+
+            curStage.setResizable(false);
+            curStage.setScene(prefScene);
+
+            Prefs prefController = loader.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

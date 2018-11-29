@@ -17,8 +17,17 @@ dependencies {
     compile 'com.github.oshi:oshi-dist:3.10.0'
 }
 
-task(runMain, dependsOn: 'classes', type: JavaExec) {
+task(run, type: JavaExec) {
+    dependsOn classes
+    dependsOn test
+
     main = 'controller.Driver'
     classpath = sourceSets.main.runtimeClasspath
+}
 
+task(runMain, type: JavaExec) {
+    dependsOn classes
+
+    main = 'controller.Driver'
+    classpath = sourceSets.main.runtimeClasspath
 }

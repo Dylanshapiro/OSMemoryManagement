@@ -2,6 +2,7 @@ package controller;
 
 import config.Config;
 import model.Algos.FirstFitAlgo;
+import model.LocalSource;
 import model.MemoryManager;
 import model.ProcessSource;
 import model.SimSource;
@@ -29,7 +30,7 @@ public class Driver extends Application {
         menMan.setAlgo(new FirstFitAlgo(menMan.getMemSize()));
 
         // Init a default process source
-        ProcessSource source = new SimSource(1);
+        ProcessSource source = new LocalSource();
 
         Display view = new Display();                           // init view
         Controller ctrl = new Controller(menMan, view, source, config); // compose Controller
