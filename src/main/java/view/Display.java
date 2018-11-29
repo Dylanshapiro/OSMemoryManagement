@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -18,7 +20,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -55,7 +59,8 @@ public class Display implements Initializable {
 
     @FXML
     private MenuItem launchPrefs;
-
+    @FXML
+    private MenuItem launchAbout;
     private boolean simEnabled;
 
     // Init
@@ -79,6 +84,10 @@ public class Display implements Initializable {
 
         // launch prefs window
         launchPrefs.setOnAction(this::launchPrefsWindow);
+
+        // launch project github
+        launchAbout.setOnAction(this::launchAbout);
+
         // Sets up names for Combo Box
         algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
         algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
@@ -91,9 +100,9 @@ public class Display implements Initializable {
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
-        for (Process p : memEvent.getProcesses()) {
-            double size = (double) p.getSize() / (double) memEvent.getMemSize();
-            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
+            for (Process p : memEvent.getProcesses()) {
+                double size = (double) p.getSize() / (double) memEvent.getMemSize();
+                double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
 
@@ -157,6 +166,7 @@ public class Display implements Initializable {
         }
     }
 
+    // Navigation stuff
     private void launchPrefsWindow(ActionEvent actionEvent) {
         Parent prefsWindow;
         try {
@@ -176,5 +186,14 @@ public class Display implements Initializable {
         }
     }
 
+    private void launchAbout(ActionEvent actionEvent)  {
+        if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+            try {
+                Desktop.getDesktop().browse(URI.create("https://github.com/Dylanshapiro/OSMemoryManagement"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
