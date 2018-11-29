@@ -74,10 +74,8 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-        this.execService.execute(() -> {
             Process p = this.source.generateProcess();
             this.manager.allocate(p);
-        });
     }
 
     public void startSim() {
@@ -89,7 +87,9 @@ public class Controller implements MemoryObserver {
         AtomicInteger thisDelay = new AtomicInteger(delayMs);
 
         this.execService.scheduleWithFixedDelay(() -> {
+
             this.manager.allocate(this.source.generateProcess());
+
         }, 0, thisDelay.get(), TimeUnit.MILLISECONDS);
     }
 
