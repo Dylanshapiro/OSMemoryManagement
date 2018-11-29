@@ -59,7 +59,7 @@
                           <items>
                             <AnchorPane fx:id="memoryViewPane" minHeight="0.0" minWidth="0.0" prefHeight="209.0" prefWidth="478.0">
                                  <children>
-                                    <Rectangle fx:id="memoryRect" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="49.0" layoutX="8.0" layoutY="101.0" stroke="BLACK" strokeType="INSIDE" width="462.0" />
+                                    <Rectangle fx:id="memoryRect"  styleClass="alloc-bar" arcHeight="5.0" arcWidth="5.0" height="49.0" layoutX="8.0" layoutY="101.0" stroke="BLACK" strokeType="INSIDE" width="462.0" />
                                     <Label layoutX="188.0" layoutY="39.0" text="Memory " />
                                  </children></AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">

@@ -1,0 +1,7 @@
+.alloc-bar {
+   -fx-fill: dodgerblue;
+    -fx-smooth: true;
+    -fx-stroke-line-cap: butt;
+    -fx-stroke-line-cap: miter;
+}
+

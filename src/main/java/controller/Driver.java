@@ -45,6 +45,7 @@ public class Driver extends Application {
         // set scene and show
         Scene scene = new Scene(root);
         scene.getStylesheets().add("css/split-pane.css"); // load css
+        scene.getStylesheets().add("css/alloc-bar.css"); // load css
         primaryStage.setScene(scene);
         primaryStage.setTitle("OSMM");
         primaryStage.show();

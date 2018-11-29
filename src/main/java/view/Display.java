@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Algos.Algo;
@@ -90,10 +91,10 @@ public class Display implements Initializable {
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
-        for(Process p:memEvent.getProcesses()){
+        for (Process p : memEvent.getProcesses()) {
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
             double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
-            fillChunk(size,baseAddress);
+            fillChunk(size, baseAddress);
         }
 
     }
@@ -108,7 +109,7 @@ public class Display implements Initializable {
     }
 
     private void toggleSim(ActionEvent actionEvent) {
-        Button button =  (Button)actionEvent.getSource();
+        Button button = (Button) actionEvent.getSource();
         if (this.simEnabled) {
             button.setText("Run Sim! =)");
             this.simEnabled = false;
@@ -128,17 +129,17 @@ public class Display implements Initializable {
     public void fillChunk(double processSize, double processAddress) {
         Rectangle chunk = new Rectangle();
 
-        chunk.setX(8 + (processAddress * memoryRect.getWidth()));
+        double rectWidth = memoryRect.getWidth();
+        double paneWidth = memoryViewPane.getWidth();
+
+        chunk.setX(8 + (processAddress * rectWidth));
         chunk.setY(101);
         chunk.setHeight(memoryRect.getHeight());
-        chunk.setWidth( processSize * memoryRect.getWidth());
-
-        memoryViewPane.getChildren().add(chunk);
-
-
+        chunk.setWidth(processSize * rectWidth);
+            memoryViewPane.getChildren().add(chunk);
     }
 
-    public void deleteChunk(){
+    public void deleteChunk() {
         memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
     }
 

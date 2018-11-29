@@ -6,18 +6,17 @@
 }
 
 .button {
-    -fx-background-color:
-            linear-gradient(#456b9d, #1d359c);
-        -fx-background-radius: 30;
-        -fx-background-insets: 0,1,2,3,0;
-        -fx-text-fill: #a9a9a9;
-        -fx-font-weight: bold;
-        -fx-font-size: 14px;
-        -fx-padding: 10 20 10 20;
+    -fx-background-color: rgba(255, 255, 255, 0);
+    -fx-background-radius: 1;
+    -fx-background-insets: 0, 1, 2, 3, 0;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20 10 20;
 }
 
 .button:hover {
-    -fx-background-color: #a8dadc;
+    -fx-background-color: rgba(13, 13, 13, 0.32);
 }
 
 .button:pressed {
@@ -29,13 +28,11 @@
 }
 
 #statusField {
-    -fx-font-family: "Comic Sans MS";
+    -fx-font-weight: 500;
+    -fx-font-family: "Open Sans";
     -fx-background-color: #a9a9a9;
 }
 
-.anchor-pane {
-    -fx-background-color: black;
-}
 
 .combo-box {
     -fx-border-width: 0.5px;
