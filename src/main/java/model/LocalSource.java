@@ -5,6 +5,7 @@ import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem.ProcessSort;
 import oshi.software.os.OperatingSystem;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -23,9 +24,20 @@ public class LocalSource implements ProcessSource {
 
     }
 
+    public void kill(int pid) throws IOException {
+        Runtime runTime = Runtime.getRuntime();
+        if (os.getFamily().toLowerCase().equals("windows")) {
+            runTime.exec("taskkill /PID " + 5512);
+        } else {
+            runTime.exec("kill " + pid);
+        }
+
+    }
+
     private OSProcess[] getOSProcs() {
         return os.getProcesses(os.getProcessCount(), ProcessSort.PID);
     }
+
 
     private Process adaptOshi(OSProcess p) {
         return new Process(p.getName(),

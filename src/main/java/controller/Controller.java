@@ -9,6 +9,7 @@ import model.Process;
 import sun.net.util.IPAddressUtil;
 import view.Display;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -65,7 +66,12 @@ public class Controller implements MemoryObserver {
 
     // input api
     public void killProc(Process p) {
-        this.manager.deallocate(p);
+        try {
+            this.source.kill(p.getProcId());
+            this.manager.deallocate(p);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setAlgo(Algo a) {

@@ -77,7 +77,7 @@ public class MemoryManager extends MemoryObservable {
     }
 
     private static int defaultMemSize() {
-        return 655360;
+        return 65536011;
     }
 
     public void setAlgo(Algo memoryAlgo) {

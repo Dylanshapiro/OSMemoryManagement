@@ -30,11 +30,12 @@ public class SimSource implements ProcessSource{
         }
     }
 
-    public Process getProcess(int i)
-    {
-        return processList.get(i);
+    @Override
+    public void  kill(int pid){
+        processList.removeIf(proc -> proc.getProcId() == pid );
     }
 
+    @Override
     public List<Process> getAll()
     {
         return processList;
@@ -50,6 +51,7 @@ public class SimSource implements ProcessSource{
     }
 
     //Create the processes of random size and name
+    @Override
     public Process generateProcess()
     {
         Random rand = new Random();
