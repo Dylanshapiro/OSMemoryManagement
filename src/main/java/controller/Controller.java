@@ -13,10 +13,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -77,7 +74,10 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-        this.manager.allocate(this.source.generateProcess());
+        this.execService.execute(() -> {
+            Process p = this.source.generateProcess();
+            this.manager.allocate(p);
+        });
     }
 
     public void startSim() {
@@ -89,14 +89,8 @@ public class Controller implements MemoryObserver {
         AtomicInteger thisDelay = new AtomicInteger(delayMs);
 
         this.execService.scheduleWithFixedDelay(() -> {
-
-            thisDelay.set(ThreadLocalRandom.current().nextInt(
-                    (delayMs - delaySpread / 2),
-                    (delayMs + delaySpread / 2)));
-
-            manager.allocate(source.generateProcess());
+            this.manager.allocate(this.source.generateProcess());
         }, 0, thisDelay.get(), TimeUnit.MILLISECONDS);
-
     }
 
     public void stopSim() {

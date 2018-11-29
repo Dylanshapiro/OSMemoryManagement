@@ -8,6 +8,7 @@ import oshi.software.os.OperatingSystem;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class LocalSource implements ProcessSource {
@@ -33,6 +34,8 @@ public class LocalSource implements ProcessSource {
                 p.getResidentSetSize());
     }
 
+
+
     @Override
     public List<Process> getAll() {
         return Arrays.stream(getOSProcs())
@@ -46,4 +49,5 @@ public class LocalSource implements ProcessSource {
         final OSProcess proc = procs[rand.nextInt(procs.length)];
         return adaptOshi(proc);
     }
+
 }
