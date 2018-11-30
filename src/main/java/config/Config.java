@@ -51,13 +51,14 @@ public class Config {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, List<String>> readSavedConfig() throws IOException, ClassNotFoundException {
 
         FileInputStream inputStream = new FileInputStream(userCfgPath);
         ObjectInputStream in = new ObjectInputStream(inputStream);
 
-        Map<String, List<String>> settings =
-                (Map<String, List<String>>) in.readObject();
+
+        Map<String, List<String>> settings = (Map<String, List<String>>) in.readObject();
 
         return settings;
     }

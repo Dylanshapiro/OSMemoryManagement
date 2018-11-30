@@ -6,17 +6,17 @@ import model.Algos.*;
 import model.*;
 import model.MemoryManager.MemoryEvent;
 import model.Process;
-import sun.net.util.IPAddressUtil;
 import view.Display;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -166,8 +166,7 @@ public class Controller implements MemoryObserver {
 
         boolean allValid = nodes.stream()
                 .allMatch(ipString -> {
-                    return IPAddressUtil.isIPv4LiteralAddress(ipString) ||
-                            IPAddressUtil.isIPv6LiteralAddress(ipString);
+                    return this.validateIpV4(ipString);
                 });
 
         if (allValid) {
@@ -176,6 +175,12 @@ public class Controller implements MemoryObserver {
         } else {
             return false;
         }
+    }
+
+    public static boolean validateIpV4(final String ip) {
+        String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
+
+        return ip.matches(PATTERN);
     }
 
     public List<String> getRemoteNodes() {

@@ -40,6 +40,7 @@ public class BuddyAlgo implements Algo {
         return name;
     }
 
+    @SuppressWarnings("unchecked")
     private void merge(Block newBlock){
         for(Block b:memory){
             if(b.getBase()==newBlock.getBase()+newBlock.getLength()){

@@ -37,6 +37,7 @@ public class RemoteSource implements ProcessSource {
 
     }
 
+    @SuppressWarnings("unchecked")
     private void syncRemoteState( )
             throws IOException, ClassNotFoundException {
 
