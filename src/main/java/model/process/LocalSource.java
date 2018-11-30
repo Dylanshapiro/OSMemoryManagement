@@ -1,5 +1,7 @@
-package model;
+package model.process;
 
+import model.process.Process;
+import model.process.ProcessSource;
 import oshi.SystemInfo;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem.ProcessSort;
@@ -9,7 +11,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class LocalSource implements ProcessSource {
@@ -31,7 +32,6 @@ public class LocalSource implements ProcessSource {
         } else {
             runTime.exec("kill " + pid);
         }
-
     }
 
     private OSProcess[] getOSProcs() {

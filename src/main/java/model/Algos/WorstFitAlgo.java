@@ -1,9 +1,5 @@
 package model.Algos;
 
-import model.Process;
-
-import java.util.Optional;
-
 public class WorstFitAlgo extends FitAlgo {
     public WorstFitAlgo(int totalmem) {
         super(totalmem);

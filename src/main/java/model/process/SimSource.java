@@ -1,11 +1,10 @@
-package model;
+package model.process;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public class SimSource implements ProcessSource{
 

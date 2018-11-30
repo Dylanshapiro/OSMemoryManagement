@@ -1,8 +1,6 @@
 package model.Algos;
 
-import model.Process;
-
-import java.util.Optional;
+import model.process.Process;
 
 public abstract class FitAlgo implements Algo{
     public static final int KILOBYTE = 1024;

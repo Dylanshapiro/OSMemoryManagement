@@ -1,4 +1,4 @@
-package model;
+package model.process;
 
 import java.io.IOException;
 import java.util.List;

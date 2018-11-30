@@ -1,9 +1,5 @@
 package model.Algos;
 
-import model.Process;
-
-import java.util.Optional;
-
 public class NextFitAlgo extends FitAlgo{
     private int count=0;
     public NextFitAlgo(int totalmem) {

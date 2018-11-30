@@ -2,7 +2,7 @@ package model;
 
 import model.Algos.Algo;
 import model.Algos.*;
-import model.Process;
+import model.process.Process;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

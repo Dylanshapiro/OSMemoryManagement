@@ -5,7 +5,8 @@ import javafx.application.Platform;
 import model.Algos.*;
 import model.*;
 import model.MemoryManager.MemoryEvent;
-import model.Process;
+import model.process.*;
+import model.process.Process;
 import view.Display;
 
 import java.io.IOException;
