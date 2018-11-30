@@ -62,4 +62,9 @@ public class LocalSource implements ProcessSource {
         return adaptOshi(proc);
     }
 
+    @Override
+    public String toString(){
+        return "Local";
+    }
+
 }

@@ -17,7 +17,7 @@ public class Prefs implements Initializable {
     Controller ctrl;
 
     @FXML
-    TableView<InetAddress> tableView;
+    TableView<String> tableView;
 
 
 

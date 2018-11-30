@@ -15,4 +15,5 @@ public interface ProcessSource {
     public default CompletableFuture<Process> generateAsync() {
         return CompletableFuture.supplyAsync(this::generateProcess);
     }
+
 }

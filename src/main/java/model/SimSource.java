@@ -64,13 +64,10 @@ public class SimSource implements ProcessSource{
         return proc;
 
     }
-    //Prints out the process list for testing
-    public void showList()
-    {
-        for(int i = 0; i < processList.size(); i++) {
-            System.out.println("Name: " + processList.get(i).getName() + "ID: " + processList.get(i).getProcId()
-                             + " Size: " + processList.get(i).getSize());
-        }
+
+    @Override
+    public String toString(){
+        return "Simulated";
     }
 
 }

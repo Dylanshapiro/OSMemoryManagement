@@ -11,7 +11,9 @@ import view.Display;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
@@ -19,6 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Controller implements MemoryObserver {
+
+    List<ProcessSource> sourceList;
 
     private ScheduledExecutorService execService;
 
@@ -30,8 +34,11 @@ public class Controller implements MemoryObserver {
     public Controller(MemoryManager manager, Display view,
                       ProcessSource source, Config config) {
 
-        execService = Executors.newScheduledThreadPool(1);
         this.config = config;
+
+        execService = Executors.newScheduledThreadPool(1);
+        this.sourceList = SourceFactory.initAll(this.getRemoteNodes());
+
         this.source = source;
         this.manager = manager;
         this.view = view;
@@ -80,8 +87,8 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-            Process p = this.source.generateProcess();
-            this.manager.allocate(p);
+        Process p = this.source.generateProcess();
+        this.manager.allocate(p);
     }
 
     public void startSim() {
@@ -103,7 +110,11 @@ public class Controller implements MemoryObserver {
         this.execService.shutdown();
     }
 
-    // Config stuff
+    public List<ProcessSource>  getSourceList(){
+        return this.sourceList;
+    }
+
+    // Config stuff //
     // set the spawn rate for sim source
     public void setDelay(int delay) {
         this.config.trySetSetting("delay",
@@ -167,21 +178,48 @@ public class Controller implements MemoryObserver {
         }
     }
 
-    public List<InetAddress> getRemoteNodes() {
-        return this.config.tryGetSetting("nodes").get()
-                .stream()
-                .map(ipString -> tryMapIp(ipString))
-                .collect(Collectors.toList());
+    public List<String> getRemoteNodes() {
+        return this.config.tryGetSetting("nodes").get();
     }
 
-    private InetAddress tryMapIp(String ipString) {
-        try {
-            return InetAddress.getByName(ipString);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+
+    static class SourceFactory {
+
+        static List<ProcessSource> sourceList;
+
+        public static List<ProcessSource> initAll(List<String> ips) {
+
+            sourceList = new ArrayList<>(16);
+
+            sourceList.add(new SimSource(1));
+            sourceList.add(new LocalSource());
+
+            if (!ips.isEmpty()) {
+                sourceList.addAll(generateRemotes(ips));
+            } else {
+                System.err.println("no ip's present");
+            }
+
+            return sourceList;
         }
-        return null; // should never actually be null
-        // setter setNodes() will not set a
-        // value that isnt valid
+
+        private static List<ProcessSource> generateRemotes(List<String> ips) {
+            return ips.stream()
+                    .map(SourceFactory::sourceFromIp)
+                    .collect(Collectors.toList());
+        }
+
+        // Try to make a source from an ipString, handle errors
+        // if impossible
+        private static RemoteSource sourceFromIp(String ip) {
+            try {
+                return new RemoteSource(ip);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

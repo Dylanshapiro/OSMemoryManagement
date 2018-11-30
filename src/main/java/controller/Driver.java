@@ -21,8 +21,8 @@ public class Driver extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //
 
+        // parse out saved preferences from config file
         Config config = new Config();
 
         // Init MemoryManager

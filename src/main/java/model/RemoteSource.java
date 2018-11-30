@@ -3,9 +3,7 @@ package model;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,15 +16,20 @@ enum  ReqType {
 
 public class RemoteSource implements ProcessSource {
 
-    URL url;
+    URI url;
 
-    HashMap<Process, Boolean> cachedProcs;
+    HashMap<Process, Boolean> cachedProcs =  new HashMap<>(100);;
 
 
-    public RemoteSource(String  ip) throws MalformedURLException {
-        this.url = new URL(ip);
+    public RemoteSource(String  ip) throws MalformedURLException,
+                                        URISyntaxException {
+        String urlStr = "https://" + ip + ":80";
+        this.url = new URI(urlStr);
+    }
 
-        this.cachedProcs = new HashMap<>(100);
+    public RemoteSource(InetAddress  ip) throws MalformedURLException, URISyntaxException {
+        String urlStr = "https://" + ip + ":80";
+        this.url = new URI(urlStr);
     }
 
     /// TODO
@@ -53,6 +56,7 @@ public class RemoteSource implements ProcessSource {
         }
     }
 
+    // TODO concat path
     private HttpURLConnection getConnection(ReqType reqType, String endPoint   ) throws IOException {
         URL endpoint = new URL(this.url.toString() +  endPoint);
 
@@ -76,5 +80,10 @@ public class RemoteSource implements ProcessSource {
     @Override
     public Process generateProcess() {
         return null;
+    }
+
+    @Override
+    public String toString(){
+        return "Remote @ " + this.url.getHost();
     }
 }

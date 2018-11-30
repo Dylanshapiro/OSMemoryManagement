@@ -15,7 +15,7 @@
 
 <VBox fx:id="rootBox" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
+    <MenuBar  fx:id="menuBar" VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -25,13 +25,13 @@
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
-          <Menu mnemonicParsing="false" text="Sources">
+          <Menu fx:id="sourceMenu" mnemonicParsing="false" text="Sources">
               <items>
               </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem  fx:id="launchAbout" mnemonicParsing="false" text="About osmm" />
+            <MenuItem fx:id="launchAbout" mnemonicParsing="false" text="About osmm" />
           </items>
         </Menu>
       </menus>

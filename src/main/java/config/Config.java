@@ -16,7 +16,7 @@ public class Config {
         defaults.put("delaySpread", Arrays.asList("500"));
         defaults.put("sizeSpread", Arrays.asList("5000"));
         defaults.put("variance", Arrays.asList("high"));
-        defaults.put("nodes", Arrays.asList("000.000.000.000"));
+        defaults.put("nodes", Arrays.asList( "173.239.232.121", "150.250.77.17"));
         defaults.put("defaultAlgo", Arrays.asList("FirstFitAlgo"));
         return defaults;
     }

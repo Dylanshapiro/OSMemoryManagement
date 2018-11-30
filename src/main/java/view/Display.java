@@ -20,11 +20,18 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.MenuBar;
+
 import java.awt.*;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class Display implements Initializable {
 
@@ -61,7 +68,14 @@ public class Display implements Initializable {
     private MenuItem launchPrefs;
     @FXML
     private MenuItem launchAbout;
+    @FXML
     private boolean simEnabled;
+
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private Menu sourceMenu;
+
 
     // Init
     public void setCtrl(Controller ctrl) {
@@ -94,6 +108,16 @@ public class Display implements Initializable {
         algoCombo.getSelectionModel().selectFirst();
 
         algoCombo.setOnAction(this::setAlgo);
+
+        this.loadSourceMenu();
+    }
+
+    private void loadSourceMenu(){
+
+        sourceMenu.getItems().addAll(this.ctrl.getSourceList()
+                .stream().map(node -> {
+                    return new MenuItem(node.toString());
+                }).collect(Collectors.toList()));
     }
 
     // receive updates
@@ -105,7 +129,6 @@ public class Display implements Initializable {
                 double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
-
     }
 
     // Input Events
