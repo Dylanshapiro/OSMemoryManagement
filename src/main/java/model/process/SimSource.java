@@ -1,4 +1,4 @@
-package model;
+package model.process;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -29,11 +29,12 @@ public class SimSource implements ProcessSource{
         }
     }
 
-    public Process getProcess(int i)
-    {
-        return processList.get(i);
+    @Override
+    public void  kill(int pid){
+        processList.removeIf(proc -> proc.getProcId() == pid );
     }
 
+    @Override
     public List<Process> getAll()
     {
         return processList;
@@ -49,6 +50,7 @@ public class SimSource implements ProcessSource{
     }
 
     //Create the processes of random size and name
+    @Override
     public Process generateProcess()
     {
         Random rand = new Random();
@@ -62,13 +64,9 @@ public class SimSource implements ProcessSource{
 
     }
 
-    //Prints out the process list for testing
-    public void showList()
-    {
-        for(int i = 0; i < processList.size(); i++) {
-            System.out.println("Name: " + processList.get(i).getName() + "ID: " + processList.get(i).getProcId()
-                             + " Size: " + processList.get(i).getSize());
-        }
+    @Override
+    public String toString(){
+        return "Simulated";
     }
 
 }

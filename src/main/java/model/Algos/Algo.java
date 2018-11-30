@@ -1,6 +1,6 @@
 package model.Algos;
 
-import model.Process;
+import model.process.Process;
 
 public interface Algo {
 

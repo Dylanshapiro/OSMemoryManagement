@@ -4,23 +4,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Algos.Algo;
 import model.MemoryManager;
-import model.Process;
+import model.process.Process;
 import controller.Controller;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class Display implements Initializable {
 
@@ -55,8 +61,16 @@ public class Display implements Initializable {
 
     @FXML
     private MenuItem launchPrefs;
-
+    @FXML
+    private MenuItem launchAbout;
+    @FXML
     private boolean simEnabled;
+
+    @FXML
+    private MenuBar menuBar;
+    @FXML
+    private Menu sourceMenu;
+
 
     // Init
     public void setCtrl(Controller ctrl) {
@@ -79,24 +93,37 @@ public class Display implements Initializable {
 
         // launch prefs window
         launchPrefs.setOnAction(this::launchPrefsWindow);
+
+        // launch project github
+        launchAbout.setOnAction(this::launchAbout);
+
         // Sets up names for Combo Box
         algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
         algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
         algoCombo.getSelectionModel().selectFirst();
 
         algoCombo.setOnAction(this::setAlgo);
+
+        this.loadSourceMenu();
+    }
+
+    private void loadSourceMenu(){
+
+        sourceMenu.getItems().addAll(this.ctrl.getSourceList()
+                .stream().map(node -> {
+                    return new MenuItem(node.toString());
+                }).collect(Collectors.toList()));
     }
 
     // receive updates
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
-        for (Process p : memEvent.getProcesses()) {
-            double size = (double) p.getSize() / (double) memEvent.getMemSize();
-            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
+            for (Process p : memEvent.getProcesses()) {
+                double size = (double) p.getSize() / (double) memEvent.getMemSize();
+                double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
-
     }
 
     // Input Events
@@ -157,6 +184,7 @@ public class Display implements Initializable {
         }
     }
 
+    // Navigation stuff
     private void launchPrefsWindow(ActionEvent actionEvent) {
         Parent prefsWindow;
         try {
@@ -176,5 +204,14 @@ public class Display implements Initializable {
         }
     }
 
+    private void launchAbout(ActionEvent actionEvent)  {
+        if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+            try {
+                Desktop.getDesktop().browse(URI.create("https://github.com/Dylanshapiro/OSMemoryManagement"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

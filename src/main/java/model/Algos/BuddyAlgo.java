@@ -1,6 +1,6 @@
 package model.Algos;
 
-import model.Process;
+import model.process.Process;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -40,6 +40,7 @@ public class BuddyAlgo implements Algo {
         return name;
     }
 
+    @SuppressWarnings("unchecked")
     private void merge(Block newBlock){
         for(Block b:memory){
             if(b.getBase()==newBlock.getBase()+newBlock.getLength()){

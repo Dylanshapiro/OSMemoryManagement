@@ -2,10 +2,9 @@ package controller;
 
 import config.Config;
 import model.Algos.FirstFitAlgo;
-import model.LocalSource;
+import model.process.LocalSource;
 import model.MemoryManager;
-import model.ProcessSource;
-import model.SimSource;
+import model.process.ProcessSource;
 import view.Display;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,8 +20,8 @@ public class Driver extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //
 
+        // parse out saved preferences from config file
         Config config = new Config();
 
         // Init MemoryManager

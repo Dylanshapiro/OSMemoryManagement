@@ -2,7 +2,7 @@ package model;
 
 import model.Algos.Algo;
 import model.Algos.*;
-import model.Process;
+import model.process.Process;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,7 +77,7 @@ public class MemoryManager extends MemoryObservable {
     }
 
     private static int defaultMemSize() {
-        return 655360;
+        return 65536011;
     }
 
     public void setAlgo(Algo memoryAlgo) {
