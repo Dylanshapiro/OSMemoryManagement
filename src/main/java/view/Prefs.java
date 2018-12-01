@@ -23,7 +23,6 @@ public class Prefs implements Initializable {
 
     public void dynamicInit(Controller ctrl){
         this.ctrl = ctrl;
-        this.tableView.getItems().addAll(ctrl.getRemoteNodes());
     }
 
     public void setController(Controller ctrl){

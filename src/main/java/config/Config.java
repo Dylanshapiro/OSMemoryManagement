@@ -4,11 +4,11 @@ import java.io.*;
 import java.util.*;
 import java.util.function.Function;
 
-public class Config {
+public final class Config {
 
-    private final String userCfgPath = "cfg/settings.obj";
+    private static final String userCfgPath = "cfg/settings.obj";
 
-    private Map<String, List<String>> settings;
+    private static Map<String, List<String>> settings;
 
     private static Map<String, List<String>> initDefaults() {
         Map<String, List<String>> defaults = new HashMap<>(5);
@@ -21,28 +21,24 @@ public class Config {
         return defaults;
     }
 
-    public Config() throws IOException {
-        initSettings();
-    }
-
-    private void initSettings() throws IOException {
+    public static void initSettings() throws IOException {
 
         final Function<Map<String, List<String>>, Void> createIfBad =
                 (defaults) -> {
                     setupCfgDir();                  // create cfg directory in root if needed
                     writeConfigFile(defaults);  // write default config file to dir
-                    this.settings = defaults;       // store cfg vals in this obj
+                    settings = defaults;       // store cfg vals in this obj
                     printCfg();                     // print cfg map
                     return null;
                 };
 
-        if (!this.checkConfigFileExists()) {
+        if (!checkConfigFileExists()) {
 
             createIfBad.apply(initDefaults());
         } else {
 
             try {
-                this.settings = readSavedConfig();
+                settings = readSavedConfig();
                 printCfg();
             } catch (ClassNotFoundException e) {
 
@@ -52,7 +48,7 @@ public class Config {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, List<String>> readSavedConfig() throws IOException, ClassNotFoundException {
+    private static Map<String, List<String>> readSavedConfig() throws IOException, ClassNotFoundException {
 
         FileInputStream inputStream = new FileInputStream(userCfgPath);
         ObjectInputStream in = new ObjectInputStream(inputStream);
@@ -63,18 +59,18 @@ public class Config {
         return settings;
     }
 
-    private void printCfg() {
-        int maxLen = this.settings.keySet().stream()
+    private static void printCfg() {
+        int maxLen = settings.keySet().stream()
                 .max(Comparator.comparingInt(String::length))
                 .get().length(); // longest key string
 
-        this.settings.forEach((key, valList) -> {
+        settings.forEach((key, valList) -> {
             System.out.printf("%-" + maxLen + "s: %s%n",
                     key, valList);
         });
     }
 
-    private void writeConfigFile(Map<String, List<String>> defaults) {
+    private static void writeConfigFile(Map<String, List<String>> defaults) {
         try {
             // create streams
             FileOutputStream outStream =
@@ -91,8 +87,8 @@ public class Config {
         }
     }
 
-    private void setupCfgDir() {
-        String cfgDirPath = this.userCfgPath.substring(0, userCfgPath.lastIndexOf('/'));
+    private static void setupCfgDir() {
+        String cfgDirPath = userCfgPath.substring(0, userCfgPath.lastIndexOf('/'));
         File cfgDir = new File(cfgDirPath);
 
         if (!cfgDir.exists() || !cfgDir.isDirectory()) {
@@ -100,21 +96,95 @@ public class Config {
         }
     }
 
-    private boolean checkConfigFileExists() {
+    private static boolean checkConfigFileExists() {
         return new File(userCfgPath).isFile();
     }
 
-    public void trySetSetting(String target, String newSetting) {
-        this.settings.replace(target, Arrays.asList(newSetting));
-        writeConfigFile(this.settings);
+    private static void trySetSetting(String target, String newSetting) {
+        settings.replace(target, Arrays.asList(newSetting));
+        writeConfigFile(settings);
     }
 
-    public void trySetSetting(String target, List<String> newSetting) {
-        this.settings.replace(target, newSetting);
-        writeConfigFile(this.settings);
+    private static void trySetSetting(String target, List<String> newSetting) {
+        settings.replace(target, newSetting);
+        writeConfigFile(settings);
     }
 
-    public Optional<List<String>> tryGetSetting(String setting) {
-        return Optional.ofNullable(this.settings.get(setting));
+    private static Optional<List<String>> tryGetSetting(String setting) {
+        return Optional.ofNullable(settings.get(setting));
     }
+
+    // Config stuff //
+    // set the spawn rate for sim source
+    public static void setDelay(int delay) {
+        trySetSetting("delay",
+                Integer.toString(delay));
+    }
+
+    public static int getDelay() {
+        return Integer.parseInt(tryGetSetting("delay")
+                .get().get(0));
+    }
+
+    // set the spawn rate for sim source
+    public static void setDelaySpread(int delayS) {
+        trySetSetting("delaySpread",
+                Integer.toString(delayS));
+    }
+
+    public static int getDelaySpread() {
+        return Integer.parseInt(tryGetSetting("delaySpread")
+                .get().get(0));
+    }
+
+    public static void setSizeSpread(int sizeSpread) {
+        trySetSetting("sizeSpread",
+                Integer.toString(sizeSpread));
+    }
+
+    public static int getSizeSpread() {
+        return Integer.parseInt(tryGetSetting("sizeSpread")
+                .get().get(0));
+    }
+
+    public static void setVariance(int variance) {
+        trySetSetting("variance",
+                Integer.toString(variance));
+    }
+
+    public static int getVariance() {
+        return Integer.parseInt(tryGetSetting("variance")
+                .get().get(0));
+    }
+
+    /**
+     * returns false if not valid ip's
+     *
+     * @return boolean
+     */
+    public static boolean setNodes(List<String> nodes) {
+
+        boolean allValid = nodes.stream()
+                .allMatch(ipString -> {
+                    return validateIpV4(ipString);
+                });
+
+        if (allValid) {
+            trySetSetting("nodes", nodes);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean validateIpV4(final String ip) {
+        String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
+
+        return ip.matches(PATTERN);
+    }
+
+    public static List<String> getRemoteNodes() {
+        return tryGetSetting("nodes").get();
+    }
+
 }

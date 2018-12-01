@@ -28,7 +28,7 @@ public class LocalSource implements ProcessSource {
     public void kill(int pid) throws IOException {
         Runtime runTime = Runtime.getRuntime();
         if (os.getFamily().toLowerCase().equals("windows")) {
-            runTime.exec("taskkill /PID " + 5512);
+            runTime.exec("taskkill /PID " + pid);
         } else {
             runTime.exec("kill " + pid);
         }

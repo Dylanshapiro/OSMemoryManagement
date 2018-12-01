@@ -22,7 +22,7 @@ public class Driver extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // parse out saved preferences from config file
-        Config config = new Config();
+        Config.initSettings();
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
@@ -32,7 +32,7 @@ public class Driver extends Application {
         ProcessSource source = new LocalSource();
 
         Display view = new Display();                           // init view
-        Controller ctrl = new Controller(menMan, view, source, config); // compose Controller
+        Controller ctrl = new Controller(menMan, view, source); // compose Controller
         view.setCtrl(ctrl);                                     // give view the ref it needs
 
         // Load jfx view. Set controller

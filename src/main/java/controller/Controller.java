@@ -30,15 +30,13 @@ public class Controller implements MemoryObserver {
     private Optional<ScheduledFuture> handle;
     private ScheduledExecutorService execService;
 
-    private final Config config;
+
     private final ProcessSource source;
     private final MemoryManager manager;
     private final Display view;
 
     public Controller(MemoryManager manager, Display view,
-                      ProcessSource source, Config config) {
-
-        this.config = config;
+                      ProcessSource source) {
 
         execService = Executors.newScheduledThreadPool(1, r-> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
@@ -46,7 +44,7 @@ public class Controller implements MemoryObserver {
             return thread;
         });
 
-        this.sourceList = SourceFactory.initAll(this.getRemoteNodes());
+        this.sourceList = SourceFactory.initAll(Config.getRemoteNodes());
 
         this.source = source;
         this.manager = manager;
@@ -122,80 +120,6 @@ public class Controller implements MemoryObserver {
     public List<ProcessSource>  getSourceList(){
         return this.sourceList;
     }
-
-    // Config stuff //
-    // set the spawn rate for sim source
-    public void setDelay(int delay) {
-        this.config.trySetSetting("delay",
-                Integer.toString(delay));
-    }
-
-    public int getDelay() {
-        return Integer.parseInt(this.config.tryGetSetting("delay")
-                .get().get(0));
-    }
-
-    // set the spawn rate for sim source
-    public void setDelaySpread(int delayS) {
-        this.config.trySetSetting("delaySpread",
-                Integer.toString(delayS));
-    }
-
-    public int getDelaySpread() {
-        return Integer.parseInt(this.config.tryGetSetting("delaySpread")
-                .get().get(0));
-    }
-
-    public void setSizeSpread(int sizeSpread) {
-        this.config.trySetSetting("sizeSpread",
-                Integer.toString(sizeSpread));
-    }
-
-    public int getSizeSpread() {
-        return Integer.parseInt(this.config.tryGetSetting("sizeSpread")
-                .get().get(0));
-    }
-
-    public void setVariance(int variance) {
-        this.config.trySetSetting("variance",
-                Integer.toString(variance));
-    }
-
-    public int getVariance() {
-        return Integer.parseInt(this.config.tryGetSetting("variance")
-                .get().get(0));
-    }
-
-    /**
-     * returns false if not valid ip's
-     *
-     * @return boolean
-     */
-    public boolean setNodes(List<String> nodes) {
-
-        boolean allValid = nodes.stream()
-                .allMatch(ipString -> {
-                    return this.validateIpV4(ipString);
-                });
-
-        if (allValid) {
-            this.config.trySetSetting("nodes", nodes);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean validateIpV4(final String ip) {
-        String PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
-
-        return ip.matches(PATTERN);
-    }
-
-    public List<String> getRemoteNodes() {
-        return this.config.tryGetSetting("nodes").get();
-    }
-
 
     static class SourceFactory {
 
