@@ -15,8 +15,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class Controller implements MemoryObserver {
 
     List<ProcessSource> sourceList;
 
+    private Optional<ScheduledFuture> handle;
     private ScheduledExecutorService execService;
 
     private final Config config;
@@ -37,7 +40,12 @@ public class Controller implements MemoryObserver {
 
         this.config = config;
 
-        execService = Executors.newScheduledThreadPool(1);
+        execService = Executors.newScheduledThreadPool(1, r-> {
+            Thread thread = Executors.defaultThreadFactory().newThread(r);
+            thread.setDaemon(true);
+            return thread;
+        });
+
         this.sourceList = SourceFactory.initAll(this.getRemoteNodes());
 
         this.source = source;
@@ -51,7 +59,6 @@ public class Controller implements MemoryObserver {
         Platform.runLater(() -> {
             this.view.updateDisplay(memEvent);// send update to view
         });
-
     }
 
     @Override
@@ -88,27 +95,28 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-        Process p = this.source.generateProcess();
-        this.manager.allocate(p);
+       this.execService.execute(() -> {
+           Process p = this.source.generateProcess();
+           this.manager.allocate(p);
+       });
     }
 
     public void startSim() {
-        this.execService = Executors.newScheduledThreadPool(1);
 
-        int delayMs = getDelay();
-        int delaySpread = getDelaySpread();
-
-        AtomicInteger thisDelay = new AtomicInteger(delayMs);
-
-        this.execService.scheduleWithFixedDelay(() -> {
+        ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
 
             this.manager.allocate(this.source.generateProcess());
 
-        }, 0, thisDelay.get(), TimeUnit.MILLISECONDS);
+        }, 0, 600, TimeUnit.MILLISECONDS);
+
+        this.handle = Optional.of(handle);
     }
 
     public void stopSim() {
-        this.execService.shutdown();
+        if (this.handle.isPresent()){
+            this.handle.get().cancel(false);
+            this.handle = Optional.empty();
+        }
     }
 
     public List<ProcessSource>  getSourceList(){
