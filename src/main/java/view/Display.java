@@ -1,5 +1,10 @@
 package view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
+import model.MemoryManager.MemoryEvent;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,6 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Display implements Initializable {
 
@@ -42,6 +48,10 @@ public class Display implements Initializable {
 
     @FXML
     private Button generateButton;
+
+    @FXML
+    private TableView<ProcessEntry> procTable;
+
 
     @FXML
     private ListView<Process> statusField;
@@ -75,6 +85,33 @@ public class Display implements Initializable {
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
+
+    }
+
+    public void initTable() {
+
+        TableColumn<ProcessEntry, String> name = new TableColumn<>("Name");
+        name.setPrefWidth(75);
+        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<ProcessEntry, Integer> id = new TableColumn<>("ID");
+        id.setPrefWidth(75);
+        id.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<ProcessEntry, Long> startTime = new TableColumn<>("StartTime");
+        startTime.setPrefWidth(75);
+        startTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+
+        TableColumn<ProcessEntry, Long> base = new TableColumn<>("Base");
+        base.setPrefWidth(75);
+        base.setCellValueFactory(new PropertyValueFactory<>("base"));
+
+        TableColumn<ProcessEntry, Long> size = new TableColumn<>("Size");
+        size.setPrefWidth(75);
+        size.setCellValueFactory(new PropertyValueFactory<>("size"));
+
+        procTable.getColumns().addAll(name, id, startTime, base, size);
+
     }
 
     @Override
@@ -104,10 +141,11 @@ public class Display implements Initializable {
 
         algoCombo.setOnAction(this::setAlgo);
 
+        this.initTable();
         this.loadSourceMenu();
     }
 
-    private void loadSourceMenu(){
+    private void loadSourceMenu() {
 
         sourceMenu.getItems().addAll(this.ctrl.getSourceList()
                 .stream().map(node -> {
@@ -115,13 +153,29 @@ public class Display implements Initializable {
                 }).collect(Collectors.toList()));
     }
 
+    private void updateProcList(MemoryEvent event) {
+        // adapt process to a form that TableView needs
+
+        ObservableList<ProcessEntry> processEntries =
+                FXCollections.observableArrayList(event.getProcesses().stream().map(proc -> {
+                    return new ProcessEntry(proc.getName(),
+                            proc.getProcId(),
+                            proc.getStartTime(),
+                            proc.getBaseAddress().get(),
+                            proc.getSize());
+                }).collect(Collectors.toList()));
+
+        this.procTable.setItems(processEntries);
+    }
+
     // receive updates
-    public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
-        statusField.getItems().setAll(memEvent.getProcesses());
+    public void updateDisplay(MemoryEvent memEvent) {
+        updateProcList(memEvent);
+       // statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
-            for (Process p : memEvent.getProcesses()) {
-                double size = (double) p.getSize() / (double) memEvent.getMemSize();
-                double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
+        for (Process p : memEvent.getProcesses()) {
+            double size = (double) p.getSize() / (double) memEvent.getMemSize();
+            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
     }
@@ -138,11 +192,11 @@ public class Display implements Initializable {
     private void toggleSim(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
         if (this.simEnabled) {
-            button.setText("Run Sim! =)");
+            button.setText("Run Sim");
             this.simEnabled = false;
             this.ctrl.stopSim();
         } else {
-            button.setText("Stop Sim! =0");
+            button.setText("Stop Sim");
             this.simEnabled = true;
             this.ctrl.startSim();
         }
@@ -163,7 +217,7 @@ public class Display implements Initializable {
         chunk.setY(101);
         chunk.setHeight(memoryRect.getHeight());
         chunk.setWidth(processSize * rectWidth);
-            memoryViewPane.getChildren().add(chunk);
+        memoryViewPane.getChildren().add(chunk);
     }
 
     public void deleteChunk() {
@@ -204,8 +258,8 @@ public class Display implements Initializable {
         }
     }
 
-    private void launchAbout(ActionEvent actionEvent)  {
-        if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+    private void launchAbout(ActionEvent actionEvent) {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(URI.create("https://github.com/Dylanshapiro/OSMemoryManagement"));
             } catch (IOException e) {
