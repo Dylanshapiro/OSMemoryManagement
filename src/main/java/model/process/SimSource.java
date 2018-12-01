@@ -8,6 +8,7 @@ import java.util.*;
 
 public class SimSource implements ProcessSource{
 
+    private int id;
     //ArrayList of processes
     private ArrayList<Process> processList = new ArrayList<Process>();
 
@@ -17,8 +18,9 @@ public class SimSource implements ProcessSource{
     //simulated bank of names
     private List<String> procNames;
 
-    public SimSource(int num)
+    public SimSource(int num, int id)
     {
+        this.id=id;
         numOfProcess = num;
         //Prepare process name bank
         try {
@@ -62,6 +64,11 @@ public class SimSource implements ProcessSource{
         processList.add(proc);
         return proc;
 
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override

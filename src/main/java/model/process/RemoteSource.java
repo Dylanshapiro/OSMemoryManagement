@@ -8,48 +8,50 @@ import java.util.HashMap;
 import java.util.List;
 
 
-enum  ReqType {
+enum ReqType {
     GET,
     POST,
-    PUT,}
+    PUT,
+}
 
 public class RemoteSource implements ProcessSource {
 
+    private int id;
     URI url;
 
-    HashMap<Process, Boolean> cachedProcs =  new HashMap<>(100);;
+    HashMap<Process, Boolean> cachedProcs = new HashMap<>(100);
 
-
-    public RemoteSource(String  ip) throws MalformedURLException,
-                                        URISyntaxException {
+    public RemoteSource(String ip, int id) throws MalformedURLException,
+            URISyntaxException {
+        this.id = id;
         String urlStr = "https://" + ip + ":80";
         this.url = new URI(urlStr);
     }
 
-    public RemoteSource(InetAddress  ip) throws MalformedURLException, URISyntaxException {
+    public RemoteSource(InetAddress ip) throws MalformedURLException, URISyntaxException {
         String urlStr = "https://" + ip + ":80";
         this.url = new URI(urlStr);
     }
 
     /// TODO
-    private void  updateViaDif(List<Process> newRecv){
+    private void updateViaDif(List<Process> newRecv) {
 
     }
 
     @SuppressWarnings("unchecked")
-    private void syncRemoteState( )
+    private void syncRemoteState()
             throws IOException, ClassNotFoundException {
 
         HttpURLConnection connection =
                 this.getConnection(ReqType.GET, "/sim/get");
 
-        final InputStream inStream =  connection.getInputStream();
+        final InputStream inStream = connection.getInputStream();
         final ObjectInputStream objIn = new ObjectInputStream(inStream);
 
         List<Process> tempList = (List<Process>) objIn.readObject();
 
-        if (tempList != null){
-           // this.updateViaDif(tempList) ; TODO
+        if (tempList != null) {
+            // this.updateViaDif(tempList) ; TODO
 
         } else {
             System.out.println("Received unexpected result: " + tempList);
@@ -57,8 +59,8 @@ public class RemoteSource implements ProcessSource {
     }
 
     // TODO concat path
-    private HttpURLConnection getConnection(ReqType reqType, String endPoint   ) throws IOException {
-        URL endpoint = new URL(this.url.toString() +  endPoint);
+    private HttpURLConnection getConnection(ReqType reqType, String endPoint) throws IOException {
+        URL endpoint = new URL(this.url.toString() + endPoint);
 
         final HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();
 
@@ -69,7 +71,7 @@ public class RemoteSource implements ProcessSource {
 
     @Override // Todo
     public List<Process> getAll() {
-       return null;
+        return null;
     }
 
     @Override
@@ -83,7 +85,12 @@ public class RemoteSource implements ProcessSource {
     }
 
     @Override
-    public String toString(){
+    public int getId() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
         return "Remote @ " + this.url.getHost();
     }
 }

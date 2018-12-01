@@ -16,6 +16,7 @@ import model.process.SimSource;
 
 import view.Display;
 
+import javax.management.InstanceNotFoundException;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -39,14 +40,13 @@ public class Controller implements MemoryObserver {
     private ScheduledExecutorService execService;
 
 
-    private final ProcessSource source;
+    private ProcessSource source;
     private final MemoryManager manager;
     private final Display view;
 
-    public Controller(MemoryManager manager, Display view,
-                      ProcessSource source) {
+    public Controller(MemoryManager manager, Display view) {
 
-        execService = Executors.newScheduledThreadPool(1, r-> {
+        execService = Executors.newScheduledThreadPool(1, r -> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setDaemon(true);
             return thread;
@@ -54,7 +54,7 @@ public class Controller implements MemoryObserver {
 
         this.sourceList = SourceFactory.initAll(Config.getRemoteNodes());
 
-        this.source = source;
+        this.source = sourceList.get(0);
         this.manager = manager;
         this.view = view;
         this.manager.addObserver(this);
@@ -86,6 +86,23 @@ public class Controller implements MemoryObserver {
     }
 
     // input api
+
+    public void setSource(String id) throws InstanceNotFoundException {
+        setSource(Integer.parseInt(id));
+    }
+
+    public void setSource(int id) throws InstanceNotFoundException {
+        ProcessSource newSource = this.sourceList.stream()
+                .filter(proc -> proc.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> {
+                    return new InstanceNotFoundException("Process Source was not found");
+                });
+
+        this.manager.clearProc();
+        this.source = newSource;
+    }
+
     public void killProc(int procID) {
         try {
             this.source.kill(procID);
@@ -100,10 +117,10 @@ public class Controller implements MemoryObserver {
     }
 
     public void addProc() {
-       this.execService.execute(() -> {
-           Process p = this.source.generateProcess();
-           this.manager.allocate(p);
-       });
+        this.execService.execute(() -> {
+            Process p = this.source.generateProcess();
+            this.manager.allocate(p);
+        });
     }
 
     public void startSim() {
@@ -118,26 +135,30 @@ public class Controller implements MemoryObserver {
     }
 
     public void stopSim() {
-        if (this.handle.isPresent()){
+        if (this.handle.isPresent()) {
             this.handle.get().cancel(false);
             this.handle = Optional.empty();
         }
     }
 
-    public List<ProcessSource>  getSourceList(){
+    public List<ProcessSource> getSourceList() {
         return this.sourceList;
     }
 
     static class SourceFactory {
 
         static List<ProcessSource> sourceList;
+        static int nextId = 0;
 
         public static List<ProcessSource> initAll(List<String> ips) {
 
             sourceList = new ArrayList<>(16);
 
-            sourceList.add(new SimSource(1));
-            sourceList.add(new LocalSource());
+            sourceList.add(new SimSource(1, nextId));
+            nextId++;
+
+            sourceList.add(new LocalSource(nextId));
+            nextId++;
 
             if (!ips.isEmpty()) {
                 sourceList.addAll(generateRemotes(ips));
@@ -158,7 +179,10 @@ public class Controller implements MemoryObserver {
         // if impossible
         private static RemoteSource sourceFromIp(String ip) {
             try {
-                return new RemoteSource(ip);
+                RemoteSource newRemote = new RemoteSource(ip, nextId);
+                nextId++;
+                return newRemote;
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (URISyntaxException e) {

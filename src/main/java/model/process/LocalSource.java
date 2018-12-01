@@ -13,14 +13,16 @@ import java.util.stream.Collectors;
 
 public class LocalSource implements ProcessSource {
 
+    private int id;
+
     private static final OperatingSystem os = new SystemInfo()
             .getOperatingSystem();
 
     private static final Random rand = new Random();
 
 
-    public LocalSource() {
-
+    public LocalSource(int id) {
+            this.id=id;
     }
 
     public void kill(int pid) throws IOException {
@@ -36,15 +38,12 @@ public class LocalSource implements ProcessSource {
         return os.getProcesses(os.getProcessCount(), ProcessSort.PID);
     }
 
-
     private Process adaptOshi(OSProcess p) {
         return new Process(p.getName(),
                 p.getProcessID(),
                 p.getStartTime(),
                 p.getResidentSetSize());
     }
-
-
 
     @Override
     public List<Process> getAll() {
@@ -58,6 +57,11 @@ public class LocalSource implements ProcessSource {
         final OSProcess[] procs = getOSProcs();
         final OSProcess proc = procs[rand.nextInt(procs.length)];
         return adaptOshi(proc);
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override

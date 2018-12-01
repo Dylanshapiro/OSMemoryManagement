@@ -26,6 +26,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 
+import javax.management.InstanceNotFoundException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -49,9 +50,6 @@ public class Display implements Initializable {
 
     @FXML
     private TableView<ProcessEntry> procTable;
-
-    @FXML
-    private ListView<Process> statusField;
 
     @FXML
     private Button killProcessButton;
@@ -141,14 +139,49 @@ public class Display implements Initializable {
         this.loadSourceMenu();
     }
 
-    private void loadSourceMenu() {
 
+    // Source Menu
+    private void changedSource(ActionEvent actionEvent) {
+        MenuItem newSource = (MenuItem) actionEvent.getSource();
+
+        String id = "0";
+
+        for (MenuItem item : sourceMenu.getItems()) {
+            CheckMenuItem checkItem = (CheckMenuItem) item;
+            if (item == newSource) {
+                checkItem.setSelected(true);
+                id = checkItem.getId();
+            } else {
+                checkItem.setSelected(false);
+            }
+        }
+
+        try {
+            this.ctrl.setSource(id);
+        } catch (InstanceNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void loadSourceMenu() {
         sourceMenu.getItems().addAll(this.ctrl.getSourceList()
                 .stream().map(node -> {
-                    return new MenuItem(node.toString());
+                    String id = String.valueOf(node.getId());
+                    CheckMenuItem menuItem = new CheckMenuItem(node.toString());
+                    menuItem.setId(id);
+                    menuItem.setOnAction(this::changedSource);
+                    return menuItem;
                 }).collect(Collectors.toList()));
     }
 
+    private void enableSourceMenu(boolean enabled) {
+        sourceMenu.getItems().forEach(item -> {
+            item.setDisable(!enabled);
+        });
+    }
+
+    // Pro List
     private void updateProcList(MemoryEvent event) {
         // adapt process to a form that TableView needs
 
@@ -167,18 +200,21 @@ public class Display implements Initializable {
     // receive updates
     public void updateDisplay(MemoryEvent memEvent) {
         updateProcList(memEvent);
-       // statusField.getItems().setAll(memEvent.getProcesses());
+        // statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
         for (Process p : memEvent.getProcesses()) {
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
             double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
+
     }
 
     // Input Events
     public void killProc(ActionEvent event) {
-        this.ctrl.killProc(procTable.getSelectionModel().getSelectedItem().getId());
+
+        final int pid = procTable.getSelectionModel().getSelectedItem().getId();
+        this.ctrl.killProc(pid);
     }
 
     public void setAlgo(ActionEvent event) {
@@ -191,10 +227,12 @@ public class Display implements Initializable {
             button.setText("Run Sim");
             this.simEnabled = false;
             this.ctrl.stopSim();
+            enableSourceMenu(true);
         } else {
             button.setText("Stop Sim");
             this.simEnabled = true;
             this.ctrl.startSim();
+            enableSourceMenu(false);
         }
     }
 
