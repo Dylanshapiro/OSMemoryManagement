@@ -78,10 +78,10 @@ public class Controller implements MemoryObserver {
     }
 
     // input api
-    public void killProc(Process p) {
+    public void killProc(int procID) {
         try {
-            this.source.kill(p.getProcId());
-            this.manager.deallocate(p);
+            this.source.kill(procID);
+            this.manager.deallocate(procID);
         } catch (IOException e) {
             e.printStackTrace();
         }

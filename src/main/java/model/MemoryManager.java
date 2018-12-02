@@ -3,15 +3,13 @@ package model;
 import model.Algos.Algo;
 import model.Algos.*;
 import model.process.Process;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
+import java.util.*;
 
 
 public class MemoryManager extends MemoryObservable {
     private static Algo memoryAlgo;
-    private static List<Process> processes;
+    private static HashMap<Integer, Process> processes;
     //size in bytes
     public static int memSize;
     private static MemoryManager memoryManager;
@@ -21,7 +19,7 @@ public class MemoryManager extends MemoryObservable {
         super();
         this.memSize=memSize;
         this.memoryAlgo=algo;
-        processes=new ArrayList<>();
+        processes= new HashMap<>();
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
@@ -33,28 +31,12 @@ public class MemoryManager extends MemoryObservable {
 
     }
 
-    public List<Process> getAllProc(){
-        return this.processes;
-    }
-
-
     public boolean allocate(Process p){
         if(p.getSize()>memSize){
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
-        if(!processes.contains(p)&& memoryAlgo.allocPs(p)!=null){
-            processes.add(p);
-            Collections.sort(processes, new Comparator<Process>() {
-                @Override
-                public int compare(Process process, Process t1) {
-                    if(process.getBaseAddress().get()<t1.getBaseAddress().get()){
-                        return -1;
-                    }
-                    else{
-                        return 1;
-                    }
-                }
-            });
+        if(!processes.containsKey(p.getProcId())&& memoryAlgo.allocPs(p)!=null){
+            processes.put(p.getProcId(),p);
             notifyObservers();
             return true;
         }
@@ -65,24 +47,17 @@ public class MemoryManager extends MemoryObservable {
     }
 
     public Process getProcess(int procID) {
-        for (Process p : processes) {
 
-            if (p.getProcId() == procID) {
-
-                return p;
-            }
-        }
-
-        return null;
+        return processes.get(procID);
     }
 
     public boolean deallocate(int procID){
         Process p;
         if((p = getProcess(procID)) != null) {
-            boolean result= processes.remove(p);
+            processes.remove(procID);
             memoryAlgo.deallocate(p);
             notifyObservers();
-            return result;
+            return true;
         }
         return false;
     }
@@ -116,16 +91,17 @@ public class MemoryManager extends MemoryObservable {
     }
 
     public class MemoryEvent{
-        private List<Process> processes;
+        private HashMap<Integer, Process> processes;
         public int memSize;
 
-        public MemoryEvent(List<Process> processes, int memSize) {
+        public MemoryEvent(HashMap<Integer, Process> processes, int memSize) {
             this.processes = processes;
             this.memSize = memSize;
         }
 
         public List<Process> getProcesses() {
-            return processes;
+
+            return new ArrayList<Process>(processes.values());
         }
 
         public int getMemSize() {

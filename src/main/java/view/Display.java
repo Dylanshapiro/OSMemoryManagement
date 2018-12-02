@@ -182,7 +182,7 @@ public class Display implements Initializable {
 
     // Input Events
     public void killProc(ActionEvent event) {
-        this.ctrl.killProc(statusField.getSelectionModel().getSelectedItem());
+        this.ctrl.killProc(procTable.getSelectionModel().getSelectedItem().getId());
     }
 
     public void setAlgo(ActionEvent event) {

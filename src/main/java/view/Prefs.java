@@ -19,8 +19,6 @@ public class Prefs implements Initializable {
     @FXML
     TableView<String> tableView;
 
-
-
     public void dynamicInit(Controller ctrl){
         this.ctrl = ctrl;
     }
