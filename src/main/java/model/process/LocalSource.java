@@ -1,7 +1,5 @@
 package model.process;
 
-import model.process.Process;
-import model.process.ProcessSource;
 import oshi.SystemInfo;
 import oshi.software.os.OSProcess;
 import oshi.software.os.OperatingSystem.ProcessSort;

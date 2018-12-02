@@ -1,17 +1,26 @@
 package controller;
 
 import config.Config;
+
 import javafx.application.Platform;
+
 import model.Algos.*;
-import model.*;
-import model.MemoryManager.MemoryEvent;
-import model.process.*;
+import model.MemoryManager;
+import model.MemoryObservable;
+import model.MemoryObserver;
 import model.process.Process;
+import model.process.LocalSource;
+import model.process.ProcessSource;
+import model.process.RemoteSource;
+import model.process.SimSource;
+
 import view.Display;
 
 import java.io.IOException;
+
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +29,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Controller implements MemoryObserver {
@@ -53,7 +61,7 @@ public class Controller implements MemoryObserver {
     }
 
     // receive from Observable
-    public void update(MemoryObservable obs, MemoryEvent memEvent) {
+    public void update(MemoryObservable obs, MemoryManager.MemoryEvent memEvent) {
         Platform.runLater(() -> {
             this.view.updateDisplay(memEvent);// send update to view
         });

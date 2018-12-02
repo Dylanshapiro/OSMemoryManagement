@@ -1,10 +1,12 @@
 package model;
 
 import model.Algos.Algo;
-import model.Algos.*;
+import model.Algos.FirstFitAlgo;
 import model.process.Process;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MemoryManager extends MemoryObservable {

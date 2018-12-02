@@ -1,7 +1,5 @@
 package view;
 
-import javafx.beans.property.SimpleStringProperty;
-
 public class ProcessEntry {
 
     private final String name;

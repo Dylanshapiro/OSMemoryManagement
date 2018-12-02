@@ -4,11 +4,9 @@ import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.TableColumn;
 import model.Algos.Algo;
 
 import javafx.scene.control.TableView;
-import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
 
