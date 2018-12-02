@@ -16,9 +16,8 @@ public class BuddyAlgo implements Algo {
     }
 
     @Override
-    public boolean[] allocate(Process P) {
-        //TODO return memory state within here (probably have to convert resulting list to array)
-        return null;
+    public boolean allocate(Process P) {
+        return (allocPs(P) != null);
     }
 
     @Override
@@ -36,16 +35,20 @@ public class BuddyAlgo implements Algo {
     }
 
     @Override
-    public boolean[] deallocate(Process allocated) {
+    public boolean deallocate(Process allocated) {
         Block b=new Block(allocated.getBaseAddress().get(),allocated.getSize());
         merge(b);
-        //TODO modify return statement
-        return null;
+        return true;
     }
 
     @Override
     public void setMemoryState(boolean[] memState) {
         //TODO allow way to convert boolean[] memState into memory in this class
+    }
+
+    public boolean[] getMemoryState() {
+        //TODO allow way to retrieve state of memory that this algo holds
+        return null;
     }
 
     @Override

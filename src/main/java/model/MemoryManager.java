@@ -15,15 +15,12 @@ public class MemoryManager extends MemoryObservable {
     //size in bytes
     public static int memSize;
     private static MemoryManager memoryManager;
-    private boolean memoryState[];
-
 
     private MemoryManager(int memSize, Algo algo){
         super();
         this.memSize = memSize;
         this.memoryAlgo = algo;
         processes = new HashMap<>();
-        this.memoryState = new boolean[memSize];
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
@@ -42,8 +39,7 @@ public class MemoryManager extends MemoryObservable {
 
         boolean[] mem;
 
-        if(!processes.containsKey(p.getProcId()) && (mem = memoryAlgo.allocate(p)) != null ){
-            memoryState = mem;
+        if(!processes.containsKey(p.getProcId()) && (memoryAlgo.allocate(p)) != false ){
             processes.put(p.getProcId(),p);
             notifyObservers();
             return true;
@@ -63,7 +59,7 @@ public class MemoryManager extends MemoryObservable {
         Process p;
         if((p = getProcess(procID)) != null) {
             processes.remove(procID);
-            memoryState = memoryAlgo.deallocate(p);
+            memoryAlgo.deallocate(p);
             notifyObservers();
             return true;
         }
@@ -77,9 +73,9 @@ public class MemoryManager extends MemoryObservable {
         return 65536011;
     }
 
-    public void setAlgo(Algo memoryAlgo) {
-        memoryAlgo.setMemoryState(memoryState);
-        this.memoryAlgo = memoryAlgo;
+    public void setAlgo(Algo a) {
+        a.setMemoryState(this.memoryAlgo.getMemoryState());
+        this.memoryAlgo = a;
     }
 
     public int getMemSize() {
