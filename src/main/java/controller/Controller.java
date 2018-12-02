@@ -96,7 +96,6 @@ public class Controller implements MemoryObserver {
     }
 
     public void setAlgo(Algo a) {
-        this.manager.clearProc();
         this.manager.setAlgo(a);
     }
 

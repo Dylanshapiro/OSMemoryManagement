@@ -15,13 +15,15 @@ public class MemoryManager extends MemoryObservable {
     //size in bytes
     public static int memSize;
     private static MemoryManager memoryManager;
+    private boolean memoryState[];
 
 
     private MemoryManager(int memSize, Algo algo){
         super();
-        this.memSize=memSize;
-        this.memoryAlgo=algo;
-        processes= new HashMap<>();
+        this.memSize = memSize;
+        this.memoryAlgo = algo;
+        processes = new HashMap<>();
+        this.memoryState = new boolean[memSize];
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
@@ -37,7 +39,11 @@ public class MemoryManager extends MemoryObservable {
         if(p.getSize()>memSize){
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
-        if(!processes.containsKey(p.getProcId())&& memoryAlgo.allocPs(p)!=null){
+
+        boolean[] mem;
+
+        if(!processes.containsKey(p.getProcId()) && (mem = memoryAlgo.allocate(p)) != null ){
+            memoryState = mem;
             processes.put(p.getProcId(),p);
             notifyObservers();
             return true;
@@ -57,7 +63,7 @@ public class MemoryManager extends MemoryObservable {
         Process p;
         if((p = getProcess(procID)) != null) {
             processes.remove(procID);
-            memoryAlgo.deallocate(p);
+            memoryState = memoryAlgo.deallocate(p);
             notifyObservers();
             return true;
         }
@@ -72,6 +78,7 @@ public class MemoryManager extends MemoryObservable {
     }
 
     public void setAlgo(Algo memoryAlgo) {
+        memoryAlgo.setMemoryState(memoryState);
         this.memoryAlgo = memoryAlgo;
     }
 

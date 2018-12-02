@@ -14,6 +14,13 @@ public class BuddyAlgo implements Algo {
         memory.add(new Block(0,memSize));
         name = "Buddy";
     }
+
+    @Override
+    public boolean[] allocate(Process P) {
+        //TODO return memory state within here (probably have to convert resulting list to array)
+        return null;
+    }
+
     @Override
     public Long allocPs(Process unallocated) {
         for(Block b: memory){
@@ -29,10 +36,16 @@ public class BuddyAlgo implements Algo {
     }
 
     @Override
-    public boolean deallocate(Process allocated) {
+    public boolean[] deallocate(Process allocated) {
         Block b=new Block(allocated.getBaseAddress().get(),allocated.getSize());
         merge(b);
-        return true;
+        //TODO modify return statement
+        return null;
+    }
+
+    @Override
+    public void setMemoryState(boolean[] memState) {
+        //TODO allow way to convert boolean[] memState into memory in this class
     }
 
     @Override

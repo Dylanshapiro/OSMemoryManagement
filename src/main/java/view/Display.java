@@ -39,8 +39,6 @@ public class Display implements Initializable {
     @FXML
     private VBox rootBox;
 
-
-    @FXML
     private Controller ctrl;
 
     @FXML
@@ -51,7 +49,6 @@ public class Display implements Initializable {
 
     @FXML
     private TableView<ProcessEntry> procTable;
-
 
     @FXML
     private ListView<Process> statusField;
@@ -67,7 +64,6 @@ public class Display implements Initializable {
 
     @FXML
     private Rectangle memoryRect;
-
 
     @FXML
     private MenuItem launchPrefs;

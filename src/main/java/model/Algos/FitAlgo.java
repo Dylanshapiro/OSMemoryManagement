@@ -15,12 +15,12 @@ public abstract class FitAlgo implements Algo{
             memory[index+i] = change;
         }
     }
-    public boolean deallocate(Process allocated){
+    public boolean[] deallocate(Process allocated){
         int base = (int)allocated.getBaseAddress().get().longValue()/1024;
         long size = getProcessSize(allocated);
 
         filler(base,size,false);
-        return true;
+        return memory;
     }
     protected long getProcessSize(Process unallocated){
         return (unallocated.getSize() % KILOBYTE == 0 )
@@ -32,6 +32,23 @@ public abstract class FitAlgo implements Algo{
     }
 
     @Override
+    public boolean[] allocate(Process P) {
+
+        if (allocPs(P) != null) {
+            return memory;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void setMemoryState(boolean[] memState) {
+
+        memory = memState;
+
+    }
+
+    @Override
     public Long allocPs(Process unallocated) {
         long procsize = getProcessSize(unallocated);
         Integer start=allocPs(procsize);
@@ -39,8 +56,8 @@ public abstract class FitAlgo implements Algo{
             return null;
         }
         filler(start,procsize,true);
-        unallocated.setBaseAddress(new Long(start*1024));
-        return new Long(start*1024);
+        unallocated.setBaseAddress(new Long(start*KILOBYTE));
+        return new Long(start*KILOBYTE);
     }
 
     /**
