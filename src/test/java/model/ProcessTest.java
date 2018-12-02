@@ -24,7 +24,6 @@ public class ProcessTest {
     // runs before EVERY test
     @Before
     public void beforeEach() {
-        System.out.println("Setting up SimSourceTest");
         proc = new Process("testProcess", id, startTime, size);
     }
 

@@ -158,7 +158,7 @@ public class Controller implements MemoryObserver {
 
             sourceList = new ArrayList<>(16);
 
-            sourceList.add(new SimSource(1, nextId));
+            sourceList.add(new SimSource(nextId));
             nextId++;
 
             sourceList.add(new LocalSource(nextId));

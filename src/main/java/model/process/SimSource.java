@@ -12,16 +12,12 @@ public class SimSource implements ProcessSource{
     //ArrayList of processes
     private ArrayList<Process> processList = new ArrayList<Process>();
 
-    //Number of process to sim
-    private int numOfProcess;
-
     //simulated bank of names
     private List<String> procNames;
 
-    public SimSource(int num, int id)
+    public SimSource( int id)
     {
         this.id=id;
-        numOfProcess = num;
         //Prepare process name bank
         try {
            procNames = Files.readAllLines(Paths.get("./src/main/resources/names.txt"), StandardCharsets.UTF_8);
@@ -47,6 +43,7 @@ public class SimSource implements ProcessSource{
     {
         Random rand = new Random();
 
+
         int n = rand.nextInt(max) + min;
         return n;
     }
@@ -59,7 +56,8 @@ public class SimSource implements ProcessSource{
         long memSize = 0;
 
         memSize = getRandomIntBetweenRange(10, 30) * 1024;
-        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), ++numOfProcess,
+        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())),
+                                   processList.size(),
                                    System.currentTimeMillis(), memSize);
         processList.add(proc);
         return proc;
