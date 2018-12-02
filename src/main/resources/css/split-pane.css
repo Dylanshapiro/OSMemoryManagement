@@ -3,6 +3,7 @@
     -fx-opacity: 20%;
     -fx-border-color: #dcdcdc;
     -fx-border-width: 1;
+    -fx-background-color:  gray;
 }
 
 .button {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -45,11 +47,81 @@
             <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0">
               <items>
 
-                <SplitPane dividerPositions="0.5, 0.5, 0.5, 0.5, 0.5" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0">
+                <SplitPane dividerPositions="0.04825737265415549, 0.14209115281501342, 0.1769436997319035, 0.34584450402144773, 0.7855227882037533, 0.8579088471849866, 0.5" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0">
                         <items>
                                 <Label text="Select Algo" />
                                 <ComboBox fx:id="algoCombo" prefWidth="150.0" />
-                                <VBox />
+                        <Separator prefWidth="200.0">
+                           <padding>
+                              <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                           </padding>
+                        </Separator>
+                        <SplitPane dividerPositions="0.49375" prefHeight="26.0" prefWidth="160.0">
+                           <items>
+                                      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="78.0">
+                                 <children>
+                                    <Label text="Source :">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label text="Algo     :">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label text="Proc     :">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="80.0">
+                                 <children>
+                                    <Label fx:id="curSourceText">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="curAlgoText">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="curProcNumText" layoutX="10.0" layoutY="27.0">
+                                       <padding>
+                                          <Insets left="6.0" right="4.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </items>
+                        </SplitPane>
+                        <VBox prefHeight="159.0" prefWidth="160.0">
+                           <children>
+                              <Label text="Used    : ">
+                                 <padding>
+                                    <Insets left="6.0" right="4.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="curMemUsedText">
+                                 <padding>
+                                    <Insets left="6.0" right="4.0" />
+                                 </padding>
+                              </Label>
+                              <Label text="Total    :">
+                                 <padding>
+                                    <Insets left="6.0" right="4.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="totalMemoryText">
+                                 <padding>
+                                    <Insets left="6.0" right="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
                                 <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" />
                                 <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" />
                                 <Button fx:id="toggleSimButton" mnemonicParsing="false" text="Run Sim" />

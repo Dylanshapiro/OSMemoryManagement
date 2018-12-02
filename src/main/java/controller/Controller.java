@@ -85,6 +85,10 @@ public class Controller implements MemoryObserver {
         );
     }
 
+    public int getMemSize(){
+        return this.manager.getMemSize();
+    }
+
     // input api
 
     public void setSource(String id) throws InstanceNotFoundException {

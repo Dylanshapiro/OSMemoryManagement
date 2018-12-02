@@ -2,6 +2,7 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.MemoryManager.MemoryEvent;
 
@@ -31,6 +32,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.OptionalLong;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -75,6 +77,21 @@ public class Display implements Initializable {
     @FXML
     private Menu sourceMenu;
 
+    // info fields
+    @FXML
+    private Label curSourceText;
+
+    @FXML
+    private Label curAlgoText;
+
+    @FXML
+    private Label curProcNumText;
+
+    @FXML
+    private Label curMemUsedText;
+
+    @FXML
+    private Label totalMemoryText;
 
     // Init
     public void setCtrl(Controller ctrl) {
@@ -135,10 +152,19 @@ public class Display implements Initializable {
 
         algoCombo.setOnAction(this::setAlgo);
 
+
         this.initTable();
         this.loadSourceMenu();
+        this.initInfoFields();
     }
 
+    private void initInfoFields() {
+        this.updateSourceText(sourceMenu.getItems().get(0).getText());
+        this.updateProcNumText(procTable.getItems().size());
+        this.updateAlgoText(algoCombo.getItems().get(0).getName());
+        this.updateUsedMemoryText("0");
+        this.updateTotalMemoryText(String.valueOf(this.ctrl.getMemSize()));
+    }
 
     // Source Menu
     private void changedSource(ActionEvent actionEvent) {
@@ -151,10 +177,12 @@ public class Display implements Initializable {
             if (item == newSource) {
                 checkItem.setSelected(true);
                 id = checkItem.getId();
+                this.updateSourceText(checkItem.getText());
             } else {
                 checkItem.setSelected(false);
             }
         }
+
 
         try {
             this.ctrl.setSource(id);
@@ -163,14 +191,20 @@ public class Display implements Initializable {
         }
     }
 
-
     private void loadSourceMenu() {
         sourceMenu.getItems().addAll(this.ctrl.getSourceList()
                 .stream().map(node -> {
                     String id = String.valueOf(node.getId());
+
                     CheckMenuItem menuItem = new CheckMenuItem(node.toString());
                     menuItem.setId(id);
                     menuItem.setOnAction(this::changedSource);
+
+                    if (node.getId() == 0) {
+                        updateSourceText( menuItem.getText());
+                        menuItem.setSelected(true);
+                    }
+
                     return menuItem;
                 }).collect(Collectors.toList()));
     }
@@ -181,7 +215,37 @@ public class Display implements Initializable {
         });
     }
 
-    // Pro List
+    // Info fields
+    private void updateProcNumText(int num){
+        this.curProcNumText.setText(toString().valueOf(num));
+    }
+
+    private void updateSourceText(String source){
+        this.curSourceText.setText(source);
+    }
+
+    private void updateAlgoText(String algo){
+        this.curAlgoText.setText(algo);
+    }
+
+    private void updateUsedMemoryText(String used){
+        this.curMemUsedText.setText(used);
+    }
+
+    private void updateTotalMemoryText(String total){
+        this.totalMemoryText.setText(total);
+    }
+
+    private OptionalLong calcUsedMem(MemoryEvent event){
+
+        return  event.getProcesses().stream()
+                .mapToLong(proc -> proc.getSize())
+                .reduce((acc, cur) -> {
+                    return acc + acc;
+                });
+    }
+
+    // Proc List
     private void updateProcList(MemoryEvent event) {
         // adapt process to a form that TableView needs
 
@@ -199,7 +263,11 @@ public class Display implements Initializable {
 
     // receive updates
     public void updateDisplay(MemoryEvent memEvent) {
+
         updateProcList(memEvent);
+        this.updateProcNumText(memEvent.getProcesses().size());
+        this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
+
         // statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
         for (Process p : memEvent.getProcesses()) {
@@ -218,7 +286,9 @@ public class Display implements Initializable {
     }
 
     public void setAlgo(ActionEvent event) {
-        this.ctrl.setAlgo(algoCombo.getSelectionModel().getSelectedItem());
+        Algo selectedItem = algoCombo.getSelectionModel().getSelectedItem();
+        this.ctrl.setAlgo(selectedItem);
+        this.updateAlgoText(selectedItem.getName());
     }
 
     private void toggleSim(ActionEvent actionEvent) {
