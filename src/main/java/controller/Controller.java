@@ -55,7 +55,7 @@ public class Controller implements MemoryObserver {
 
     // utils
     public List<Algo> getAlgoList() {
-        final int memSize = this.manager.getMemSize();
+        final long memSize = this.manager.getMemSize();
 
         return Arrays.asList(
                 new FirstFitAlgo(memSize),
@@ -72,7 +72,7 @@ public class Controller implements MemoryObserver {
      }
 
     public void setAlgo(Algo a) {
-        this.manager.clearProc();
+
         this.manager.setAlgo(a);
     }
 

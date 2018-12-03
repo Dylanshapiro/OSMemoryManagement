@@ -13,7 +13,7 @@ public class MemoryManager extends MemoryObservable {
     private static Algo memoryAlgo;
     private static List<Process> processes;
     //size in bytes
-    public static int memSize;
+    public static long memSize;
     private static MemoryManager memoryManager;
 
 
@@ -82,9 +82,10 @@ public class MemoryManager extends MemoryObservable {
 
     public void setAlgo(Algo memoryAlgo) {
         this.memoryAlgo = memoryAlgo;
+        this.memoryAlgo.setRepresentation(processes);
     }
 
-    public int getMemSize() {
+    public long getMemSize() {
         return memSize;
     }
 
@@ -103,9 +104,9 @@ public class MemoryManager extends MemoryObservable {
 
     public class MemoryEvent{
         private List<Process> processes;
-        public int memSize;
+        public long memSize;
 
-        public MemoryEvent(List<Process> processes, int memSize) {
+        public MemoryEvent(List<Process> processes, long memSize) {
             this.processes = processes;
             this.memSize = memSize;
         }
@@ -114,7 +115,7 @@ public class MemoryManager extends MemoryObservable {
             return processes;
         }
 
-        public int getMemSize() {
+        public long getMemSize() {
             return memSize;
         }
     }

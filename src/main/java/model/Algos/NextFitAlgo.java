@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class NextFitAlgo extends FitAlgo{
     private int count=0;
-    public NextFitAlgo(int totalmem) {
+    public NextFitAlgo(long totalmem) {
         super(totalmem);
         name = "Next Fit";
     }
