@@ -39,11 +39,14 @@ public class MemoryManager extends MemoryObservable {
 
 
     public boolean allocate(Process p){
+        System.out.println("allocate was called");
         if(p.getSize()>memSize){
+            System.out.println("process 2 big");
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
         Long result=memoryAlgo.allocPs(p);
         if(!processes.contains(p)&& result!=null){
+            System.out.println("found a spot for process");
             processes.add(p);
             Collections.sort(processes, new Comparator<Process>() {
                 @Override
@@ -60,6 +63,7 @@ public class MemoryManager extends MemoryObservable {
             return true;
         }
         else{
+            System.out.println("could not find spot");
             notifyObserversError("Not enough continuous memory to Allocate process: "+p.getName());
         }
         return false;

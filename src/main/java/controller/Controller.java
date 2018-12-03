@@ -54,7 +54,6 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         this.sourceList = pList;
 
         this.source = sourceList.get(0);
-
     }
 
     // receive from Observable
@@ -173,6 +172,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         execService.execute(()->{
             manager.deallocate(p);
         });
+
     }
 
 }

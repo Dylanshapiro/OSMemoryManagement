@@ -39,7 +39,11 @@ public class Driver extends Application {
 
         Controller ctrl = new Controller(menMan, view, pList); // compose Controller
 
-        view.setCtrl(ctrl);                                     // give view the ref it needs
+
+
+        view.setCtrl(ctrl);
+
+        menMan.addObserver(ctrl);// give view the ref it needs
         ((SimSource) pList.get(0)).addObserver(ctrl);
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
