@@ -57,10 +57,11 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     }
 
-
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
+        System.out.println("\n\nControlle received an update");
         Platform.runLater(()-> {
+            System.out.println("yes");
             this.view.updateDisplay( memEvent);// send update to view
         });
 
@@ -136,12 +137,15 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void startSim() {
-        this.execService = Executors.newScheduledThreadPool(1);
+        System.out.println("Controller::startSim()");
 
-        this.execService.scheduleWithFixedDelay(() -> {
+        ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
 
-            source.sim();
-        }, 0,600, TimeUnit.MILLISECONDS);
+            this.source.sim();
+
+        }, 0, 600, TimeUnit.MILLISECONDS);
+
+        this.handle = Optional.of(handle);
 
     }
 
@@ -156,11 +160,13 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     @Override
     public void newProcess(Process p) {
+        System.out.println("Controller::NewProcess()");
         manager.allocate(p);
     }
 
     @Override
     public void killProcess(Process p) {
+        System.out.println("Controller::killProcess");
         manager.deallocate(p);
     }
 

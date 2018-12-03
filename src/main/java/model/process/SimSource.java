@@ -53,6 +53,7 @@ public class SimSource extends ProcessSourceObservable implements ProcessSource{
     @Override
     public Process generateProcess()
     {
+        System.out.println("SimSource::GeneratePRocess:");
         Random rand = new Random();
         long memSize = 0;
 
@@ -76,6 +77,7 @@ public class SimSource extends ProcessSourceObservable implements ProcessSource{
 
     @Override
     public void sim() {
+        System.out.println("SimSource::sim()");
 
            int rand = getRandomIntBetweenRange(0, 2);
            if (rand > 0) {
