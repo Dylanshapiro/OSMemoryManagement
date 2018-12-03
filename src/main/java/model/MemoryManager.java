@@ -81,14 +81,13 @@ public class MemoryManager extends MemoryObservable {
             if (p.getProcId() == procID) {
                 return p;
             }
-
         }
-        return processes.get(procID);
+        return null;
     }
 
     public boolean deallocate(int procID){
         Process p;
-        if((p = this.getProcess(procID)) != null) {
+        if((p = getProcess(procID)) != null) {
             processes.remove(p);
             memoryAlgo.deallocate(p);
             notifyObservers(p);
