@@ -5,6 +5,7 @@ import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
 import model.process.ProcessSource;
+import model.process.SimSource;
 import view.Display;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,10 +27,10 @@ public class Driver extends Application {
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
-        menMan.setAlgo(new FirstFitAlgo(menMan.getMemSize()));
+        menMan.setAlgo(new FirstFitAlgo());
 
         // Init a default process source
-        ProcessSource source = new LocalSource();
+        ProcessSource source = new SimSource(0);
 
         Display view = new Display();                           // init view
         Controller ctrl = new Controller(menMan, view, source); // compose Controller

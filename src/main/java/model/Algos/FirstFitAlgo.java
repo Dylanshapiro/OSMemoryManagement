@@ -1,31 +1,30 @@
 package model.Algos;
 
+import java.util.Arrays;
+import java.util.HashMap;
 
-public class FirstFitAlgo extends FitAlgo {
+public class FirstFitAlgo implements Algo {
 
 
-    //divides total memory to make into kilobytes.
-    public FirstFitAlgo(int totalmem){
-        super(totalmem);
-        name = "First Fit";
-    }
+    @Override
+    public Long allocateP(Long procSize, HashMap<Long, Long> freeMem) {
 
-    // Implements Firstfit algorithm
-    public Integer allocPs(long procsize){
-        int start = 0;
-        int open = 0;
+        Object[] keys = freeMem.keySet().toArray();
+        Arrays.sort(keys);
 
-        for(int i = 0;i < memory.length; i++) {
-            if(!memory[i]){
-               open++;
-               if(open >= procsize){
-                   return new Integer (start);
-               }
-            } else {
-               open = 0;
-               start = i+1;
+        for (int i = 0; i < keys.length; i++) {
+
+            Long baseAddress = (Long) keys[i];
+
+            if ((freeMem.get(baseAddress) - baseAddress) > procSize) {
+                return baseAddress;
             }
         }
         return null;
+    }
+
+    @Override
+    public String getName() {
+        return "First Fit";
     }
 }

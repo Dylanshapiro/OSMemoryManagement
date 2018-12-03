@@ -74,14 +74,12 @@ public class Controller implements MemoryObserver {
 
     // utils
     public List<Algo> getAlgoList() {
-        final int memSize = this.manager.getMemSize();
-
         return Arrays.asList(
-                new FirstFitAlgo(memSize),
-                new BestFitAlgo(memSize),
-                new WorstFitAlgo(memSize),
-                new NextFitAlgo(memSize),
-                new BuddyAlgo(memSize)
+                new FirstFitAlgo(),
+                new BestFitAlgo(),
+                new WorstFitAlgo(),
+                new NextFitAlgo(),
+                new BuddyAlgo()
         );
     }
 

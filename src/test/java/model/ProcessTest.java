@@ -43,7 +43,7 @@ public class ProcessTest {
 
     @Test
     public void testGetBaseAddressUnalloc() {
-        assertFalse(proc.getBaseAddress().isPresent());
+        assertFalse(proc.getBaseAddress() != null);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ProcessTest {
         final MemoryManager tempMan = MemoryManager.getInstance();
         final int defaultMemSize = tempMan.getMemSize();
 
-        final Algo tempAlgo = new FirstFitAlgo(tempMan.getMemSize());
+        final Algo tempAlgo = new FirstFitAlgo();
 
         tempMan.setAlgo(tempAlgo);
 
@@ -61,7 +61,7 @@ public class ProcessTest {
         tempMan.allocate(proc);
 
         // Check if it now has a base Address
-        assertTrue(proc.getBaseAddress().isPresent());
+        assertTrue(proc.getBaseAddress()!= null);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ProcessTest {
         final Long testBase = new Long(10);
         proc.setBaseAddress(testBase);
 
-        assertEquals(testBase, proc.getBaseAddress().get());
+        assertEquals(testBase, proc.getBaseAddress());
     }
 
     @Test

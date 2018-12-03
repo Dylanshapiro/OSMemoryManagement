@@ -157,7 +157,7 @@ public class Display implements Initializable {
                     return new ProcessEntry(proc.getName(),
                             proc.getProcId(),
                             proc.getStartTime(),
-                            proc.getBaseAddress().get(),
+                            proc.getBaseAddress(),
                             proc.getSize());
                 }).collect(Collectors.toList()));
 
@@ -171,7 +171,7 @@ public class Display implements Initializable {
         this.deleteChunk();
         for (Process p : memEvent.getProcesses()) {
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
-            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
+            double baseAddress = (double) p.getBaseAddress() / (double) memEvent.getMemSize();
             fillChunk(size, baseAddress);
         }
     }

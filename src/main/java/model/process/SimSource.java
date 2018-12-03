@@ -56,7 +56,7 @@ public class SimSource implements ProcessSource{
         Random rand = new Random();
         long memSize = 0;
 
-        memSize = getRandomIntBetweenRange(10, 30) * 1024;
+        memSize = getRandomIntBetweenRange(600, 1000);
         Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), ++numOfProcess,
                                    System.currentTimeMillis(), memSize);
         processList.add(proc);

@@ -1,7 +1,5 @@
 package model.process;
 
-import java.util.Optional;
-
 public class Process {
 
     private int procId;
@@ -9,7 +7,7 @@ public class Process {
     private ProcState state;
     private Long size;
     private String name;
-    Optional<Long> baseAddress;
+    Long baseAddress;
 
     /**
      * constructor
@@ -24,7 +22,7 @@ public class Process {
         this.startTime = startTime;
         this.state = state.READY;
         this.size = size;
-        this.baseAddress = Optional.empty();
+        this.baseAddress = null;
     }
 
     /**
@@ -52,7 +50,7 @@ public class Process {
      *
      * @return Optional<Integer>
      */
-    public Optional<Long> getBaseAddress() {
+    public Long getBaseAddress() {
         return baseAddress;
     }
 
@@ -63,7 +61,7 @@ public class Process {
      * @param baseAddress
      */
     public void setBaseAddress(Long baseAddress) {
-        this.baseAddress = Optional.of(baseAddress);
+        this.baseAddress = baseAddress;
     }
 
     /**
@@ -104,14 +102,6 @@ public class Process {
         this.procId = procId;
     }
 
-    /**
-     * if address is null false if not null true
-     *
-     * @return boolean
-     */
-    public boolean isAllocated() {
-        return this.baseAddress.isPresent();
-    }
 
     /**
      * Fetch thine name.
@@ -124,7 +114,7 @@ public class Process {
 
 
     public String toString() {
-        return (name + "\t\t" + procId + "\t\t" + size + "\t\t" + getBaseAddress().get());
+        return (name + "\t\t" + procId + "\t\t" + size + "\t\t" + getBaseAddress());
     }
 
 }

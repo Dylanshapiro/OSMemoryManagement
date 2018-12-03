@@ -1,114 +1,20 @@
 package model.Algos;
 
-import model.process.Process;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.HashMap;
+
 
 
 public class BuddyAlgo implements Algo {
-    private LinkedList<Block> memory;
-    private String name;
-    public BuddyAlgo(int memSize){
-        memory=new LinkedList<>();
-        memory.add(new Block(0,memSize));
-        name = "Buddy";
-    }
 
     @Override
-    public boolean allocate(Process P) {
-        return (allocPs(P) != null);
-    }
-
-    @Override
-    public Long allocPs(Process unallocated) {
-        for(Block b: memory){
-            if(b.getLength()>unallocated.getSize()){
-                long base=b.getBase();
-                b.setBase(b.getBase()+unallocated.getSize());
-                b.setLength(b.getLength()-unallocated.getSize());
-                unallocated.setBaseAddress(base);
-                return new Long(base);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean deallocate(Process allocated) {
-        Block b=new Block(allocated.getBaseAddress().get(),allocated.getSize());
-        merge(b);
-        return true;
-    }
-
-    @Override
-    public void setMemoryState(boolean[] memState) {
-        //TODO allow way to convert boolean[] memState into memory in this class
-    }
-
-    public boolean[] getMemoryState() {
-        //TODO allow way to retrieve state of memory that this algo holds
+    public Long allocateP(Long procSize, HashMap<Long, Long> freeMem) {
+        //TODO translate old code
         return null;
     }
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void merge(Block newBlock){
-        for(Block b:memory){
-            if(b.getBase()==newBlock.getBase()+newBlock.getLength()){
-                b.setBase(newBlock.getBase());
-                return;
-            }
-            else if(b.getBase()+b.getLength()==newBlock.getBase()){
-                b.setLength(b.getLength()+newBlock.getLength());
-                return;
-            }
-        }
-        memory.add(newBlock);
-        Collections.sort(memory);
-    }
-    private class Block implements Comparable{
-        long base;
-        long length;
-
-        public Block(long base, long length) {
-            this.base = base;
-            this.length = length;
-        }
-
-        public long getBase() {
-            return base;
-        }
-
-        public void setBase(long base) {
-            this.base = base;
-        }
-
-        public long getLength() {
-            return length;
-        }
-
-        public void setLength(long length) {
-            this.length = length;
-        }
-
-        @Override
-        public int compareTo(Object o) {
-            if(!(o instanceof Block)){
-                return 0;
-            }
-            Block newBlock=(Block)o;
-            if(newBlock.getBase()==getBase()){
-                return 0;
-            }
-            if(newBlock.getBase()>getBase()){
-                return -1;
-            }
-            return 1;
-        }
+        return "Buddy System";
     }
 }

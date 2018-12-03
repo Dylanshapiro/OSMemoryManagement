@@ -4,9 +4,7 @@ import model.Algos.Algo;
 import model.Algos.FirstFitAlgo;
 import model.process.Process;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class MemoryManager extends MemoryObservable {
@@ -15,17 +13,20 @@ public class MemoryManager extends MemoryObservable {
     //size in bytes
     public static int memSize;
     private static MemoryManager memoryManager;
+    private HashMap <Long, Long> freeMem;
 
     private MemoryManager(int memSize, Algo algo){
         super();
         this.memSize = memSize;
         this.memoryAlgo = algo;
         processes = new HashMap<>();
+        freeMem = new HashMap<>();
+        freeMem.put((long) 0,(long) memSize);
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
             int memSize = defaultMemSize();
-            Algo algo = new FirstFitAlgo(memSize);
+            Algo algo = new FirstFitAlgo();
             memoryManager=new MemoryManager(memSize,algo);
         }
         return memoryManager;
@@ -37,9 +38,14 @@ public class MemoryManager extends MemoryObservable {
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
 
-        boolean[] mem;
+        p.setBaseAddress(memoryAlgo.allocateP(p.getSize(),freeMem));
+        if(!processes.containsKey(p.getProcId()) && p.getBaseAddress() != null){
 
-        if(!processes.containsKey(p.getProcId()) && (memoryAlgo.allocate(p)) != false ){
+            //take end address
+            Long endAddress = freeMem.get(p.getBaseAddress());
+            //remove partition and split
+            freeMem.remove(p.getBaseAddress());
+            freeMem.put(p.getBaseAddress() + p.getSize() + 1, endAddress);
             processes.put(p.getProcId(),p);
             notifyObservers();
             return true;
@@ -59,22 +65,38 @@ public class MemoryManager extends MemoryObservable {
         Process p;
         if((p = getProcess(procID)) != null) {
             processes.remove(procID);
-            memoryAlgo.deallocate(p);
+            //free up memory chunk
+            freeMem.put(p.getBaseAddress(),p.getBaseAddress() + p.getSize());
+            mergePartitions();
             notifyObservers();
             return true;
         }
         return false;
     }
+
+    public void mergePartitions(){
+        for (Long startAddress : freeMem.keySet()) {
+            //searches to see if key is the next available address
+            //if so, merge both partitions
+            Long nextAddress = freeMem.get(startAddress) + 1;
+            if (freeMem.keySet().contains(nextAddress)) {
+
+                freeMem.replace(startAddress, freeMem.get(nextAddress));
+                freeMem.remove(nextAddress);
+                break;
+            }
+
+        }
+    }
     private static Algo defaultAlgo(){
-        return new FirstFitAlgo(memSize);
+        return new FirstFitAlgo();
     }
 
     private static int defaultMemSize() {
-        return 65536011;
+        return 8000;
     }
 
     public void setAlgo(Algo a) {
-        a.setMemoryState(this.memoryAlgo.getMemoryState());
         this.memoryAlgo = a;
     }
 
