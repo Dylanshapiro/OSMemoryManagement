@@ -43,6 +43,8 @@ public class Controller implements MemoryObserver {
     private final MemoryManager manager;
     private final Display view;
 
+    private List<Algo>algoList;
+
     public Controller(MemoryManager manager, Display view,
                       ProcessSource source) {
 
@@ -53,6 +55,14 @@ public class Controller implements MemoryObserver {
         });
 
         this.sourceList = SourceFactory.initAll(Config.getRemoteNodes());
+
+        this.algoList = Arrays.asList(
+                new FirstFitAlgo(),
+                new BestFitAlgo(),
+                new WorstFitAlgo(),
+                new NextFitAlgo(),
+                new BuddyAlgo()
+        );
 
         this.source = source;
         this.manager = manager;
@@ -73,14 +83,9 @@ public class Controller implements MemoryObserver {
     }
 
     // utils
+
     public List<Algo> getAlgoList() {
-        return Arrays.asList(
-                new FirstFitAlgo(),
-                new BestFitAlgo(),
-                new WorstFitAlgo(),
-                new NextFitAlgo(),
-                new BuddyAlgo()
-        );
+        return algoList;
     }
 
     // input api

@@ -11,21 +11,21 @@ public class MemoryManager extends MemoryObservable {
     private static Algo memoryAlgo;
     private static HashMap<Integer, Process> processes;
     //size in bytes
-    public static int memSize;
+    public static long memSize;
     private static MemoryManager memoryManager;
     private HashMap <Long, Long> freeMem;
 
-    private MemoryManager(int memSize, Algo algo){
+    private MemoryManager(long memSize, Algo algo){
         super();
         this.memSize = memSize;
         this.memoryAlgo = algo;
         processes = new HashMap<>();
         freeMem = new HashMap<>();
-        freeMem.put((long) 0,(long) memSize);
+        freeMem.put((long) 0, memSize);
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
-            int memSize = defaultMemSize();
+            long memSize = defaultMemSize();
             Algo algo = new FirstFitAlgo();
             memoryManager=new MemoryManager(memSize,algo);
         }
@@ -43,9 +43,11 @@ public class MemoryManager extends MemoryObservable {
 
             //take end address
             Long endAddress = freeMem.get(p.getBaseAddress());
+
             //remove partition and split
             freeMem.remove(p.getBaseAddress());
             freeMem.put(p.getBaseAddress() + p.getSize() + 1, endAddress);
+
             processes.put(p.getProcId(),p);
             notifyObservers();
             return true;
@@ -63,6 +65,7 @@ public class MemoryManager extends MemoryObservable {
 
     public boolean deallocate(int procID){
         Process p;
+
         if((p = getProcess(procID)) != null) {
             processes.remove(procID);
             //free up memory chunk
@@ -93,6 +96,7 @@ public class MemoryManager extends MemoryObservable {
     }
 
     private static int defaultMemSize() {
+        //65536011
         return 8000;
     }
 
@@ -100,11 +104,11 @@ public class MemoryManager extends MemoryObservable {
         this.memoryAlgo = a;
     }
 
-    public int getMemSize() {
+    public long getMemSize() {
         return memSize;
     }
 
-    public void setMemSize(int memSize) {
+    public void setMemSize(long memSize) {
         MemoryManager.memSize = memSize;
     }
 
@@ -119,9 +123,9 @@ public class MemoryManager extends MemoryObservable {
 
     public class MemoryEvent{
         private HashMap<Integer, Process> processes;
-        public int memSize;
+        public long memSize;
 
-        public MemoryEvent(HashMap<Integer, Process> processes, int memSize) {
+        public MemoryEvent(HashMap<Integer, Process> processes, long memSize) {
             this.processes = processes;
             this.memSize = memSize;
         }
@@ -131,7 +135,7 @@ public class MemoryManager extends MemoryObservable {
             return new ArrayList<Process>(processes.values());
         }
 
-        public int getMemSize() {
+        public long getMemSize() {
             return memSize;
         }
     }
