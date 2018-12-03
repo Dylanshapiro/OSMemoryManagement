@@ -2,7 +2,7 @@ package model;
 
 import model.Algos.Algo;
 import model.Algos.*;
-import model.Process;
+import model.process.Process;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,7 +17,7 @@ public class MemoryManager extends MemoryObservable {
     private static MemoryManager memoryManager;
 
 
-    private MemoryManager(int memSize, Algo algo){
+    private MemoryManager(long memSize, Algo algo){
         super();
         this.memSize=memSize;
         this.memoryAlgo=algo;
@@ -55,7 +55,7 @@ public class MemoryManager extends MemoryObservable {
                     }
                 }
             });
-            notifyObservers();
+            notifyObservers(p);
             return true;
         }
         else{
@@ -67,7 +67,7 @@ public class MemoryManager extends MemoryObservable {
         if(processes.contains(p)) {
             boolean result= processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers();
+            notifyObservers(p);
             return result;
         }
         return false;
@@ -89,30 +89,37 @@ public class MemoryManager extends MemoryObservable {
         return memSize;
     }
 
-    public void setMemSize(int memSize) {
+    public void setMemSize(long memSize) {
         MemoryManager.memSize = memSize;
     }
 
-    private void notifyObservers(){
-        this.notifyObservers(new MemoryEvent(processes,memSize));
+    private void notifyObservers(Process p){
+        this.notifyObservers(new MemoryEvent(processes,p,memSize));
     }
 
     public void clearProc() {
         this.processes.clear();
-        notifyObservers();
+        Process temp=null;
+        notifyObservers(temp);
     }
 
     public class MemoryEvent{
         private List<Process> processes;
         public long memSize;
+        private Process lastChanged;
 
-        public MemoryEvent(List<Process> processes, long memSize) {
+        public MemoryEvent(List<Process> processes,Process process, long memSize) {
             this.processes = processes;
             this.memSize = memSize;
+            this.lastChanged=process;
         }
 
         public List<Process> getProcesses() {
             return processes;
+        }
+
+        public Process getLastChanged() {
+            return lastChanged;
         }
 
         public long getMemSize() {
