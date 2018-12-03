@@ -1,47 +1,29 @@
 package view;
 
+
+import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
-import javafx.scene.control.cell.PropertyValueFactory;
-import model.MemoryManager.MemoryEvent;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import model.Algos.Algo;
-import model.MemoryManager;
-import model.process.Process;
-import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
+import model.Algos.Algo;
+import model.MemoryManager;
+import model.MemoryManager.MemoryEvent;
+import model.process.Process;
 
 import javax.management.InstanceNotFoundException;
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.util.OptionalLong;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Display implements Initializable {
-
     @FXML
-    private VBox rootBox;
-
     private Controller ctrl;
 
     @FXML
@@ -51,6 +33,7 @@ public class Display implements Initializable {
     private Button generateButton;
 
     @FXML
+
     private TableView<ProcessEntry> procTable;
 
     @FXML
@@ -65,11 +48,6 @@ public class Display implements Initializable {
     @FXML
     private Rectangle memoryRect;
 
-    @FXML
-    private MenuItem launchPrefs;
-    @FXML
-    private MenuItem launchAbout;
-    @FXML
     private boolean simEnabled;
 
     @FXML
@@ -93,10 +71,10 @@ public class Display implements Initializable {
     @FXML
     private Label totalMemoryText;
 
+
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
-
     }
 
     public void initTable() {
@@ -125,6 +103,7 @@ public class Display implements Initializable {
 
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -138,12 +117,6 @@ public class Display implements Initializable {
 
         // Algo Combo box
         algoCombo.getItems().addAll(this.ctrl.getAlgoList());
-
-        // launch prefs window
-        launchPrefs.setOnAction(this::launchPrefsWindow);
-
-        // launch project github
-        launchAbout.setOnAction(this::launchAbout);
 
         // Sets up names for Combo Box
         algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
@@ -262,27 +235,25 @@ public class Display implements Initializable {
     }
 
     // receive updates
-    public void updateDisplay(MemoryEvent memEvent) {
-
+    public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
         this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
 
-        // statusField.getItems().setAll(memEvent.getProcesses());
         this.deleteChunk();
-        for (Process p : memEvent.getProcesses()) {
+        for(Process p:memEvent.getProcesses()){
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
             double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
-            fillChunk(size, baseAddress);
+            fillChunk(size,baseAddress);
         }
 
     }
 
     // Input Events
     public void killProc(ActionEvent event) {
-
         final int pid = procTable.getSelectionModel().getSelectedItem().getId();
         this.ctrl.killProc(pid);
+
     }
 
     public void setAlgo(ActionEvent event) {
@@ -292,14 +263,14 @@ public class Display implements Initializable {
     }
 
     private void toggleSim(ActionEvent actionEvent) {
-        Button button = (Button) actionEvent.getSource();
+        Button button =  (Button)actionEvent.getSource();
         if (this.simEnabled) {
-            button.setText("Run Sim");
+            button.setText("Run Sim! =)");
             this.simEnabled = false;
             this.ctrl.stopSim();
             enableSourceMenu(true);
         } else {
-            button.setText("Stop Sim");
+            button.setText("Stop Sim! =0");
             this.simEnabled = true;
             this.ctrl.startSim();
             enableSourceMenu(false);
@@ -314,17 +285,17 @@ public class Display implements Initializable {
     public void fillChunk(double processSize, double processAddress) {
         Rectangle chunk = new Rectangle();
 
-        double rectWidth = memoryRect.getWidth();
-        double paneWidth = memoryViewPane.getWidth();
-
-        chunk.setX(8 + (processAddress * rectWidth));
+        chunk.setX(8 + (processAddress * memoryRect.getWidth()));
         chunk.setY(101);
         chunk.setHeight(memoryRect.getHeight());
-        chunk.setWidth(processSize * rectWidth);
+        chunk.setWidth( processSize * memoryRect.getWidth());
+
         memoryViewPane.getChildren().add(chunk);
+
+
     }
 
-    public void deleteChunk() {
+    public void deleteChunk(){
         memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
     }
 
@@ -341,35 +312,4 @@ public class Display implements Initializable {
             }
         }
     }
-
-    // Navigation stuff
-    private void launchPrefsWindow(ActionEvent actionEvent) {
-        Parent prefsWindow;
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            prefsWindow = (AnchorPane) loader.load(getClass().getResource("../xml/prefs.fxml"));
-
-            Scene prefScene = new Scene(prefsWindow);
-            Stage curStage = (Stage) rootBox.getScene().getWindow();
-
-            curStage.setResizable(false);
-            curStage.setScene(prefScene);
-
-            Prefs prefController = loader.getController();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void launchAbout(ActionEvent actionEvent) {
-        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-            try {
-                Desktop.getDesktop().browse(URI.create("https://github.com/Dylanshapiro/OSMemoryManagement"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }

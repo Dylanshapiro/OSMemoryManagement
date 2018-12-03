@@ -1,19 +1,13 @@
 package controller;
 
 import config.Config;
-
 import javafx.application.Platform;
-
 import model.Algos.*;
-import model.MemoryManager;
-import model.MemoryObservable;
-import model.MemoryObserver;
+import model.*;
+import model.MemoryManager.MemoryEvent;
+import model.process.*;
 import model.process.Process;
-import model.process.LocalSource;
-import model.process.ProcessSource;
-import model.process.RemoteSource;
-import model.process.SimSource;
-
+import sun.net.util.IPAddressUtil;
 import view.Display;
 
 import javax.management.InstanceNotFoundException;
@@ -23,28 +17,30 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import java.util.ArrayList;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class Controller implements MemoryObserver {
+public class Controller implements MemoryObserver, ProcessSourceObserver {
 
-    List<ProcessSource> sourceList;
 
     private Optional<ScheduledFuture> handle;
     private ScheduledExecutorService execService;
 
-
+    private List<ProcessSource> sourceList;
     private ProcessSource source;
+
     private final MemoryManager manager;
     private final Display view;
 
-    public Controller(MemoryManager manager, Display view) {
+    public Controller(MemoryManager manager, Display view, List<ProcessSource> pList) {
 
         this.handle = Optional.empty();
         this.execService = Executors.newScheduledThreadPool(1, r -> {
@@ -53,20 +49,24 @@ public class Controller implements MemoryObserver {
             return thread;
         });
 
-
-        this.sourceList = SourceFactory.initAll(Config.getRemoteNodes());
-
-        this.source = sourceList.get(0);
         this.manager = manager;
         this.view = view;
-        this.manager.addObserver(this);
+        this.sourceList = pList;
+
+        this.source = sourceList.get(0);
+
     }
 
+
     // receive from Observable
-    public void update(MemoryObservable obs, MemoryManager.MemoryEvent memEvent) {
-        Platform.runLater(() -> {
-            this.view.updateDisplay(memEvent);// send update to view
+    public void update(MemoryObservable obs, MemoryEvent memEvent) {
+        Platform.runLater(()-> {
+            this.view.updateDisplay( memEvent);// send update to view
         });
+
+    }
+    public List<ProcessSource> getSourceList() {
+        return this.sourceList;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class Controller implements MemoryObserver {
 
     // utils
     public List<Algo> getAlgoList() {
-        final int memSize = this.manager.getMemSize();
+        final long memSize = this.manager.getMemSize();
 
         return Arrays.asList(
                 new FirstFitAlgo(memSize),
@@ -87,7 +87,7 @@ public class Controller implements MemoryObserver {
         );
     }
 
-    public int getMemSize(){
+    public long getMemSize(){
         return this.manager.getMemSize();
     }
 
@@ -118,7 +118,13 @@ public class Controller implements MemoryObserver {
         }
     }
 
+    public void killProc(Process p) {
+        this.manager.deallocate(p);
+     }
+
+
     public void setAlgo(Algo a) {
+
         this.manager.setAlgo(a);
     }
 
@@ -130,15 +136,15 @@ public class Controller implements MemoryObserver {
     }
 
     public void startSim() {
+        this.execService = Executors.newScheduledThreadPool(1);
 
-        ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
+        this.execService.scheduleWithFixedDelay(() -> {
 
-            this.manager.allocate(this.source.generateProcess());
+            source.sim();
+        }, 0,600, TimeUnit.MILLISECONDS);
 
-        }, 0, 600, TimeUnit.MILLISECONDS);
-
-        this.handle = Optional.of(handle);
     }
+
 
     public void stopSim() {
         if (this.handle.isPresent()) {
@@ -147,54 +153,15 @@ public class Controller implements MemoryObserver {
         }
     }
 
-    public List<ProcessSource> getSourceList() {
-        return this.sourceList;
+
+    @Override
+    public void newProcess(Process p) {
+        manager.allocate(p);
     }
 
-    static class SourceFactory {
-
-        static List<ProcessSource> sourceList;
-        static int nextId = 0;
-
-        public static List<ProcessSource> initAll(List<String> ips) {
-
-            sourceList = new ArrayList<>(16);
-
-            sourceList.add(new SimSource(nextId));
-            nextId++;
-
-            sourceList.add(new LocalSource(nextId));
-            nextId++;
-
-            if (!ips.isEmpty()) {
-                sourceList.addAll(generateRemotes(ips));
-            } else {
-                System.err.println("no ip's present");
-            }
-
-            return sourceList;
-        }
-
-        private static List<ProcessSource> generateRemotes(List<String> ips) {
-            return ips.stream()
-                    .map(SourceFactory::sourceFromIp)
-                    .collect(Collectors.toList());
-        }
-
-        // Try to make a source from an ipString, handle errors
-        // if impossible
-        private static RemoteSource sourceFromIp(String ip) {
-            try {
-                RemoteSource newRemote = new RemoteSource(ip, nextId);
-                nextId++;
-                return newRemote;
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+    @Override
+    public void killProcess(Process p) {
+        manager.deallocate(p);
     }
+
 }

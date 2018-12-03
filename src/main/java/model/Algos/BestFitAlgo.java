@@ -1,7 +1,7 @@
 package model.Algos;
 
 public class BestFitAlgo extends FitAlgo {
-    public BestFitAlgo(int totalmem) {
+    public BestFitAlgo(long totalmem) {
         super(totalmem);
         name = "Best Fit";
     }

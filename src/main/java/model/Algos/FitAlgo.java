@@ -1,14 +1,18 @@
 package model.Algos;
-
 import model.process.Process;
 
+
+import java.util.List;
+
 public abstract class FitAlgo implements Algo{
-    public static final int KILOBYTE = 1024;
+    public static int BlockSize;
     protected boolean[] memory;
     protected String name;
 
-    public FitAlgo(int totalmem){
-        memory = new boolean[totalmem/KILOBYTE];
+    public FitAlgo(long totalmem){
+        BlockSize=Math.toIntExact(totalmem/ 1048576L);
+
+        memory = new boolean[1048576];
     }
     protected void filler(int index, long size, boolean change){
         for(int i=0;i < size ;i++){
@@ -16,36 +20,19 @@ public abstract class FitAlgo implements Algo{
         }
     }
     public boolean deallocate(Process allocated){
-        int base = (int)allocated.getBaseAddress().get().longValue()/1024;
+        int base = (int)allocated.getBaseAddress().get().longValue()/BlockSize;
         long size = getProcessSize(allocated);
 
         filler(base,size,false);
         return true;
     }
     protected long getProcessSize(Process unallocated){
-        return (unallocated.getSize() % KILOBYTE == 0 )
-                ? unallocated.getSize()/ KILOBYTE: (unallocated.getSize()/KILOBYTE) + 1;
+        return (unallocated.getSize() % BlockSize == 0 )
+                ? unallocated.getSize()/ BlockSize : (unallocated.getSize()/ BlockSize) + 1;
     }
 
     public String getName(){
         return name;
-    }
-
-    @Override
-    public boolean allocate(Process P) {
-        return (allocPs(P) != null);
-    }
-
-    @Override
-    public void setMemoryState(boolean[] memState) {
-
-        memory = memState;
-
-    }
-
-    @Override
-    public boolean[] getMemoryState(){
-        return memory;
     }
 
     @Override
@@ -56,10 +43,17 @@ public abstract class FitAlgo implements Algo{
             return null;
         }
         filler(start,procsize,true);
-        unallocated.setBaseAddress(new Long(start*KILOBYTE));
-        return new Long(start*KILOBYTE);
+        unallocated.setBaseAddress(new Long(((long)start)* BlockSize));
+        return new Long(((long)start)* BlockSize);
     }
-
+    public void setRepresentation(List<Process> processes)
+    {
+        memory = new boolean[memory.length];
+        for(Process p:processes){
+            if(p.getBaseAddress().get().longValue()/BlockSize +getProcessSize(p)<memory.length)
+                filler((int)(p.getBaseAddress().get().longValue()/ BlockSize),getProcessSize(p),true);
+        }
+    }
     /**
      *
      * @param size the sizeof the process in megabytes

@@ -4,22 +4,19 @@ import model.process.Process;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class BuddyAlgo implements Algo {
     private LinkedList<Block> memory;
     private String name;
-    public BuddyAlgo(int memSize){
+    private long memSize;
+    public BuddyAlgo(long memSize){
         memory=new LinkedList<>();
         memory.add(new Block(0,memSize));
+        this.memSize=memSize;
         name = "Buddy";
     }
-
-    @Override
-    public boolean allocate(Process P) {
-        return (allocPs(P) != null);
-    }
-
     @Override
     public Long allocPs(Process unallocated) {
         for(Block b: memory){
@@ -42,21 +39,36 @@ public class BuddyAlgo implements Algo {
     }
 
     @Override
-    public void setMemoryState(boolean[] memState) {
-        //TODO allow way to convert boolean[] memState into memory in this class
-    }
-
-    public boolean[] getMemoryState() {
-        //TODO allow way to retrieve state of memory that this algo holds
-        return null;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public void setRepresentation(List<Process> processes) {
+        LinkedList<Block> memory=new LinkedList<>();
+        if(processes.size()>0&&processes.get(0).getBaseAddress().get()!=0){
+            memory.add(new Block(0,processes.get(0).getBaseAddress().get()));
+        }
+        for(int i=0;i<processes.size()-1;i++){
+            long endf=processes.get(i).getBaseAddress().get()+processes.get(i).getSize();
+            long starts=processes.get(i+1).getBaseAddress().get();
+            if(starts-endf>0){
+                long size=starts-endf;
+                memory.add(new Block(processes.get(i).getBaseAddress().get()+processes.get(i).getSize()+1
+                        ,size));
+            }
+
+        }
+        if(processes.size()>0&&processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()<memSize){
+            memory.add(new Block(processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()+1,memSize-processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()));
+        }
+        if(processes.size()==0){
+            memory.add(new Block(0,memSize));
+        }
+        this.memory=memory;
+
+    }
+
     private void merge(Block newBlock){
         for(Block b:memory){
             if(b.getBase()==newBlock.getBase()+newBlock.getLength()){
@@ -71,6 +83,7 @@ public class BuddyAlgo implements Algo {
         memory.add(newBlock);
         Collections.sort(memory);
     }
+
     private class Block implements Comparable{
         long base;
         long length;

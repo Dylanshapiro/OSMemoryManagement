@@ -5,12 +5,16 @@ import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
 import model.process.ProcessSource;
+import model.process.SimSource;
 import view.Display;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Driver extends Application {
 
@@ -26,13 +30,17 @@ public class Driver extends Application {
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
-        menMan.setAlgo(new FirstFitAlgo(menMan.getMemSize()));
+        menMan.setMemSize(17179869184L);//4gb
+        menMan.setAlgo(new FirstFitAlgo(17179869184L));
 
 
-        Display view = new Display();                           // init view
-        Controller ctrl = new Controller(menMan, view); // compose Controller
+        Display view = new Display();
+        List<ProcessSource> pList = initSources();
+
+        Controller ctrl = new Controller(menMan, view, pList); // compose Controller
+
         view.setCtrl(ctrl);                                     // give view the ref it needs
-
+        ((SimSource) pList.get(0)).addObserver(ctrl);
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("../xml/view.fxml"));
@@ -48,5 +56,13 @@ public class Driver extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("OSMM");
         primaryStage.show();
+    }
+
+
+    public List<ProcessSource> initSources(){
+        List<ProcessSource> procs = new ArrayList<>(4);
+        procs.add(new SimSource(1));
+        procs.add(new LocalSource(2));
+        return procs;
     }
 }
