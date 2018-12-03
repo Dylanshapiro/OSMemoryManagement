@@ -15,10 +15,30 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'com.github.oshi:oshi-dist:3.10.0'
+    compile 'org.slf4j:slf4j-nop:1.8.0-beta2'
 }
 
-task(runMain, dependsOn: 'classes', type: JavaExec) {
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:none" << "-XDenableSunApiLintControl" << "-Xlint:-sunapi" << "-Xlint:unchecked"
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:none" << "-XDenableSunApiLintControl" << "-Xlint:-sunapi" << "-Xlint:unchecked"
+}
+
+task(run, type: JavaExec) {
+    dependsOn classes
+    dependsOn test
+
     main = 'controller.Driver'
     classpath = sourceSets.main.runtimeClasspath
+}
 
+task(runMain, type: JavaExec) {
+    dependsOn classes
+
+    main = 'controller.Driver'
+    classpath = sourceSets.main.runtimeClasspath
 }

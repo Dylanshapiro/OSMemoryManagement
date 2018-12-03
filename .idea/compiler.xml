@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="OSMemoryManagement_main" target="1.8" />
       <module name="OSMemoryManagement_test" target="1.8" />
+      <module name="OSMM_main" target="1.8" />
+      <module name="OSMM_test" target="1.8" />
       <module name="OSMTEST2_main" target="1.8" />
       <module name="OSMTEST2_test" target="1.8" />
     </bytecodeTargetLevel>

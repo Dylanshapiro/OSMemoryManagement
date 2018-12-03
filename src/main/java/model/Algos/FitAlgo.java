@@ -1,6 +1,6 @@
 package model.Algos;
+import model.process.Process;
 
-import model.Process;
 
 import java.util.List;
 import java.util.Optional;

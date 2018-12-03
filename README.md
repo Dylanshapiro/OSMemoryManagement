@@ -8,8 +8,8 @@
 
 <p align="center">
 
-  <a href="https://travis-ci.org/Dylanshapiro/OSMemoryManagement">
-    <img src="https://img.shields.io/travis/Dylanshapiro/OSMemoryManagement.svg"
+  <a href="https://travis-ci.com/Dylanshapiro/OSMemoryManagement">
+    <img src="https://travis-ci.com/Dylanshapiro/OSMemoryManagement.svg?branch=master"
       alt="CI" />
   </a>
 

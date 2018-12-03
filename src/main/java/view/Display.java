@@ -4,7 +4,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import model.Algos.Algo;
 import model.MemoryManager;
-import model.Process;
+import model.process.Process;
 import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
