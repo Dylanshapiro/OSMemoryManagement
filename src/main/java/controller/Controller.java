@@ -161,13 +161,18 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     @Override
     public void newProcess(Process p) {
         System.out.println("Controller::NewProcess()");
-        manager.allocate(p);
+        execService.execute(()->{
+            manager.allocate(p);
+        });
+
     }
 
     @Override
     public void killProcess(Process p) {
         System.out.println("Controller::killProcess");
-        manager.deallocate(p);
+        execService.execute(()->{
+            manager.deallocate(p);
+        });
     }
 
 }
