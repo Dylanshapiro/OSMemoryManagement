@@ -46,11 +46,13 @@ public class Controller implements MemoryObserver {
 
     public Controller(MemoryManager manager, Display view) {
 
-        execService = Executors.newScheduledThreadPool(1, r -> {
+        this.handle = Optional.empty();
+        this.execService = Executors.newScheduledThreadPool(1, r -> {
             Thread thread = Executors.defaultThreadFactory().newThread(r);
             thread.setDaemon(true);
             return thread;
         });
+
 
         this.sourceList = SourceFactory.initAll(Config.getRemoteNodes());
 
