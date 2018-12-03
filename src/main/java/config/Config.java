@@ -100,17 +100,17 @@ public final class Config {
         return new File(userCfgPath).isFile();
     }
 
-    private static void trySetSetting(String target, String newSetting) {
+    public static void trySetSetting(String target, String newSetting) {
         settings.replace(target, Arrays.asList(newSetting));
         writeConfigFile(settings);
     }
 
-    private static void trySetSetting(String target, List<String> newSetting) {
+    public static void trySetSetting(String target, List<String> newSetting) {
         settings.replace(target, newSetting);
         writeConfigFile(settings);
     }
 
-    private static Optional<List<String>> tryGetSetting(String setting) {
+    public static Optional<List<String>> tryGetSetting(String setting) {
         return Optional.ofNullable(settings.get(setting));
     }
 

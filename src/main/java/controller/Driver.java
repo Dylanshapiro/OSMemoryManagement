@@ -26,13 +26,14 @@ public class Driver extends Application {
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
-        menMan.setAlgo(new FirstFitAlgo(menMan.getMemSize()));
+        menMan.setMemSize(Integer.MAX_VALUE);
+        menMan.setAlgo(new FirstFitAlgo(Integer.MAX_VALUE));
 
         // Init a default process source
         ProcessSource source = new LocalSource();
 
         Display view = new Display();                           // init view
-        Controller ctrl = new Controller(menMan, view, source); // compose Controller
+        Controller ctrl = new Controller(menMan, view, source,new Config()); // compose Controller
         view.setCtrl(ctrl);                                     // give view the ref it needs
 
         // Load jfx view. Set controller

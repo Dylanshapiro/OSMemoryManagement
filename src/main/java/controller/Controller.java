@@ -5,7 +5,8 @@ import javafx.application.Platform;
 import model.Algos.*;
 import model.*;
 import model.MemoryManager.MemoryEvent;
-import model.Process;
+import model.process.Process;
+import model.process.ProcessSource;
 import sun.net.util.IPAddressUtil;
 import view.Display;
 
@@ -39,6 +40,7 @@ public class Controller implements MemoryObserver {
         this.view = view;
         this.manager.addObserver(this);
     }
+
 
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {

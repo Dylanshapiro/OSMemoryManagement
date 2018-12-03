@@ -1,6 +1,6 @@
 package model.Algos;
 
-import model.Process;
+import model.process.Process;
 
 import java.util.Collections;
 import java.util.LinkedList;
