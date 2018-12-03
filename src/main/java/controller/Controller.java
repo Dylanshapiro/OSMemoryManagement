@@ -7,6 +7,7 @@ import model.*;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
 import model.process.ProcessSource;
+import model.process.ProcessSourceObserver;
 import sun.net.util.IPAddressUtil;
 import view.Display;
 
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class Controller implements MemoryObserver {
+public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     private ScheduledExecutorService execService;
 
@@ -94,14 +95,14 @@ public class Controller implements MemoryObserver {
         int delaySpread = getDelaySpread();
 
         AtomicInteger thisDelay = new AtomicInteger(delayMs);
-
         this.execService.scheduleWithFixedDelay(() -> {
 
             thisDelay.set(ThreadLocalRandom.current().nextInt(
                     (delayMs - delaySpread / 2),
                     (delayMs + delaySpread / 2)));
 
-            manager.allocate(source.generateProcess());
+            //manager.allocate(source.generateProcess());
+            source.sim();
         }, 0, thisDelay.get(), TimeUnit.MILLISECONDS);
 
     }
@@ -190,5 +191,15 @@ public class Controller implements MemoryObserver {
         return null; // should never actually be null
         // setter setNodes() will not set a
         // value that isnt valid
+    }
+
+    @Override
+    public void newProcess(Process p) {
+        manager.allocate(p);
+    }
+
+    @Override
+    public void killProcess(Process p) {
+        manager.deallocate(p);
     }
 }

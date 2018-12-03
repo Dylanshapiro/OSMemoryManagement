@@ -5,6 +5,7 @@ import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
 import model.process.ProcessSource;
+import model.process.SimSource;
 import view.Display;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,16 +27,16 @@ public class Driver extends Application {
 
         // Init MemoryManager
         MemoryManager menMan = MemoryManager.getInstance();
-        menMan.setMemSize(Integer.MAX_VALUE);
-        menMan.setAlgo(new FirstFitAlgo(Integer.MAX_VALUE));
+        menMan.setMemSize(17179869184L);//4gb
+        menMan.setAlgo(new FirstFitAlgo(17179869184L));
 
         // Init a default process source
-        ProcessSource source = new LocalSource();
+        ProcessSource source = new SimSource(100);//TODO change back to local
 
         Display view = new Display();                           // init view
         Controller ctrl = new Controller(menMan, view, source,new Config()); // compose Controller
         view.setCtrl(ctrl);                                     // give view the ref it needs
-
+        ((SimSource) source).addObserver(ctrl);
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
                 .getResource("../xml/view.fxml"));

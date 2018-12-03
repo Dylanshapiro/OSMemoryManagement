@@ -25,7 +25,7 @@ public class MemoryManager extends MemoryObservable {
     }
     public static MemoryManager getInstance(){
         if(memoryManager==null){
-            int memSize = defaultMemSize();
+            long memSize = defaultMemSize();
             Algo algo = new FirstFitAlgo(memSize);
             memoryManager=new MemoryManager(memSize,algo);
         }
@@ -42,7 +42,8 @@ public class MemoryManager extends MemoryObservable {
         if(p.getSize()>memSize){
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
-        if(!processes.contains(p)&& memoryAlgo.allocPs(p)!=null){
+        Long result=memoryAlgo.allocPs(p);
+        if(!processes.contains(p)&& result!=null){
             processes.add(p);
             Collections.sort(processes, new Comparator<Process>() {
                 @Override
@@ -76,8 +77,8 @@ public class MemoryManager extends MemoryObservable {
         return new FirstFitAlgo(memSize);
     }
 
-    private static int defaultMemSize() {
-        return 655360;
+    private static long defaultMemSize() {
+        return 17179869184L;
     }
 
     public void setAlgo(Algo memoryAlgo) {

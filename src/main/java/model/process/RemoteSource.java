@@ -83,6 +83,11 @@ public class RemoteSource implements ProcessSource {
     }
 
     @Override
+    public void sim() {
+
+    }
+
+    @Override
     public String toString(){
         return "Remote @ " + this.url.getHost();
     }

@@ -61,6 +61,11 @@ public class LocalSource implements ProcessSource {
     }
 
     @Override
+    public void sim() {
+
+    }
+
+    @Override
     public String toString(){
         return "Local";
     }

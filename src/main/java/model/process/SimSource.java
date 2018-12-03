@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class SimSource implements ProcessSource{
+public class SimSource extends ProcessSourceObservable implements ProcessSource{
 
     //ArrayList of processes
     private ArrayList<Process> processList = new ArrayList<Process>();
@@ -16,7 +16,6 @@ public class SimSource implements ProcessSource{
 
     //simulated bank of names
     private List<String> procNames;
-
     public SimSource(int num)
     {
         numOfProcess = num;
@@ -56,7 +55,7 @@ public class SimSource implements ProcessSource{
         Random rand = new Random();
         long memSize = 0;
 
-        memSize = getRandomIntBetweenRange(10, 30) * 1024;
+        memSize = getRandomIntBetweenRange(20, 1000)*1048576;
         Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), ++numOfProcess,
                                    System.currentTimeMillis(), memSize);
         processList.add(proc);
@@ -68,5 +67,19 @@ public class SimSource implements ProcessSource{
     public String toString(){
         return "Simulated";
     }
+
+    @Override
+    public void sim() {
+
+           int rand = getRandomIntBetweenRange(0, 2);
+           if (rand > 0) {
+               notifyNewProcess(generateProcess());
+           } else {
+               rand = getRandomIntBetweenRange(0, processList.size());
+               notifyKillProcess(processList.get(rand));
+               processList.remove(rand);
+           }
+       }
+
 
 }

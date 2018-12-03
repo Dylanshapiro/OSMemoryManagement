@@ -46,7 +46,7 @@ public class BuddyAlgo implements Algo {
     @Override
     public void setRepresentation(List<Process> processes) {
         LinkedList<Block> memory=new LinkedList<>();
-        if(processes.get(0).getBaseAddress().get()!=0){
+        if(processes.size()>0&&processes.get(0).getBaseAddress().get()!=0){
             memory.add(new Block(0,processes.get(0).getBaseAddress().get()));
         }
         for(int i=0;i<processes.size()-1;i++){
@@ -59,8 +59,11 @@ public class BuddyAlgo implements Algo {
             }
 
         }
-        if(processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()<memSize){
+        if(processes.size()>0&&processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()<memSize){
             memory.add(new Block(processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()+1,memSize-processes.get(processes.size()-1).getBaseAddress().get()+processes.get(processes.size()-1).getSize()));
+        }
+        if(processes.size()==0){
+            memory.add(new Block(0,memSize));
         }
         this.memory=memory;
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface ProcessSource {
+public interface ProcessSource{
 
     public List<Process> getAll();
 
@@ -15,5 +15,6 @@ public interface ProcessSource {
     public default CompletableFuture<Process> generateAsync() {
         return CompletableFuture.supplyAsync(this::generateProcess);
     }
+    public void sim();
 
 }
