@@ -40,6 +40,7 @@ public class MemoryManager extends MemoryObservable {
 
     public boolean allocate(Process p){
         if(p.getSize()>memSize){
+            System.out.println("process 2 big");
             notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
         }
         Long result=memoryAlgo.allocPs(p);

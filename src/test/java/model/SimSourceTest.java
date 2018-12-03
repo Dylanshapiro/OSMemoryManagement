@@ -27,12 +27,12 @@ public class SimSourceTest {
     public void beforeEach() {
         rand = new Random();
         this.initId = rand.nextInt() + 1;
-        this.source = new SimSource(initId);
+        this.source = new SimSource(100,initId);
     }
 
     @Test
     public void testSimSource() {
-        SimSource test = new SimSource(initId);
+        SimSource test = new SimSource(100,initId);
         assertEquals(initId, test.getId());
     }
 
@@ -53,12 +53,13 @@ public class SimSourceTest {
     public void testGetAll() {
 
         final int numProc = 20;
+        final int totalProc = source.getAll().size() + numProc;
 
         for (int i = 0; i < numProc; i++) {
             source.generateProcess();
         }
 
-        assertEquals(numProc, source.getAll().size());
+        assertEquals(totalProc, source.getAll().size());
     }
 
     @Test
@@ -70,9 +71,8 @@ public class SimSourceTest {
 
     @Test
     public void testGetId() {
-        assertEquals(initId, source.getId());
+        SimSource test = new SimSource(100,1);
+        assertEquals(1, test.getId());
     }
-
-
 }
 

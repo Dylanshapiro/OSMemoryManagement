@@ -54,17 +54,16 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         this.sourceList = pList;
 
         this.source = sourceList.get(0);
-
     }
-
 
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
-        Platform.runLater(()-> {
-            this.view.updateDisplay( memEvent);// send update to view
-        });
 
+        Platform.runLater(() -> {
+            this.view.updateDisplay(memEvent);// send update to view
+        });
     }
+
     public List<ProcessSource> getSourceList() {
         return this.sourceList;
     }
@@ -87,7 +86,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         );
     }
 
-    public long getMemSize(){
+    public long getMemSize() {
         return this.manager.getMemSize();
     }
 
@@ -118,13 +117,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }
     }
 
-    public void killProc(Process p) {
-        this.manager.deallocate(p);
-     }
-
-
     public void setAlgo(Algo a) {
-
         this.manager.setAlgo(a);
     }
 
@@ -136,12 +129,14 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void startSim() {
-        this.execService = Executors.newScheduledThreadPool(1);
 
-        this.execService.scheduleWithFixedDelay(() -> {
+        ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
 
-            source.sim();
-        }, 0,600, TimeUnit.MILLISECONDS);
+            this.source.sim();
+
+        }, 0, 300, TimeUnit.MILLISECONDS);
+
+        this.handle = Optional.of(handle);
 
     }
 
@@ -153,15 +148,19 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }
     }
 
-
     @Override
     public void newProcess(Process p) {
-        manager.allocate(p);
+        execService.execute(() -> {
+            manager.allocate(p);
+        });
+
     }
 
     @Override
     public void killProcess(Process p) {
-        manager.deallocate(p);
+        execService.execute(() -> {
+            manager.deallocate(p);
+        });
     }
 
 }

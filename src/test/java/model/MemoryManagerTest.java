@@ -38,8 +38,6 @@ public class MemoryManagerTest {
         assertTrue(this.manager == another);
     }
 
-
-
     @Test
     public void testMemSize(){
 

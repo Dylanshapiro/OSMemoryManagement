@@ -50,7 +50,7 @@ public class ProcessTest {
 
         // Create an Algo and MemoryManager instace for test
         final MemoryManager tempMan = MemoryManager.getInstance();
-        final int defaultMemSize = tempMan.getMemSize();
+        final Long defaultMemSize = tempMan.getMemSize();
 
         final Algo tempAlgo = new FirstFitAlgo(tempMan.getMemSize());
 

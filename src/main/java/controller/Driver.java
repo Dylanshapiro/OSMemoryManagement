@@ -39,7 +39,11 @@ public class Driver extends Application {
 
         Controller ctrl = new Controller(menMan, view, pList); // compose Controller
 
-        view.setCtrl(ctrl);                                     // give view the ref it needs
+
+
+        view.setCtrl(ctrl);
+
+        menMan.addObserver(ctrl);// give view the ref it needs
         ((SimSource) pList.get(0)).addObserver(ctrl);
         // Load jfx view. Set controller
         FXMLLoader fxmlLoader = new FXMLLoader(getClass()
@@ -61,7 +65,7 @@ public class Driver extends Application {
 
     public List<ProcessSource> initSources(){
         List<ProcessSource> procs = new ArrayList<>(4);
-        procs.add(new SimSource(1));
+        procs.add(new SimSource(100,1));
         procs.add(new LocalSource(2));
         return procs;
     }

@@ -6,23 +6,40 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import model.Algos.Algo;
 import model.MemoryManager;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
 
 import javax.management.InstanceNotFoundException;
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.OptionalLong;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class Display implements Initializable {
+
+    @FXML
+    private VBox rootBox;
+
     @FXML
     private Controller ctrl;
 
@@ -309,6 +326,36 @@ public class Display implements Initializable {
                 setText(item.getName());//return String, actual name of material
             } else {
                 setText(null);
+            }
+        }
+    }
+
+    // Navigation stuff
+    private void launchPrefsWindow(ActionEvent actionEvent) {
+        Parent prefsWindow;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            prefsWindow = (AnchorPane) loader.load(getClass().getResource("../xml/prefs.fxml"));
+
+            Scene prefScene = new Scene(prefsWindow);
+            Stage curStage = (Stage) rootBox.getScene().getWindow();
+
+            curStage.setResizable(false);
+            curStage.setScene(prefScene);
+
+            Prefs prefController = loader.getController();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void launchAbout(ActionEvent actionEvent) {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                Desktop.getDesktop().browse(URI.create("https://github.com/Dylanshapiro/OSMemoryManagement"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
