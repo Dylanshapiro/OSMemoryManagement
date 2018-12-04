@@ -122,6 +122,16 @@ public class Process {
         return name;
     }
 
+    /**
+     * Uses procID to see if equal.
+     * @param p
+     * @return
+     */
+    public boolean equals(Process p)
+    {
+        return (this.getProcId() == p.getProcId());
+    }
+
 
     public String toString() {
         return (name + "\t\t" + procId + "\t\t" + size + "\t\t" + getBaseAddress().get());

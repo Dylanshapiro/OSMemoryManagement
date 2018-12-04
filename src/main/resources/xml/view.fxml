@@ -19,9 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox fx:id="rootBox" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="rootBox" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
+    <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
@@ -44,7 +44,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0">
+            <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0"  VBox.vgrow="ALWAYS">
               <items>
 
                 <SplitPane dividerPositions="0.04825737265415549, 0.14209115281501342, 0.1769436997319035, 0.34584450402144773, 0.7855227882037533, 0.8579088471849866, 0.5" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0">
@@ -129,7 +129,7 @@
                         </items>
                   </SplitPane>
 
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"  VBox.vgrow="ALWAYS">
                      <children>
                         <SplitPane dividerPositions="0.5736842105263158" layoutX="-3.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="382.0" prefWidth="480.0">
                           <items>

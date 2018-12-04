@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.Algos.Algo;
@@ -256,12 +257,22 @@ public class Display implements Initializable {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
         this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
-
         this.deleteChunk();
+
         for(Process p:memEvent.getProcesses()){
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
             double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
-            fillChunk(size,baseAddress);
+
+            Rectangle chunk = fillChunk(size, baseAddress);
+
+            if (p.equals(memEvent.getLastChanged())) {
+
+                chunk.setFill(Color.BISQUE);
+
+            } else {
+                chunk.setFill(Color.BLACK);
+            }
+                memoryViewPane.getChildren().add(chunk);
         }
 
     }
@@ -299,7 +310,8 @@ public class Display implements Initializable {
         this.ctrl.addProc();
     }
 
-    public void fillChunk(double processSize, double processAddress) {
+    public Rectangle fillChunk(double processSize, double processAddress) {
+
         Rectangle chunk = new Rectangle();
 
         chunk.setX(8 + (processAddress * memoryRect.getWidth()));
@@ -307,10 +319,9 @@ public class Display implements Initializable {
         chunk.setHeight(memoryRect.getHeight());
         chunk.setWidth( processSize * memoryRect.getWidth());
 
-        memoryViewPane.getChildren().add(chunk);
-
-
+        return chunk;
     }
+
 
     public void deleteChunk(){
         memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
