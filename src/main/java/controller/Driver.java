@@ -65,7 +65,7 @@ public class Driver extends Application {
 
     public List<ProcessSource> initSources(){
         List<ProcessSource> procs = new ArrayList<>(4);
-        procs.add(new SimSource(100,1));
+        procs.add(new SimSource(1));
         procs.add(new LocalSource(2));
         return procs;
     }

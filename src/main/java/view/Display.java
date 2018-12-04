@@ -17,6 +17,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -256,7 +258,7 @@ public class Display implements Initializable {
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
-        this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
+        this.updateUsedMemoryText("" + calcUsedMem(memEvent).getAsLong());
         this.deleteChunk();
 
         for(Process p:memEvent.getProcesses()){
@@ -266,12 +268,20 @@ public class Display implements Initializable {
             Rectangle chunk = fillChunk(size, baseAddress);
 
             if (p.equals(memEvent.getLastChanged())) {
-
                 chunk.setFill(Color.BISQUE);
 
             } else {
                 chunk.setFill(Color.BLACK);
             }
+
+                chunk.addEventFilter(MouseEvent.MOUSE_CLICKED, e2 ->{
+
+                    if(e2.getButton()== MouseButton.PRIMARY)
+                    {
+                     //TODO Select process that this chunk represents in the procTable
+
+                    } });
+
                 memoryViewPane.getChildren().add(chunk);
         }
 
