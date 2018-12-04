@@ -65,10 +65,11 @@ public class ProcessTest {
 
     @Test
     public void testSetBaseAddress() {
-        final Long testBase = new Long(10);
-        proc.setBaseAddress(testBase);
+        Process tester = new Process("test", 1, 1, new Long(20));
 
-        assertEquals(testBase, proc.getBaseAddress().get());
+        tester.setBaseAddress(new Long(20));
+
+        assertEquals(new Long(20), tester.getBaseAddress().get());
     }
 
     @Test

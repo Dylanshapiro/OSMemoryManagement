@@ -91,10 +91,6 @@ public class Display implements Initializable {
     @FXML
     private Label totalMemoryText;
 
-
-    private HashMap<Rectangle, TableColumn<ProcessEntry, ?>> rectToRow;
-
-
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
@@ -131,7 +127,6 @@ public class Display implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        this.rectToRow = new HashMap<>(100);
         // Buttons
         // Generate Process Button
         generateButton.setOnAction(this::addProc);
