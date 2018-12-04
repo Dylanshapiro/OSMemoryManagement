@@ -5,7 +5,7 @@ import model.process.Process;
 import java.util.List;
 
 public abstract class FitAlgo implements Algo{
-    public static long BlockSize;
+    public static int BlockSize;
     protected boolean[] memory;
     protected String name;
 
@@ -20,7 +20,7 @@ public abstract class FitAlgo implements Algo{
         }
     }
     public boolean deallocate(Process allocated){
-        int base = (int)(allocated.getBaseAddress().get().longValue()/BlockSize);
+        int base = (int)allocated.getBaseAddress().get().longValue()/BlockSize;
         long size = getProcessSize(allocated);
 
         filler(base,size,false);

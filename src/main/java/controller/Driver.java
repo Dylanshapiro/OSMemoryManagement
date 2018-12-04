@@ -33,13 +33,10 @@ public class Driver extends Application {
         menMan.setMemSize(17179869184L);//4gb
         menMan.setAlgo(new FirstFitAlgo(17179869184L));
 
-
         Display view = new Display();
         List<ProcessSource> pList = initSources();
 
         Controller ctrl = new Controller(menMan, view, pList); // compose Controller
-
-
 
         view.setCtrl(ctrl);
 
@@ -65,7 +62,7 @@ public class Driver extends Application {
 
     public List<ProcessSource> initSources(){
         List<ProcessSource> procs = new ArrayList<>(4);
-        procs.add(new SimSource(1));
+        procs.add(new SimSource(100,1));
         procs.add(new LocalSource(2));
         return procs;
     }

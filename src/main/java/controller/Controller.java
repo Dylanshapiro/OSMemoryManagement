@@ -1,32 +1,25 @@
 package controller;
 
-import config.Config;
 import javafx.application.Platform;
 import model.Algos.*;
-import model.*;
+import model.MemoryManager;
 import model.MemoryManager.MemoryEvent;
-import model.process.*;
+import model.MemoryObservable;
+import model.MemoryObserver;
 import model.process.Process;
-import sun.net.util.IPAddressUtil;
+import model.process.ProcessSource;
+import model.process.ProcessSourceObserver;
 import view.Display;
 
 import javax.management.InstanceNotFoundException;
 import java.io.IOException;
-
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-
-import java.util.ArrayList;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Controller implements MemoryObserver, ProcessSourceObserver {
 
@@ -58,13 +51,12 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
-        System.out.println("\n\nControlle received an update");
-        Platform.runLater(()-> {
-            System.out.println("yes");
-            this.view.updateDisplay( memEvent);// send update to view
-        });
 
+        Platform.runLater(() -> {
+            this.view.updateDisplay(memEvent);// send update to view
+        });
     }
+
     public List<ProcessSource> getSourceList() {
         return this.sourceList;
     }
@@ -87,7 +79,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         );
     }
 
-    public long getMemSize(){
+    public long getMemSize() {
         return this.manager.getMemSize();
     }
 
@@ -118,13 +110,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }
     }
 
-    public void killProc(Process p) {
-        this.manager.deallocate(p);
-     }
-
-
     public void setAlgo(Algo a) {
-
         this.manager.setAlgo(a);
     }
 
@@ -136,18 +122,16 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void startSim() {
-        System.out.println("Controller::startSim()");
 
         ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
 
             this.source.sim();
 
-        }, 0, 600, TimeUnit.MILLISECONDS);
+        }, 0, 300, TimeUnit.MILLISECONDS);
 
         this.handle = Optional.of(handle);
 
     }
-
 
     public void stopSim() {
         if (this.handle.isPresent()) {
@@ -156,23 +140,18 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }
     }
 
-
     @Override
     public void newProcess(Process p) {
-        System.out.println("Controller::NewProcess()");
-        execService.execute(()->{
+        execService.execute(() -> {
             manager.allocate(p);
         });
-
     }
 
     @Override
     public void killProcess(Process p) {
-        System.out.println("Controller::killProcess");
-        execService.execute(()->{
+        execService.execute(() -> {
             manager.deallocate(p);
         });
-
     }
 
 }

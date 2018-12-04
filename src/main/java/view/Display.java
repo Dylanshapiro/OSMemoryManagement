@@ -17,8 +17,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -34,6 +32,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -92,12 +92,16 @@ public class Display implements Initializable {
     private Label totalMemoryText;
 
 
+    private HashMap<Rectangle, TableColumn<ProcessEntry, ?>> rectToRow;
+
+
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
     }
 
     public void initTable() {
+
 
         TableColumn<ProcessEntry, String> name = new TableColumn<>("Name");
         name.setPrefWidth(75);
@@ -127,6 +131,7 @@ public class Display implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        this.rectToRow = new HashMap<>(100);
         // Buttons
         // Generate Process Button
         generateButton.setOnAction(this::addProc);
@@ -194,7 +199,7 @@ public class Display implements Initializable {
                     menuItem.setOnAction(this::changedSource);
 
                     if (node.getId() == 0) {
-                        updateSourceText( menuItem.getText());
+                        updateSourceText(menuItem.getText());
                         menuItem.setSelected(true);
                     }
 
@@ -209,29 +214,29 @@ public class Display implements Initializable {
     }
 
     // Info fields
-    private void updateProcNumText(int num){
+    private void updateProcNumText(int num) {
         this.curProcNumText.setText(toString().valueOf(num));
     }
 
-    private void updateSourceText(String source){
+    private void updateSourceText(String source) {
         this.curSourceText.setText(source);
     }
 
-    private void updateAlgoText(String algo){
+    private void updateAlgoText(String algo) {
         this.curAlgoText.setText(algo);
     }
 
-    private void updateUsedMemoryText(String used){
+    private void updateUsedMemoryText(String used) {
         this.curMemUsedText.setText(used);
     }
 
-    private void updateTotalMemoryText(String total){
+    private void updateTotalMemoryText(String total) {
         this.totalMemoryText.setText(total);
     }
 
-    private OptionalLong calcUsedMem(MemoryEvent event){
+    private OptionalLong calcUsedMem(MemoryEvent event) {
 
-        return  event.getProcesses().stream()
+        return event.getProcesses().stream()
                 .mapToLong(proc -> proc.getSize())
                 .reduce((acc, cur) -> {
                     return acc + acc;
@@ -258,33 +263,50 @@ public class Display implements Initializable {
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
-        this.updateUsedMemoryText("" + calcUsedMem(memEvent).getAsLong());
+        this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
         this.deleteChunk();
 
-        for(Process p:memEvent.getProcesses()){
+        for (Process p : memEvent.getProcesses()) {
             double size = (double) p.getSize() / (double) memEvent.getMemSize();
             double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
 
             Rectangle chunk = fillChunk(size, baseAddress);
 
+            linkRectToRow(chunk ,p); // link a rectangle and chunk
+
             if (p.equals(memEvent.getLastChanged())) {
-                chunk.setFill(Color.BISQUE);
+
+                chunk.setFill(Color.BISQUE); // eww
 
             } else {
                 chunk.setFill(Color.BLACK);
             }
 
-                chunk.addEventFilter(MouseEvent.MOUSE_CLICKED, e2 ->{
-
-                    if(e2.getButton()== MouseButton.PRIMARY)
-                    {
-                     //TODO Select process that this chunk represents in the procTable
-
-                    } });
-
-                memoryViewPane.getChildren().add(chunk);
+            memoryViewPane.getChildren().add(chunk);
         }
 
+    }
+
+    public void linkRectToRow(Rectangle rect, Process process) {
+
+        Optional<ProcessEntry> matchedEntry = this.procTable
+                .getItems()
+                .stream()
+                .filter(pEntry -> pEntry.getId() == process.getProcId())
+                .findFirst();
+
+        if (matchedEntry.isPresent()) {
+
+            rect.setOnMouseClicked(event -> {
+                this.procTable
+                        .getSelectionModel()
+                        .select(matchedEntry.get());
+            });
+
+        } else {
+            System.err.print("No tableview entry matches our process, "
+                    + "something is wrong");
+        }
     }
 
     // Input Events
@@ -301,7 +323,7 @@ public class Display implements Initializable {
     }
 
     private void toggleSim(ActionEvent actionEvent) {
-        Button button =  (Button)actionEvent.getSource();
+        Button button = (Button) actionEvent.getSource();
         if (this.simEnabled) {
             button.setText("Run Sim! =)");
             this.simEnabled = false;
@@ -327,13 +349,13 @@ public class Display implements Initializable {
         chunk.setX(8 + (processAddress * memoryRect.getWidth()));
         chunk.setY(101);
         chunk.setHeight(memoryRect.getHeight());
-        chunk.setWidth( processSize * memoryRect.getWidth());
+        chunk.setWidth(processSize * memoryRect.getWidth());
 
         return chunk;
     }
 
 
-    public void deleteChunk(){
+    public void deleteChunk() {
         memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
     }
 
