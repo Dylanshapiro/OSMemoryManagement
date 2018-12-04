@@ -76,9 +76,8 @@ public class MemoryManager extends MemoryObservable {
     }
     public Process getProcess(int procID) {
 
-        for (Process p: processes) {
-
-            if (p.getProcId() == procID) {
+        for(Process p:processes){
+            if(p.getProcId()==procID){
                 return p;
             }
         }

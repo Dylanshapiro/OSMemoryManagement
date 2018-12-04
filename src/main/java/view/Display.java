@@ -17,6 +17,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -32,7 +33,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.ResourceBundle;
@@ -90,6 +90,9 @@ public class Display implements Initializable {
 
     @FXML
     private Label totalMemoryText;
+
+    private Rectangle activeChunk;
+
 
     // Init
     public void setCtrl(Controller ctrl) {
@@ -209,7 +212,7 @@ public class Display implements Initializable {
     }
 
     // Info fields
-    private void updateProcNumText(int num) {
+    private void updateProcNumText(int num){
         this.curProcNumText.setText(toString().valueOf(num));
     }
 
@@ -267,22 +270,15 @@ public class Display implements Initializable {
 
             Rectangle chunk = fillChunk(size, baseAddress);
 
-            linkRectToRow(chunk ,p); // link a rectangle and chunk
-
-            if (p.equals(memEvent.getLastChanged())) {
-
-                chunk.setFill(Color.BISQUE); // eww
-
-            } else {
-                chunk.setFill(Color.BLACK);
-            }
-
+            linkChunkToRow(chunk ,p); // link a chunk to process entry
+            setActiveChunk(chunk);
+            //TODO simulate mouse click to have newly added chunk already selected upon spawning.
             memoryViewPane.getChildren().add(chunk);
         }
 
     }
 
-    public void linkRectToRow(Rectangle rect, Process process) {
+    public void linkChunkToRow(Rectangle chunk, Process process) {
 
         Optional<ProcessEntry> matchedEntry = this.procTable
                 .getItems()
@@ -291,11 +287,11 @@ public class Display implements Initializable {
                 .findFirst();
 
         if (matchedEntry.isPresent()) {
-
-            rect.setOnMouseClicked(event -> {
+            chunk.setOnMouseClicked(event -> {
                 this.procTable
                         .getSelectionModel()
                         .select(matchedEntry.get());
+                this.setActiveChunk(chunk);
             });
 
         } else {
@@ -304,6 +300,15 @@ public class Display implements Initializable {
         }
     }
 
+    public void setActiveChunk (Rectangle chunk) {
+        if (activeChunk != null) {
+            activeChunk.setFill(Color.BLACK);
+        }
+
+        activeChunk = chunk;
+        activeChunk.setFill(Color.BISQUE);
+
+    }
     // Input Events
     public void killProc(ActionEvent event) {
         final int pid = procTable.getSelectionModel().getSelectedItem().getId();
