@@ -51,7 +51,6 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     // receive from Observable
     public void update(MemoryObservable obs, MemoryEvent memEvent) {
-
         Platform.runLater(() -> {
             this.view.updateDisplay(memEvent);// send update to view
         });

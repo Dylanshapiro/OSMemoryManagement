@@ -103,6 +103,28 @@ public class Display implements Initializable {
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
+        // Buttons
+        // Generate Process Button
+        generateButton.setOnAction(this::addProc);
+        // Kill Process Button
+        killProcessButton.setOnAction(this::killProc);
+        // Toggle Sim Button
+        toggleSimButton.setOnAction(this::toggleSim);
+
+        // Algo Combo box
+        algoCombo.getItems().addAll(this.ctrl.getAlgoList());
+
+        // Sets up names for Combo Box
+        algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
+        algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
+        algoCombo.getSelectionModel().selectFirst();
+
+        algoCombo.setOnAction(this::setAlgo);
+
+
+        this.initTable();
+        this.loadSourceMenu();
+        this.initInfoFields();
     }
 
     public void initTable() {
@@ -136,28 +158,6 @@ public class Display implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Buttons
-        // Generate Process Button
-        generateButton.setOnAction(this::addProc);
-        // Kill Process Button
-        killProcessButton.setOnAction(this::killProc);
-        // Toggle Sim Button
-        toggleSimButton.setOnAction(this::toggleSim);
-
-        // Algo Combo box
-        algoCombo.getItems().addAll(this.ctrl.getAlgoList());
-
-        // Sets up names for Combo Box
-        algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
-        algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
-        algoCombo.getSelectionModel().selectFirst();
-
-        algoCombo.setOnAction(this::setAlgo);
-
-
-        this.initTable();
-        this.loadSourceMenu();
-        this.initInfoFields();
     }
 
     private void initInfoFields() {

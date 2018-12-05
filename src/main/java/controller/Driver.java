@@ -5,6 +5,7 @@ import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
 import model.process.ProcessSource;
+import model.process.ProcessSourceObservable;
 import model.process.SimSource;
 import view.Display;
 import javafx.application.Application;
@@ -26,36 +27,36 @@ public class Driver extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // parse out saved preferences from config file
-        Config.initSettings();
+   //     Config.initSettings();
 
-        // Init MemoryManager
-        MemoryManager menMan = MemoryManager.getInstance();
-        menMan.setMemSize(17179869184L);//4gb
-        menMan.setAlgo(new FirstFitAlgo(17179869184L));
+        FXMLLoader loader = new FXMLLoader(getClass()
+                .getResource("../xml/view.fxml"));
 
-        Display view = new Display();
+        Parent root = loader.load();
+
+        MemoryManager manager = MemoryManager.getInstance();
+        manager.setAlgo(new FirstFitAlgo(600000));
         List<ProcessSource> pList = initSources();
 
-        Controller ctrl = new Controller(menMan, view, pList); // compose Controller
+        Display view = loader.getController();
 
+        Controller ctrl = new Controller(manager,view,pList);
+        manager.addObserver(ctrl);
+        ((ProcessSourceObservable) pList.get(0)).addObserver(ctrl);
         view.setCtrl(ctrl);
-
-        menMan.addObserver(ctrl);// give view the ref it needs
-        ((SimSource) pList.get(0)).addObserver(ctrl);
-        // Load jfx view. Set controller
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass()
-                .getResource("../xml/view.fxml"));
-        fxmlLoader.setController(view);
-        Parent root = fxmlLoader.load();
-
-        // set scene and show
         Scene scene = new Scene(root);
+
         scene.getStylesheets().add("css/root.css"); // load css
         scene.getStylesheets().add("css/split-pane.css"); // load css
         scene.getStylesheets().add("css/alloc-bar.css"); // load css
         scene.getStylesheets().add("css/table-view.css"); // load css
+
+
+
+        // set scene and show
         primaryStage.setScene(scene);
         primaryStage.setTitle("OSMM");
+
         primaryStage.show();
     }
 

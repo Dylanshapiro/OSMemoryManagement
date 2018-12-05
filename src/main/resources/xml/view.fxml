@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox fx:id="rootBox" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="rootBox" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Display">
   <children>
     <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
       <menus>
