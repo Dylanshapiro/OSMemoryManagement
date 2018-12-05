@@ -49,21 +49,16 @@ public class Display implements Initializable {
     @FXML
     private Controller ctrl;
 
-
     //Refactored
     @FXML
-    private Menu sourceMenu;
-    @FXML
     private SourceMenu sourceMenuController;
-
-    @FXML
-    private ComboBox<Algo> algoCombo;
     @FXML
     private AlgoCombo algoComboController;
+    @FXML
+    private ActionButtons actionButtonsController;
 
     ////
     @FXML
-
     private TableView<ProcessEntry> procTable;
 
     @FXML
@@ -75,11 +70,8 @@ public class Display implements Initializable {
     @FXML
     private SplitPane memorySplitPane;
 
-    private boolean simEnabled;
-
     @FXML
     private MenuBar menuBar;
-
 
 
     // info fields
@@ -107,7 +99,7 @@ public class Display implements Initializable {
 
         this.initTable();
 
-
+        this.actionButtonsController.init(ctrl,memoryRect,procTable );
         this.sourceMenuController.init(ctrl,curSourceText);
         this.algoComboController.init(ctrl,curAlgoText);
 
@@ -227,6 +219,16 @@ public class Display implements Initializable {
 
     }
 
+    public Rectangle fillChunk(double processSize, double processAddress) {
+
+        Rectangle chunk = new Rectangle();
+        chunk.setX(memoryRect.getLayoutX() + (processAddress * memoryRect.getWidth()));
+        chunk.setY(memoryRect.getLayoutY());
+        chunk.setHeight(memoryRect.getHeight());
+        chunk.setWidth(processSize * memoryRect.getWidth());
+
+        return chunk;
+    }
     public void linkChunkToRow(Rectangle chunk, Process process) {
 
         Optional<ProcessEntry> matchedEntry = this.procTable
@@ -259,47 +261,6 @@ public class Display implements Initializable {
 
     }
 
-    // Input Events
-    @FXML
-    public void killProc(ActionEvent event) {
-        final int pid = procTable.getSelectionModel().getSelectedItem().getId();
-        this.ctrl.killProc(pid);
-
-    }
-
-
-
-    @FXML
-    private void toggleSim(ActionEvent actionEvent) {
-        Button button = (Button) actionEvent.getSource();
-        if (this.simEnabled) {
-            button.setText("Run Sim! =)");
-            this.simEnabled = false;
-            this.ctrl.stopSim();
-           // enableSourceMenu(true);
-        } else {
-            button.setText("Stop Sim! =0");
-            this.simEnabled = true;
-            this.ctrl.startSim();
-          //  enableSourceMenu(false);
-        }
-    }
-
-    @FXML
-    public void addProc(ActionEvent event) {
-        this.ctrl.addProc();
-    }
-
-    public Rectangle fillChunk(double processSize, double processAddress) {
-
-        Rectangle chunk = new Rectangle();
-        chunk.setX(memoryRect.getLayoutX() + (processAddress * memoryRect.getWidth()));
-        chunk.setY(memoryRect.getLayoutY());
-        chunk.setHeight(memoryRect.getHeight());
-        chunk.setWidth(processSize * memoryRect.getWidth());
-
-        return chunk;
-    }
 
 
     public void deleteChunk() {

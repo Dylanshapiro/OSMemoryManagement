@@ -16,15 +16,16 @@ import java.util.ResourceBundle;
 
 public class AlgoCombo implements Initializable {
 
-    private Controller ctrl;
 
+    // From fxml
     @FXML
     private ComboBox<Algo> algoCombo;
 
-    @FXML
+    // From init
+    private Controller ctrl;
     private Label currentAlgoLabel;
 
-
+    // init
     public void init(Controller ctrl, Node curAlgoLabel){
         this.ctrl = ctrl;
 

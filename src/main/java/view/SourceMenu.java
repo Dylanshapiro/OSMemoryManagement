@@ -16,15 +16,15 @@ import java.util.stream.Collectors;
 
 public class SourceMenu implements Initializable {
 
+    // From Fxml
     @FXML
     private Menu sourceMenu;
 
-    @FXML
+    // From init
     private Label currentSourceLabel;
-
-    @FXML
     private Controller ctrl;
 
+    // init
     public void init(Controller ctrl, Node curSourceLabel){
         this.ctrl = ctrl;
         this.loadSourceMenu();
