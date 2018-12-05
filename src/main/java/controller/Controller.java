@@ -89,6 +89,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void setSource(int id) throws InstanceNotFoundException {
+
         ProcessSource newSource = this.sourceList.stream()
                 .filter(proc -> proc.getId() == id)
                 .findFirst()

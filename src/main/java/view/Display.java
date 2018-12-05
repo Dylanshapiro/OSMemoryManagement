@@ -70,8 +70,10 @@ public class Display implements Initializable {
 
     @FXML
     private MenuBar menuBar;
+
     @FXML
     private Menu sourceMenu;
+    @FXML SourceMenu sourceMenuController;
 
     // info fields
     @FXML
@@ -108,7 +110,7 @@ public class Display implements Initializable {
 
 
         this.initTable();
-        this.loadSourceMenu();
+        this.sourceMenuController.init(ctrl,curSourceText);
         this.initInfoFields();
     }
 
@@ -146,7 +148,6 @@ public class Display implements Initializable {
     }
 
     private void initInfoFields() {
-        this.updateSourceText(sourceMenu.getItems().get(0).getText());
         this.updateProcNumText(procTable.getItems().size());
         this.updateAlgoText(algoCombo.getItems().get(0).getName());
         this.updateUsedMemoryText("0");
@@ -154,53 +155,7 @@ public class Display implements Initializable {
     }
 
     // Source Menu
-    private void changedSource(ActionEvent actionEvent) {
-        MenuItem newSource = (MenuItem) actionEvent.getSource();
 
-        String id = "0";
-
-        for (MenuItem item : sourceMenu.getItems()) {
-            CheckMenuItem checkItem = (CheckMenuItem) item;
-            if (item == newSource) {
-                checkItem.setSelected(true);
-                id = checkItem.getId();
-                this.updateSourceText(checkItem.getText());
-            } else {
-                checkItem.setSelected(false);
-            }
-        }
-
-
-        try {
-            this.ctrl.setSource(id);
-        } catch (InstanceNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadSourceMenu() {
-        sourceMenu.getItems().addAll(this.ctrl.getSourceList()
-                .stream().map(node -> {
-                    String id = String.valueOf(node.getId());
-
-                    CheckMenuItem menuItem = new CheckMenuItem(node.toString());
-                    menuItem.setId(id);
-                    menuItem.setOnAction(this::changedSource);
-
-                    if (node.getId() == 0) {
-                        updateSourceText(menuItem.getText());
-                        menuItem.setSelected(true);
-                    }
-
-                    return menuItem;
-                }).collect(Collectors.toList()));
-    }
-
-    private void enableSourceMenu(boolean enabled) {
-        sourceMenu.getItems().forEach(item -> {
-            item.setDisable(!enabled);
-        });
-    }
 
     // Info fields
     private void updateProcNumText(int num){
@@ -223,13 +178,13 @@ public class Display implements Initializable {
         this.totalMemoryText.setText(total);
     }
 
-    private OptionalLong calcUsedMem(MemoryEvent event) {
+    private Long calcUsedMem(MemoryEvent event) {
 
         return event.getProcesses().stream()
                 .mapToLong(proc -> proc.getSize())
                 .reduce((acc, cur) -> {
                     return acc + acc;
-                });
+                }).orElseGet( () -> new Long(0));
     }
 
     // Proc List
@@ -253,7 +208,7 @@ public class Display implements Initializable {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
         //TODO convert this below to KB or MB
-        this.updateUsedMemoryText("" + calcUsedMem(memEvent).getAsLong());
+        this.updateUsedMemoryText("" + calcUsedMem(memEvent));
         this.deleteChunk();
 
         for (Process p : memEvent.getProcesses()) {
@@ -326,12 +281,12 @@ public class Display implements Initializable {
             button.setText("Run Sim! =)");
             this.simEnabled = false;
             this.ctrl.stopSim();
-            enableSourceMenu(true);
+           // enableSourceMenu(true);
         } else {
             button.setText("Stop Sim! =0");
             this.simEnabled = true;
             this.ctrl.startSim();
-            enableSourceMenu(false);
+          //  enableSourceMenu(false);
         }
     }
 

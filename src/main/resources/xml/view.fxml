@@ -27,10 +27,7 @@
             <MenuItem mnemonicParsing="false" text="Quit" />
           </items>
         </Menu>
-          <Menu fx:id="sourceMenu" mnemonicParsing="false" text="Sources">
-              <items>
-              </items>
-        </Menu>
+          <fx:include fx:id="sourceMenu" source="SourceMenu.fxml"/>
         <Menu mnemonicParsing="false" text="Help">
           <items>
             <MenuItem fx:id="launchAbout" mnemonicParsing="false" text="About osmm" />
