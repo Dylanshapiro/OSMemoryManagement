@@ -5,6 +5,7 @@ import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,8 +18,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -67,6 +70,9 @@ public class Display implements Initializable {
 
     @FXML
     private Rectangle memoryRect;
+
+    @FXML
+    private SplitPane memorySplitPane;
 
     private boolean simEnabled;
 
@@ -272,7 +278,10 @@ public class Display implements Initializable {
             Rectangle chunk = fillChunk(size, baseAddress);
 
             linkChunkToRow(chunk ,p); // link a chunk to process entry
-            setActiveChunk(chunk);
+            if (p.equals(memEvent.getLastChanged())) {
+
+                setActiveChunk(chunk);
+            }
             //TODO simulate mouse click to have newly added chunk already selected upon spawning.
             memoryViewPane.getChildren().add(chunk);
         }
@@ -346,9 +355,8 @@ public class Display implements Initializable {
     public Rectangle fillChunk(double processSize, double processAddress) {
 
         Rectangle chunk = new Rectangle();
-
-        chunk.setX(8 + (processAddress * memoryRect.getWidth()));
-        chunk.setY(101);
+        chunk.setX(memoryRect.getLayoutX() + (processAddress * memoryRect.getWidth()));
+        chunk.setY(memoryRect.getLayoutY());
         chunk.setHeight(memoryRect.getHeight());
         chunk.setWidth(processSize * memoryRect.getWidth());
 
