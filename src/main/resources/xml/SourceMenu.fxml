@@ -8,7 +8,7 @@
 
 
 <Menu xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-      fx:id="sourceMenu" mnemonicParsing="false" text="Sources" fx:controller="view.SourceMenu">
+      fx:id="sourceMenu" mnemonicParsing="false" text="Sources" fx:controller="view.component.SourceMenu">
     <items>
     </items>
 </Menu>

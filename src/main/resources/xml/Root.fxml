@@ -17,7 +17,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.Group?>
-<VBox fx:id="rootBox" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Display">
+<VBox fx:id="root" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.Root">
   <children>
     <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
       <menus>

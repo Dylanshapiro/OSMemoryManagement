@@ -6,7 +6,7 @@ import model.MemoryManager;
 import model.process.ProcessSource;
 import model.process.ProcessSourceObservable;
 import model.process.SimSource;
-import view.Display;
+import view.component.Root;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,7 +28,7 @@ public class Driver extends Application {
         // parse out saved preferences from config file
 
         FXMLLoader loader = new FXMLLoader(getClass()
-                .getResource("../xml/view.fxml"));
+                .getResource("../xml/Root.fxml"));
 
         Parent root = loader.load();
 
@@ -36,7 +36,7 @@ public class Driver extends Application {
         manager.setAlgo(new FirstFitAlgo(600000));
         List<ProcessSource> pList = initSources();
 
-        Display view = loader.getController();
+        Root view = loader.getController();
 
         Controller ctrl = new Controller(manager,view,pList);
         manager.addObserver(ctrl);

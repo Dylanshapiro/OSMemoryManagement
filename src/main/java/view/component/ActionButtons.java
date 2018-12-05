@@ -1,4 +1,4 @@
-package view;
+package view.component;
 
 import controller.Controller;
 import javafx.event.ActionEvent;
@@ -12,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import model.Algos.Algo;
+import view.ProcessEntry;
 
 import java.net.URL;
 import java.util.ResourceBundle;

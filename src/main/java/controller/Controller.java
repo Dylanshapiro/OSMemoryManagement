@@ -9,7 +9,7 @@ import model.MemoryObserver;
 import model.process.Process;
 import model.process.ProcessSource;
 import model.process.ProcessSourceObserver;
-import view.Display;
+import view.component.Root;
 
 import javax.management.InstanceNotFoundException;
 import java.io.IOException;
@@ -31,9 +31,9 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     private ProcessSource source;
 
     private final MemoryManager manager;
-    private final Display view;
+    private final Root view;
 
-    public Controller(MemoryManager manager, Display view, List<ProcessSource> pList) {
+    public Controller(MemoryManager manager, Root view, List<ProcessSource> pList) {
 
         this.handle = Optional.empty();
         this.execService = Executors.newScheduledThreadPool(1, r -> {

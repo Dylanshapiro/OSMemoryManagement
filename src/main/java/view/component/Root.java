@@ -1,47 +1,34 @@
-package view;
+package view.component;
 
 
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
-import model.Algos.Algo;
 import model.MemoryManager;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
+import view.ProcessEntry;
 
-import javax.management.InstanceNotFoundException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Optional;
-import java.util.OptionalLong;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class Display implements Initializable {
+public class Root implements Initializable {
 
     @FXML
     private VBox rootBox;
