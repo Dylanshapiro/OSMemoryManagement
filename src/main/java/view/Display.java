@@ -49,10 +49,19 @@ public class Display implements Initializable {
     @FXML
     private Controller ctrl;
 
+
+    //Refactored
+    @FXML
+    private Menu sourceMenu;
+    @FXML
+    private SourceMenu sourceMenuController;
+
     @FXML
     private ComboBox<Algo> algoCombo;
+    @FXML
+    private AlgoCombo algoComboController;
 
-
+    ////
     @FXML
 
     private TableView<ProcessEntry> procTable;
@@ -71,9 +80,7 @@ public class Display implements Initializable {
     @FXML
     private MenuBar menuBar;
 
-    @FXML
-    private Menu sourceMenu;
-    @FXML SourceMenu sourceMenuController;
+
 
     // info fields
     @FXML
@@ -98,19 +105,12 @@ public class Display implements Initializable {
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
 
-        // Algo Combo box
-        algoCombo.getItems().addAll(this.ctrl.getAlgoList());
-
-        // Sets up names for Combo Box
-        algoCombo.setCellFactory(listView -> new Display.SimpleTableObjectListCell());
-        algoCombo.setButtonCell(new Display.SimpleTableObjectListCell());
-        algoCombo.getSelectionModel().selectFirst();
-
-        algoCombo.setOnAction(this::setAlgo);
-
-
         this.initTable();
+
+
         this.sourceMenuController.init(ctrl,curSourceText);
+        this.algoComboController.init(ctrl,curAlgoText);
+
         this.initInfoFields();
     }
 
@@ -149,7 +149,6 @@ public class Display implements Initializable {
 
     private void initInfoFields() {
         this.updateProcNumText(procTable.getItems().size());
-        this.updateAlgoText(algoCombo.getItems().get(0).getName());
         this.updateUsedMemoryText("0");
         this.updateTotalMemoryText(String.valueOf(this.ctrl.getMemSize()));
     }
@@ -268,11 +267,7 @@ public class Display implements Initializable {
 
     }
 
-    public void setAlgo(ActionEvent event) {
-        Algo selectedItem = algoCombo.getSelectionModel().getSelectedItem();
-        this.ctrl.setAlgo(selectedItem);
-        this.updateAlgoText(selectedItem.getName());
-    }
+
 
     @FXML
     private void toggleSim(ActionEvent actionEvent) {
@@ -311,19 +306,7 @@ public class Display implements Initializable {
         memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
     }
 
-    // This just sets the names for the Algorithms.
-    private static class SimpleTableObjectListCell extends ListCell<Algo> {
 
-        @Override
-        public void updateItem(Algo item, boolean empty) {
-            super.updateItem(item, empty);
-            if (item != null) {
-                setText(item.getName());//return String, actual name of material
-            } else {
-                setText(null);
-            }
-        }
-    }
 
     // Navigation stuff
     private void launchPrefsWindow(ActionEvent actionEvent) {

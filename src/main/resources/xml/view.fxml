@@ -43,7 +43,7 @@
                 <SplitPane dividerPositions="0.04825737265415549, 0.14209115281501342, 0.1769436997319035, 0.34584450402144773, 0.7855227882037533, 0.8579088471849866, 0.5" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <items>
                                 <Label text="Select Algorithm" />
-                                <ComboBox fx:id="algoCombo" prefWidth="150.0" />
+                                <fx:include fx:id="algoCombo" source="AlgoCombo.fxml"/>
                         <Separator prefWidth="200.0">
                            <padding>
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
