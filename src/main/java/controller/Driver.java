@@ -1,6 +1,5 @@
 package controller;
 
-import config.Config;
 import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
@@ -27,7 +26,6 @@ public class Driver extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // parse out saved preferences from config file
-   //     Config.initSettings();
 
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("../xml/view.fxml"));

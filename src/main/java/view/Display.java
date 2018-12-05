@@ -99,6 +99,7 @@ public class Display implements Initializable {
 
         this.initTable();
 
+
         this.actionButtonsController.init(ctrl,memoryRect,procTable );
         this.sourceMenuController.init(ctrl,curSourceText);
         this.algoComboController.init(ctrl,curAlgoText);
@@ -270,25 +271,6 @@ public class Display implements Initializable {
 
 
     // Navigation stuff
-    private void launchPrefsWindow(ActionEvent actionEvent) {
-        Parent prefsWindow;
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            prefsWindow = (AnchorPane) loader.load(getClass().getResource("../xml/prefs.fxml"));
-
-            Scene prefScene = new Scene(prefsWindow);
-            Stage curStage = (Stage) rootBox.getScene().getWindow();
-
-            curStage.setResizable(false);
-            curStage.setScene(prefScene);
-
-            Prefs prefController = loader.getController();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void launchAbout(ActionEvent actionEvent) {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
