@@ -118,9 +118,15 @@
                               </Label>
                            </children>
                         </VBox>
-                                <Button fx:id="generateButton" mnemonicParsing="false" text="Generate Random Process" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                <Button fx:id="killProcessButton" mnemonicParsing="false" text="Kill Process" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                <Button fx:id="toggleSimButton" mnemonicParsing="false" text="Run Sim" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                <Button id="addButton" mnemonicParsing="false" text="Generate Random Process"
+                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                        AnchorPane.topAnchor="0.0" onAction="#addProc" />
+                                <Button id="killProcessButton" mnemonicParsing="false" text="Kill Process"
+                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                        AnchorPane.topAnchor="0.0" onAction="#killProc" />
+                                <Button id="toggleSimButton" mnemonicParsing="false" text="Run Sim"
+                                               AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                               AnchorPane.topAnchor="0.0" onAction="#toggleSim" />
 
                         </items>
                   </SplitPane>

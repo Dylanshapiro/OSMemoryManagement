@@ -52,18 +52,10 @@ public class Display implements Initializable {
     @FXML
     private ComboBox<Algo> algoCombo;
 
-    @FXML
-    private Button generateButton;
 
     @FXML
 
     private TableView<ProcessEntry> procTable;
-
-    @FXML
-    private Button killProcessButton;
-
-    @FXML
-    private Button toggleSimButton;
 
     @FXML
     private AnchorPane memoryViewPane;
@@ -103,13 +95,6 @@ public class Display implements Initializable {
     // Init
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
-        // Buttons
-        // Generate Process Button
-        generateButton.setOnAction(this::addProc);
-        // Kill Process Button
-        killProcessButton.setOnAction(this::killProc);
-        // Toggle Sim Button
-        toggleSimButton.setOnAction(this::toggleSim);
 
         // Algo Combo box
         algoCombo.getItems().addAll(this.ctrl.getAlgoList());
@@ -319,7 +304,9 @@ public class Display implements Initializable {
         activeChunk.setFill(Color.BISQUE);
 
     }
+
     // Input Events
+    @FXML
     public void killProc(ActionEvent event) {
         final int pid = procTable.getSelectionModel().getSelectedItem().getId();
         this.ctrl.killProc(pid);
@@ -332,6 +319,7 @@ public class Display implements Initializable {
         this.updateAlgoText(selectedItem.getName());
     }
 
+    @FXML
     private void toggleSim(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getSource();
         if (this.simEnabled) {
