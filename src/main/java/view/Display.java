@@ -261,7 +261,8 @@ public class Display implements Initializable {
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         updateProcList(memEvent);
         this.updateProcNumText(memEvent.getProcesses().size());
-        this.updateUsedMemoryText(calcUsedMem(memEvent).toString());
+        //TODO convert this below to KB or MB
+        this.updateUsedMemoryText("" + calcUsedMem(memEvent).getAsLong());
         this.deleteChunk();
 
         for (Process p : memEvent.getProcesses()) {
