@@ -45,6 +45,8 @@ public class Root implements Initializable {
     private ActionButtons actionButtonsController;
     @FXML
     private ProcessTable processTableController;
+    @FXML
+    private DataFields dataFieldsController;
 
     ////
     @FXML
@@ -59,23 +61,6 @@ public class Root implements Initializable {
     @FXML
     private MenuBar menuBar;
 
-
-    // info fields
-    @FXML
-    private Label curSourceText;
-
-    @FXML
-    private Label curAlgoText;
-
-    @FXML
-    private Label curProcNumText;
-
-    @FXML
-    private Label curMemUsedText;
-
-    @FXML
-    private Label totalMemoryText;
-
     private Rectangle activeChunk;
 
 
@@ -83,12 +68,12 @@ public class Root implements Initializable {
     public void setCtrl(Controller ctrl) {
         this.ctrl = ctrl;
 
+        this.dataFieldsController.init(ctrl);
         this.processTableController.init(ctrl);
-        this.actionButtonsController.init(ctrl,memoryRect,processTableController.getTable() );
-        this.sourceMenuController.init(ctrl,curSourceText);
-        this.algoComboController.init(ctrl,curAlgoText);
+        this.actionButtonsController.init(ctrl,memoryRect,processTableController.getTable());
 
-        this.initInfoFields();
+        this.sourceMenuController.init(ctrl,dataFieldsController);
+        this.algoComboController.init(ctrl,dataFieldsController);
     }
 
 
@@ -97,56 +82,17 @@ public class Root implements Initializable {
 
     }
 
-    private void initInfoFields() {
-        this.updateProcNumText(processTableController.getTable()
-                                            .getItems().size());
-        this.updateUsedMemoryText("0");
-        this.updateTotalMemoryText(String.valueOf(this.ctrl.getMemSize()));
-    }
+
 
     // Source Menu
-
-
-    // Info fields
-    private void updateProcNumText(int num){
-        this.curProcNumText.setText(toString().valueOf(num));
-    }
-
-    private void updateSourceText(String source) {
-        this.curSourceText.setText(source);
-    }
-
-    private void updateAlgoText(String algo) {
-        this.curAlgoText.setText(algo);
-    }
-
-    private void updateUsedMemoryText(String used) {
-        this.curMemUsedText.setText(used);
-    }
-
-    private void updateTotalMemoryText(String total) {
-        this.totalMemoryText.setText(total);
-    }
-
-    private Long calcUsedMem(MemoryEvent event) {
-
-        return event.getProcesses().stream()
-                .mapToLong(proc -> proc.getSize())
-                .reduce((acc, cur) -> {
-                    return acc + acc;
-                }).orElseGet( () -> new Long(0));
-    }
-
-
 
 
     // receive updates
     public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
         this.processTableController.update(memEvent);
+        this.dataFieldsController.update(memEvent);
 
-        this.updateProcNumText(memEvent.getProcesses().size());
         //TODO convert this below to KB or MB
-        this.updateUsedMemoryText("" + calcUsedMem(memEvent));
         this.deleteChunk();
 
         for (Process p : memEvent.getProcesses()) {

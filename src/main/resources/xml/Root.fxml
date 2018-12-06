@@ -50,72 +50,8 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </padding>
                         </Separator>
-                        <SplitPane dividerPositions="0.49375" prefHeight="26.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <items>
-                                      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="46.0" prefWidth="78.0">
-                                 <children>
-                                    <Label text="Source :">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                    <Label text="Algo     :">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                    <Label text="Proc     :">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="80.0">
-                                 <children>
-                                    <Label fx:id="curSourceText">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                    <Label fx:id="curAlgoText">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                    <Label fx:id="curProcNumText" layoutX="10.0" layoutY="27.0">
-                                       <padding>
-                                          <Insets left="6.0" right="4.0" />
-                                       </padding>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </items>
-                        </SplitPane>
-                        <VBox prefHeight="159.0" prefWidth="160.0">
-                           <children>
-                              <Label text="Used    : ">
-                                 <padding>
-                                    <Insets left="6.0" right="4.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="curMemUsedText">
-                                 <padding>
-                                    <Insets left="6.0" right="4.0" />
-                                 </padding>
-                              </Label>
-                              <Label text="Total    :">
-                                 <padding>
-                                    <Insets left="6.0" right="4.0" />
-                                 </padding>
-                              </Label>
-                              <Label fx:id="totalMemoryText">
-                                 <padding>
-                                    <Insets left="6.0" right="4.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
+
+                            <fx:include fx:id="dataFields" source="DataFields.fxml"/>
                             <fx:include fx:id="actionButtons" source="ActionButtons.fxml"/>
                         </items>
                   </SplitPane>

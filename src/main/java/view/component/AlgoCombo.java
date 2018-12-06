@@ -23,10 +23,11 @@ public class AlgoCombo implements Initializable {
 
     // From init
     private Controller ctrl;
-    private Label currentAlgoLabel;
+    private DataFields dataFieldsController;
+
 
     // init
-    public void init(Controller ctrl, Node curAlgoLabel){
+    public void init(Controller ctrl, DataFields dataFieldsController){
         this.ctrl = ctrl;
 
         // Algo Combo box
@@ -39,14 +40,14 @@ public class AlgoCombo implements Initializable {
 
         algoCombo.setOnAction(this::setAlgo);
 
-        this.currentAlgoLabel = (Label) curAlgoLabel;
-        this.currentAlgoLabel.setText(algoCombo.getItems().get(0).getName());
+        this.dataFieldsController = dataFieldsController;
+        this.dataFieldsController.setAlgoText(algoCombo.getItems().get(0).getName());
     }
 
     public void setAlgo(ActionEvent event) {
         Algo selectedItem = algoCombo.getSelectionModel().getSelectedItem();
         this.ctrl.setAlgo(selectedItem);
-        this.currentAlgoLabel.setText(selectedItem.getName());
+        this.dataFieldsController.setAlgoText(selectedItem.getName());
     }
 
     @Override

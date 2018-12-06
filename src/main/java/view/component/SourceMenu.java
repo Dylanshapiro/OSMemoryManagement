@@ -4,13 +4,10 @@ import controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import model.Algos.Algo;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -21,17 +18,18 @@ public class SourceMenu implements Initializable {
     private Menu sourceMenu;
 
     // From init
-    private Label currentSourceLabel;
+
+    private DataFields dataFieldsController;
     private Controller ctrl;
 
     // init
-    public void init(Controller ctrl, Node curSourceLabel){
+    public void init(Controller ctrl, DataFields dataFieldsController){
         this.ctrl = ctrl;
         this.loadSourceMenu();
 
-        this.currentSourceLabel = (Label) curSourceLabel;
+        this.dataFieldsController= dataFieldsController;
 
-        this.currentSourceLabel.setText(this.sourceMenu.getItems().get(0).getText());
+        this.dataFieldsController.setSourceText(this.sourceMenu.getItems().get(0).getText());
 
         CheckMenuItem  first =(CheckMenuItem) this.sourceMenu.getItems().get(0);
         first.setSelected(true);
@@ -47,7 +45,7 @@ public class SourceMenu implements Initializable {
                     menuItem.setOnAction(this::changedSource);
 
                     if (node.getId() == 0) {
-                        this.currentSourceLabel.setText(menuItem.getText());
+                        this.dataFieldsController.setSourceText(menuItem.getText());
                         menuItem.setSelected(true);
                     }
 
@@ -65,7 +63,7 @@ public class SourceMenu implements Initializable {
             if (item == newSource) {
                 checkItem.setSelected(true);
                 id = checkItem.getId();
-                this.currentSourceLabel.setText(checkItem.getText());
+                this.dataFieldsController.setSourceText(checkItem.getText());
             } else {
                 checkItem.setSelected(false);
             }
