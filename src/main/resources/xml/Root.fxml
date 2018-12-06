@@ -131,13 +131,7 @@
                                  </children></AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">
                                  <children>
-                                    <TableView fx:id="procTable" editable="true" layoutX="2.0" prefHeight="161.0" prefWidth="476.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columns>
-                                      </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
+                                     <fx:include fx:id="processTable" source="ProcessTable.fxml"/>
                                  </children>
                               </AnchorPane>
                           </items>
