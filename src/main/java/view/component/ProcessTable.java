@@ -1,5 +1,6 @@
 package view.component;
 
+import model.process.Process;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +11,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.MemoryManager.MemoryEvent;
 import view.ProcessEntry;
+import javafx.scene.shape.Rectangle;
 
+import java.awt.*;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -70,7 +76,35 @@ public class ProcessTable implements Initializable {
         this.processTable.setItems(processEntries);
     }
 
-    public TableView<ProcessEntry> getTable(){
+    public void linkChunkToRow(Rectangle chunk, Process p, Consumer<Rectangle> activeFunc) {
+        Optional<ProcessEntry> matchedEntry = processTable
+                .getItems()
+                .stream()
+                .filter(pEntry -> pEntry.getId() == p.getProcId())
+                .findFirst();
+
+        if (matchedEntry.isPresent()) {
+
+            linkChunkToRow(chunk, matchedEntry.get(), activeFunc);
+        } else {
+            System.err.print("No tableview entry matches our process, "
+                    + "something is wrong");
+        }
+    }
+
+    public void linkChunkToRow(Rectangle chunk, ProcessEntry entry, Consumer<Rectangle> activeFunc) {
+
+        chunk.setOnMouseClicked(event -> {
+            processTable
+                    .getSelectionModel()
+                    .select(entry);
+
+            activeFunc.accept(chunk);
+        });
+    }
+
+
+    public TableView<ProcessEntry> getTable() {
         return this.processTable;
     }
 

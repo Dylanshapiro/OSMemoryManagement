@@ -24,16 +24,14 @@ public class ActionButtons implements Initializable {
     // From init
     private Controller ctrl;
     private TableView<ProcessEntry> procTable;
-    private Rectangle memoryRect;
-
 
     private boolean simEnabled;
 
     // init
-    public void init(Controller ctrl, Node rect, Node table) {
+    public void init(Controller ctrl,Node table) {
         this.ctrl = ctrl;
         this.procTable = (TableView<ProcessEntry>) table;
-        this.memoryRect = (Rectangle) rect;
+
     }
 
     @Override

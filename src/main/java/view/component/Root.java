@@ -47,22 +47,9 @@ public class Root implements Initializable {
     private ProcessTable processTableController;
     @FXML
     private DataFields dataFieldsController;
-
+    @FXML
+    private RectVisualization rectVisualizationController;
     ////
-    @FXML
-    private AnchorPane memoryViewPane;
-
-    @FXML
-    private Rectangle memoryRect;
-
-    @FXML
-    private SplitPane memorySplitPane;
-
-    @FXML
-    private MenuBar menuBar;
-
-    private Rectangle activeChunk;
-
 
     // Init
     public void setCtrl(Controller ctrl) {
@@ -70,8 +57,8 @@ public class Root implements Initializable {
 
         this.dataFieldsController.init(ctrl);
         this.processTableController.init(ctrl);
-        this.actionButtonsController.init(ctrl,memoryRect,processTableController.getTable());
-
+        this.actionButtonsController.init(ctrl, processTableController.getTable());
+        this.rectVisualizationController.init(ctrl,processTableController);
         this.sourceMenuController.init(ctrl,dataFieldsController);
         this.algoComboController.init(ctrl,dataFieldsController);
     }
@@ -82,80 +69,11 @@ public class Root implements Initializable {
 
     }
 
-
-
-    // Source Menu
-
-
     // receive updates
-    public void updateDisplay(MemoryManager.MemoryEvent memEvent) {
+    public void updateDisplay(MemoryEvent memEvent) {
         this.processTableController.update(memEvent);
         this.dataFieldsController.update(memEvent);
-
-        //TODO convert this below to KB or MB
-        this.deleteChunk();
-
-        for (Process p : memEvent.getProcesses()) {
-            double size = (double) p.getSize() / (double) memEvent.getMemSize();
-            double baseAddress = (double) p.getBaseAddress().get() / (double) memEvent.getMemSize();
-
-            Rectangle chunk = fillChunk(size, baseAddress);
-
-            linkChunkToRow(chunk ,p); // link a chunk to process entry
-            if (p.equals(memEvent.getLastChanged())) {
-
-                setActiveChunk(chunk);
-            }
-            //TODO simulate mouse click to have newly added chunk already selected upon spawning.
-            memoryViewPane.getChildren().add(chunk);
-        }
-
-    }
-
-    public Rectangle fillChunk(double processSize, double processAddress) {
-
-        Rectangle chunk = new Rectangle();
-        chunk.setX(memoryRect.getLayoutX() + (processAddress * memoryRect.getWidth()));
-        chunk.setY(memoryRect.getLayoutY());
-        chunk.setHeight(memoryRect.getHeight());
-        chunk.setWidth(processSize * memoryRect.getWidth());
-
-        return chunk;
-    }
-
-    public void linkChunkToRow(Rectangle chunk, Process process) {
-
-        Optional<ProcessEntry> matchedEntry = processTableController.getTable()
-                .getItems()
-                .stream()
-                .filter(pEntry -> pEntry.getId() == process.getProcId())
-                .findFirst();
-
-        if (matchedEntry.isPresent()) {
-            chunk.setOnMouseClicked(event -> {
-                this.processTableController.getTable()
-                        .getSelectionModel()
-                        .select(matchedEntry.get());
-                this.setActiveChunk(chunk);
-            });
-
-        } else {
-            System.err.print("No tableview entry matches our process, "
-                    + "something is wrong");
-        }
-    }
-
-    public void setActiveChunk (Rectangle chunk) {
-        if (activeChunk != null) {
-            activeChunk.setFill(Color.BLACK);
-        }
-
-        activeChunk = chunk;
-        activeChunk.setFill(Color.BISQUE);
-    }
-
-    public void deleteChunk() {
-        memoryViewPane.getChildren().remove(2, memoryViewPane.getChildren().size());
+        this.rectVisualizationController.update(memEvent);
     }
 
     // Navigation stuff
