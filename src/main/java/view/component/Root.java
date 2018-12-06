@@ -52,7 +52,7 @@ public class Root implements Initializable {
     ////
 
     // Init
-    public void initCtrl(Controller ctrl) {
+    public void init(Controller ctrl) {
         this.ctrl = ctrl;
 
         this.dataFieldsController.init(ctrl);
