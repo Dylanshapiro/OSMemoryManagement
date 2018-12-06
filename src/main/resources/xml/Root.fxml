@@ -31,7 +31,7 @@
           <fx:include fx:id="sourceMenu" source="SourceMenu.fxml"/>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem fx:id="launchAbout" mnemonicParsing="false" text="About osmm" />
+            <MenuItem id="launchAbout" mnemonicParsing="false" text="About osmm" onAction="#launchAbout"/>
           </items>
         </Menu>
       </menus>

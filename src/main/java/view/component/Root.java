@@ -52,7 +52,7 @@ public class Root implements Initializable {
     ////
 
     // Init
-    public void setCtrl(Controller ctrl) {
+    public void initCtrl(Controller ctrl) {
         this.ctrl = ctrl;
 
         this.dataFieldsController.init(ctrl);
@@ -62,7 +62,6 @@ public class Root implements Initializable {
         this.sourceMenuController.init(ctrl,dataFieldsController);
         this.algoComboController.init(ctrl,dataFieldsController);
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -77,6 +76,7 @@ public class Root implements Initializable {
     }
 
     // Navigation stuff
+    @FXML
     private void launchAbout(ActionEvent actionEvent) {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {

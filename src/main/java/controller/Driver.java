@@ -41,15 +41,13 @@ public class Driver extends Application {
         Controller ctrl = new Controller(manager,view,pList);
         manager.addObserver(ctrl);
         ((ProcessSourceObservable) pList.get(0)).addObserver(ctrl);
-        view.setCtrl(ctrl);
+        view.init(ctrl);
         Scene scene = new Scene(root);
 
         scene.getStylesheets().add("css/root.css"); // load css
         scene.getStylesheets().add("css/split-pane.css"); // load css
         scene.getStylesheets().add("css/alloc-bar.css"); // load css
         scene.getStylesheets().add("css/table-view.css"); // load css
-
-
 
         // set scene and show
         primaryStage.setScene(scene);
