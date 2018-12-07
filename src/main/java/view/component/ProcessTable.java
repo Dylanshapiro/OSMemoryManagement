@@ -1,5 +1,6 @@
 package view.component;
 
+import javafx.beans.property.SimpleStringProperty;
 import model.process.Process;
 import controller.Controller;
 import javafx.collections.FXCollections;
@@ -51,11 +52,11 @@ public class ProcessTable implements Initializable {
         startTime.setPrefWidth(75);
         startTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 
-        TableColumn<ProcessEntry, Long> base = new TableColumn<>("Base");
+        TableColumn<ProcessEntry, String> base = new TableColumn<>("Base");
         base.setPrefWidth(75);
         base.setCellValueFactory(new PropertyValueFactory<>("base"));
 
-        TableColumn<ProcessEntry, Long> size = new TableColumn<>("Size");
+        TableColumn<ProcessEntry, String> size = new TableColumn<>("Size");
         size.setPrefWidth(75);
         size.setCellValueFactory(new PropertyValueFactory<>("size"));
 
@@ -66,11 +67,7 @@ public class ProcessTable implements Initializable {
 
         ObservableList<ProcessEntry> processEntries =
                 FXCollections.observableArrayList(event.getProcesses().stream().map(proc -> {
-                    return new ProcessEntry(proc.getName(),
-                            proc.getProcId(),
-                            proc.getStartTime(),
-                            proc.getBaseAddress().get(),
-                            proc.getSize());
+                    return new ProcessEntry(proc, "megabyte");
                 }).collect(Collectors.toList()));
 
         this.processTable.setItems(processEntries);
