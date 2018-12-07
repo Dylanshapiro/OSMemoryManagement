@@ -92,14 +92,14 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
         this.manager.clearProc();
 
-       this.source = this.sourceList.stream()
+        this.source = this.sourceList.stream()
                 .filter(proc -> proc.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> {
                     return new InstanceNotFoundException("Process Source was not found");
                 });
 
-       ((ProcessSourceObservable) this.source).addObserver(this);
+        ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
     public void setAlgo(Algo a) {
@@ -113,15 +113,20 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
             this.source.sim();
 
         }, 0, 300, TimeUnit.MILLISECONDS);
-
         this.handle = Optional.of(handle);
-
     }
 
     public void stopSim() {
         this.handle.ifPresent(handle -> {
             handle.cancel(false);
             this.handle = Optional.empty();
+        });
+    }
+
+    public void resetSim() {
+        this.stopSim();
+        CompletableFuture.runAsync(() -> {
+            this.manager.reset();
         });
     }
 
@@ -136,7 +141,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void killProc(int procID) {
-        CompletableFuture.runAsync(() ->{
+        CompletableFuture.runAsync(() -> {
             try {
                 this.source.kill(procID);
                 this.manager.deallocate(procID);
@@ -148,7 +153,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     @Override
     public void killProcess(Process p) {
-        CompletableFuture.runAsync(() ->{
+        CompletableFuture.runAsync(() -> {
             manager.deallocate(p.getProcId());
         }, execService);
     }

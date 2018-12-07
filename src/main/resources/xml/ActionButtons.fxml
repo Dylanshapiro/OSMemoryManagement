@@ -7,7 +7,10 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.ActionButtons">
-    <Button id="addButton" mnemonicParsing="false" text="Generate Random Process"
+    <Button id="reset" mnemonicParsing="false" text="Reset Sim"
+            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+            AnchorPane.topAnchor="0.0" onAction="#reset" />
+    <Button id="addButton" mnemonicParsing="false" text="Add Process"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
             AnchorPane.topAnchor="0.0" onAction="#addProc" />
     <Button id="killProcessButton" mnemonicParsing="false" text="Kill Process"

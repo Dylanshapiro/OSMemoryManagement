@@ -67,6 +67,9 @@ public class ActionButtons implements Initializable {
         this.ctrl.addProc();
     }
 
-
+    @FXML
+    public void reset(ActionEvent event){
+        this.ctrl.resetSim();
+    }
 
 }

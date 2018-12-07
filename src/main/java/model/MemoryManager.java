@@ -120,6 +120,13 @@ public class MemoryManager extends MemoryObservable {
         this.notifyObservers(new MemoryEvent(processes,p,memSize));
     }
 
+    public void reset() {
+        this.processes.clear();
+        Process temp=null;
+        memoryAlgo.setRepresentation(new ArrayList<>());
+        notifyObservers(temp);
+    }
+
     public void clearProc() {
         this.processes.clear();
         Process temp=null;
