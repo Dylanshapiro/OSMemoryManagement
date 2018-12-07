@@ -17,10 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Controller implements MemoryObserver, ProcessSourceObserver {
 
@@ -93,17 +90,16 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
         ((ProcessSourceObservable) this.source).removeObserver(this);
 
-        ProcessSource newSource = this.sourceList.stream()
+        this.manager.clearProc();
+
+       this.source = this.sourceList.stream()
                 .filter(proc -> proc.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> {
                     return new InstanceNotFoundException("Process Source was not found");
                 });
 
-        ((ProcessSourceObservable) newSource).addObserver(this);
-
-        this.manager.clearProc();
-        this.source = newSource;
+       ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
     public void setAlgo(Algo a) {
@@ -123,43 +119,38 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void stopSim() {
-        if (this.handle.isPresent()) {
-            this.handle.get().cancel(false);
+        this.handle.ifPresent(handle -> {
+            handle.cancel(false);
             this.handle = Optional.empty();
-        }
+        });
     }
 
-
     public void addProc() {
-        this.execService.execute(() -> {
-            Process p = this.source.generateProcess();
-            this.manager.allocate(p);
-        });
+        CompletableFuture.supplyAsync(() -> this.source.generateProcess(), execService)
+                .thenAccept(p -> this.manager.allocate(p));
     }
 
     @Override
     public void newProcess(Process p) {
-        execService.execute(() -> {
-            manager.allocate(p);
-        });
+        CompletableFuture.runAsync(() -> this.manager.allocate(p), execService);
     }
 
     public void killProc(int procID) {
-      execService.execute(() -> {
-          try {
-              this.source.kill(procID);
-              this.manager.deallocate(procID);
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
-      });
+        CompletableFuture.runAsync(() ->{
+            try {
+                this.source.kill(procID);
+                this.manager.deallocate(procID);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, execService);
     }
 
     @Override
     public void killProcess(Process p) {
-        execService.execute(() -> {
+        CompletableFuture.runAsync(() ->{
             manager.deallocate(p.getProcId());
-        });
+        }, execService);
     }
 
 }

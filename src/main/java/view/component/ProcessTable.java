@@ -14,6 +14,7 @@ import model.MemoryManager.MemoryEvent;
 import view.ProcessEntry;
 import javafx.scene.shape.Rectangle;
 
+import javax.management.InstanceNotFoundException;
 import java.awt.*;
 import java.net.URL;
 import java.util.Optional;
@@ -73,20 +74,16 @@ public class ProcessTable implements Initializable {
         this.processTable.setItems(processEntries);
     }
 
-    public void linkChunkToRow(Rectangle chunk, Process p, Consumer<Rectangle> activeFunc) {
-        Optional<ProcessEntry> matchedEntry = processTable
+    public void linkChunkToRow(Rectangle chunk, Process p, Consumer<Rectangle> activeFunc) throws InstanceNotFoundException {
+
+        ProcessEntry entry = (ProcessEntry) processTable
                 .getItems()
                 .stream()
                 .filter(pEntry -> pEntry.getId() == p.getProcId())
-                .findFirst();
+                .findFirst()
+                .orElseThrow( () -> new InstanceNotFoundException("the ProcessEntry was not found, unable to link"));
 
-        if (matchedEntry.isPresent()) {
-
-            linkChunkToRow(chunk, matchedEntry.get(), activeFunc);
-        } else {
-            System.err.print("No tableview entry matches our process, "
-                    + "something is wrong");
-        }
+            linkChunkToRow(chunk, entry , activeFunc);
     }
 
     public void linkChunkToRow(Rectangle chunk, ProcessEntry entry, Consumer<Rectangle> activeFunc) {

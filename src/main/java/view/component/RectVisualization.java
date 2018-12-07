@@ -11,6 +11,7 @@ import model.MemoryManager.MemoryEvent;
 import model.process.Process;
 import view.ProcessEntry;
 
+import javax.management.InstanceNotFoundException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -49,7 +50,11 @@ public class RectVisualization implements Initializable {
 
             Rectangle chunk = fillChunk(size, baseAddress);
 
-            this.processTableController.linkChunkToRow(chunk, p, this::setActiveChunk); // link a chunk to process entry
+            try {
+                this.processTableController.linkChunkToRow(chunk, p, this::setActiveChunk); // link a chunk to process entry
+            } catch (InstanceNotFoundException e) {
+                e.printStackTrace();
+            }
 
             if (p.equals(memEvent.getLastChanged())) {
                 setActiveChunk(chunk);
