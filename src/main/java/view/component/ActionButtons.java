@@ -15,6 +15,7 @@ import model.Algos.Algo;
 import view.ProcessEntry;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ActionButtons implements Initializable {
@@ -28,7 +29,7 @@ public class ActionButtons implements Initializable {
     private boolean simEnabled;
 
     // init
-    public void init(Controller ctrl,Node table) {
+    public void init(Controller ctrl, Node table) {
         this.ctrl = ctrl;
         this.procTable = (TableView<ProcessEntry>) table;
 
@@ -42,8 +43,11 @@ public class ActionButtons implements Initializable {
     // Input Events
     @FXML
     public void killProc(ActionEvent event) {
-        final int pid = procTable.getSelectionModel().getSelectedItem().getId();
-        this.ctrl.killProc(pid);
+        if(! procTable.getSelectionModel().isEmpty()){
+
+            Integer id = procTable.getSelectionModel().getSelectedItem().getId();
+            this.ctrl.killProc(id);
+        }
     }
 
     @FXML
@@ -68,7 +72,7 @@ public class ActionButtons implements Initializable {
     }
 
     @FXML
-    public void reset(ActionEvent event){
+    public void reset(ActionEvent event) {
         this.ctrl.resetSim();
     }
 
