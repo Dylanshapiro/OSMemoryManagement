@@ -48,7 +48,7 @@ public class ProcessTable implements Initializable {
         id.setPrefWidth(75);
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<ProcessEntry, Long> startTime = new TableColumn<>("StartTime");
+        TableColumn<ProcessEntry, String> startTime = new TableColumn<>("StartTime");
         startTime.setPrefWidth(75);
         startTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
 

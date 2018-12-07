@@ -1,12 +1,11 @@
 package view;
 
-import javafx.beans.property.SimpleStringProperty;
-import oshi.util.FormatUtil;
+import model.process.Process;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.stream.Stream;
-
-import model.process.Process;
+import java.text.SimpleDateFormat;
 
 public class ProcessEntry {
 
@@ -36,9 +35,11 @@ public class ProcessEntry {
 
     private HashMap<String, Unit> units;
 
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm::ss");
+
     private final String name;
     private final Integer id;
-    private final Long startTime;
+    private final String startTime;
     private final String base;
     private final String size;
 
@@ -58,8 +59,8 @@ public class ProcessEntry {
 
         this.name = name;
         this.id = id;
-        this.startTime = startTime;
-
+        this.startTime = sdf.format(new Date(startTime)) ;
+;;;
         this.base = curUnit.convertPretty(base);
         this.size = curUnit.convertPretty(size);
     }
@@ -72,7 +73,7 @@ public class ProcessEntry {
         return id;
     }
 
-    public Long getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 

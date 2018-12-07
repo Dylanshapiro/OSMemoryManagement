@@ -127,7 +127,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
             this.source.sim();
 
-        }, 0, 600, TimeUnit.MILLISECONDS);
+        }, 0, 300, TimeUnit.MILLISECONDS);
 
         this.handle = Optional.of(handle);
 
