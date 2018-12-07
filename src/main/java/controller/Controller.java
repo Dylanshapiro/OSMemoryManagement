@@ -106,24 +106,8 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         this.source = newSource;
     }
 
-    public void killProc(int procID) {
-        try {
-            this.source.kill(procID);
-            this.manager.deallocate(procID);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void setAlgo(Algo a) {
         this.manager.setAlgo(a);
-    }
-
-    public void addProc() {
-        this.execService.execute(() -> {
-            Process p = this.source.generateProcess();
-            this.manager.allocate(p);
-        });
     }
 
     public void startSim() {
@@ -145,11 +129,30 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }
     }
 
+
+    public void addProc() {
+        this.execService.execute(() -> {
+            Process p = this.source.generateProcess();
+            this.manager.allocate(p);
+        });
+    }
+
     @Override
     public void newProcess(Process p) {
         execService.execute(() -> {
             manager.allocate(p);
         });
+    }
+
+    public void killProc(int procID) {
+      execService.execute(() -> {
+          try {
+              this.source.kill(procID);
+              this.manager.deallocate(procID);
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      });
     }
 
     @Override
