@@ -31,7 +31,7 @@ public class Driver extends Application {
 
         Controller ctrl = initController();
 
-        loader.setControllerFactory(new ControllerFactory(ctrl));
+        loader.setControllerFactory(new ComponentFactory(ctrl));
 
         Parent root = loader.load();
         Scene scene = new Scene(root);
@@ -45,6 +45,8 @@ public class Driver extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("OSMM");
 
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(640);
         primaryStage.show();
     }
 

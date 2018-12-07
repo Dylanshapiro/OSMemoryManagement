@@ -11,11 +11,11 @@ import java.util.Optional;
  * declared a reference to ctrl (the Controller passed into this factory's constructor).
  * Gives the Controller passed into this factory a ref to the root gui component (Root) if it
  * has the variable "view" declared*/
-public class ControllerFactory implements Callback<java.lang.Class<?>, java.lang.Object> {
+public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.Object> {
 
     private final Controller ctrl;
 
-    public ControllerFactory(Controller ctrl) {
+    public ComponentFactory(Controller ctrl) {
         this.ctrl = ctrl;
     }
 
@@ -76,6 +76,7 @@ public class ControllerFactory implements Callback<java.lang.Class<?>, java.lang
         try {
             f.setAccessible(true);
             f.set(o, val);
+            f.setAccessible(false);
             // f.setAccessible(false);
         } catch (IllegalAccessException e) {
             e.printStackTrace();

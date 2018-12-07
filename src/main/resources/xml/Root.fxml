@@ -21,58 +21,62 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.Group?>
 
-<VBox fx:id="root" prefHeight="400" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.Root">
-  <children>
-    <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Export" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-          <fx:include fx:id="sourceMenu" source="SourceMenu.fxml" />
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem id="launchAbout" mnemonicParsing="false" onAction="#launchAbout" text="About osmm" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="689.0" VBox.vgrow="ALWAYS">
-      <children>
-            <SplitPane dividerPositions="0.25235109717868337" prefHeight="375.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-              <items>
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.Root"
+      fx:id="root" prefHeight="400" prefWidth="640" minHeight="150">
+    <children>
+        <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Export" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Quit" />
+                    </items>
+                </Menu>
+                <fx:include fx:id="sourceMenu" source="SourceMenu.fxml" />
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem id="launchAbout" mnemonicParsing="false" onAction="#launchAbout" text="About osmm" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="689.0" minHeight="150" VBox.vgrow="ALWAYS">
+            <children>
 
-                <SplitPane dividerPositions="0.07859078590785908, 0.7859078590785907" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" prefHeight="251.0" prefWidth="145.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                        <items>
+                <AnchorPane layoutX="214.0" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="426.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <SplitPane fx:id="memorySplitPane" dividerPositions="0.5736842105263158" layoutX="-46.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="371.0" prefWidth="383.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-46.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <items>
+
+                                <fx:include fx:id="rectVisualization" source="RectVisualization.fxml" />
+
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">
+                                    <children>
+                                        <fx:include fx:id="processTable" source="ProcessTable.fxml" />
+                                    </children>
+                                </AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="-1.0" maxWidth="206.0" minHeight="150" prefHeight="371.0" prefWidth="170.0" VBox.vgrow="SOMETIMES">
+                    <children>
+                        <VBox prefHeight="371.0" prefWidth="168.0">
+                            <children>
                                 <fx:include fx:id="algoCombo" source="AlgoCombo.fxml" />
 
-                            <fx:include fx:id="dataFields" source="DataFields.fxml" />
-                            <fx:include fx:id="actionButtons" source="ActionButtons.fxml" />
-                        </items>
-                  </SplitPane>
+                                <fx:include fx:id="dataFields" source="DataFields.fxml" />
+                                <fx:include fx:id="actionButtons" source="ActionButtons.fxml" />
+                            </children>
 
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <SplitPane fx:id="memorySplitPane" dividerPositions="0.5736842105263158" layoutX="-3.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="382.0" prefWidth="480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <items>
 
-                              <fx:include fx:id="rectVisualization" source="RectVisualization.fxml" />
+                        </VBox>
+                    </children>
+                </AnchorPane>
 
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">
-                                 <children>
-                                     <fx:include fx:id="processTable" source="ProcessTable.fxml" />
-                                 </children>
-                              </AnchorPane>
-                          </items>
-                        </SplitPane>
-                     </children>
-                  </AnchorPane>
-              </items>
-            </SplitPane>
-      </children>
-    </AnchorPane>
-  </children>
+            </children>
+        </AnchorPane>
+
+    </children>
 </VBox>
