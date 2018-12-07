@@ -8,6 +8,7 @@ import model.MemoryObservable;
 import model.MemoryObserver;
 import model.process.Process;
 import model.process.ProcessSource;
+import model.process.ProcessSourceObservable;
 import model.process.ProcessSourceObserver;
 import view.component.Root;
 
@@ -90,12 +91,16 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     public void setSource(int id) throws InstanceNotFoundException {
 
+        ((ProcessSourceObservable) this.source).removeObserver(this);
+
         ProcessSource newSource = this.sourceList.stream()
                 .filter(proc -> proc.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> {
                     return new InstanceNotFoundException("Process Source was not found");
                 });
+
+        ((ProcessSourceObservable) newSource).addObserver(this);
 
         this.manager.clearProc();
         this.source = newSource;
@@ -150,7 +155,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     @Override
     public void killProcess(Process p) {
         execService.execute(() -> {
-            manager.deallocate(p);
+            manager.deallocate(p.getProcId());
         });
     }
 
