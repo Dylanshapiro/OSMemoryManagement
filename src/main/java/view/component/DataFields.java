@@ -73,11 +73,7 @@ public class DataFields implements Initializable {
 
     private Long calcUsedMem(MemoryEvent event) {
 
-        return event.getProcesses().stream()
-                .mapToLong(proc -> proc.getSize())
-                .reduce((acc, cur) -> {
-                    return acc + acc;
-                }).orElseGet( () -> new Long(0));
+        return event.getUsedMem();
     }
 
 }

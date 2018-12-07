@@ -37,7 +37,6 @@ public class MemoryManager extends MemoryObservable {
         return this.processes;
     }
 
-
     public boolean allocate(Process p){
         if(p.getSize()>memSize){
             System.out.println("process 2 big");
@@ -148,6 +147,16 @@ public class MemoryManager extends MemoryObservable {
 
         public long getMemSize() {
             return memSize;
+        }
+
+        public long getUsedMem(){
+            return this.processes.stream()
+                    .mapToLong(Process::getSize)
+                    .sum();
+        }
+
+        public long getAvailMem(){
+            return this.memSize - this.getUsedMem();
         }
     }
 }
