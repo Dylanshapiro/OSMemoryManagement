@@ -3,10 +3,8 @@ package model;
 import model.Algos.Algo;
 import model.Algos.*;
 import model.process.Process;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
+import java.util.*;
 
 
 public class MemoryManager extends MemoryObservable {
@@ -39,8 +37,8 @@ public class MemoryManager extends MemoryObservable {
 
     public boolean allocate(Process p){
         if(p.getSize()>memSize){
-            System.out.println("process 2 big");
-            notifyObserversError("Process exceeds total memory "+p.getName()+", now is the time to panic... ");
+            this.notifyObservers(getErrorEvent(p,
+                    "Process exceeds total memory "+p.getName()+", now is the time to panic... "));
         }
         Long result=memoryAlgo.allocPs(p);
         if(!processes.contains(p)&& result!=null){
@@ -56,19 +54,22 @@ public class MemoryManager extends MemoryObservable {
                     }
                 }
             });
-            notifyObservers(p);
+            notifyObservers(p,Op.ADD);
             return true;
         }
         else{
-            notifyObserversError("Not enough continuous memory to Allocate process: "+p.getName());
+            this.notifyObservers(getErrorEvent(p,
+                    "Not enough continuous memory to Allocate process: "+p.getName()));
         }
         return false;
     }
+
+
     public boolean deallocate(Process p){
         if(processes.contains(p)) {
             boolean result= processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p);
+            notifyObservers(p, Op.DELETE);
             return result;
         }
         return false;
@@ -88,7 +89,7 @@ public class MemoryManager extends MemoryObservable {
         if((p = getProcess(procID)) != null) {
             processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p);
+            notifyObservers(p, Op.DELETE);
             return true;
         }
         return false;
@@ -116,32 +117,57 @@ public class MemoryManager extends MemoryObservable {
         MemoryManager.memSize = memSize;
     }
 
-    private void notifyObservers(Process p){
-        this.notifyObservers(new MemoryEvent(processes,p,memSize));
+    private void notifyObservers(Process p,Op type){
+        this.notifyObservers(new MemoryEvent(processes,p,memSize, type));
+    }
+
+    private void notifyObservers(Process p, Op type, String message){
+        final MemoryEvent event = new MemoryEvent(processes, p, memSize, type);
+        event.setStatusMessage(message);
+        this.notifyObservers(event);
     }
 
     public void reset() {
         this.processes.clear();
         Process temp=null;
         memoryAlgo.setRepresentation(new ArrayList<>());
-        notifyObservers(temp);
+        notifyObservers(temp, Op.RESET, "sim reset");
     }
 
     public void clearProc() {
         this.processes.clear();
         Process temp=null;
-        notifyObservers(temp);
+        notifyObservers(temp,Op.RESET);
+    }
+
+   public enum Op{
+        ADD,
+        DELETE,
+        RESET,
+        ERROR,
     }
 
     public class MemoryEvent{
+
         private List<Process> processes;
         public long memSize;
         private Process lastChanged;
+        private Op type;
+        private Optional<String> statusMessage;
 
-        public MemoryEvent(List<Process> processes,Process process, long memSize) {
+        public MemoryEvent(List<Process> processes,Process process,
+                           long memSize, Op type) {
             this.processes = processes;
             this.memSize = memSize;
             this.lastChanged=process;
+            this.type = type;
+            this.statusMessage = Optional.empty();
+        }
+
+
+
+        public void setStatusMessage(String message){
+            this.statusMessage = Optional.of(message);
         }
 
         public List<Process> getProcesses() {
@@ -165,5 +191,19 @@ public class MemoryManager extends MemoryObservable {
         public long getAvailMem(){
             return this.memSize - this.getUsedMem();
         }
+
+        public Op getOpType(){
+            return this.type;
+        }
+
+        public Optional<String> getStatusMessage(){
+            return this.statusMessage;
+        }
+    }
+
+    private MemoryEvent getErrorEvent(Process p, String message){
+        MemoryEvent event = new MemoryEvent(processes,p,memSize, Op.ERROR);
+        event.setStatusMessage( message );
+        return event;
     }
 }

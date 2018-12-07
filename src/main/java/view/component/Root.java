@@ -2,31 +2,17 @@ package view.component;
 
 
 import controller.Controller;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import model.MemoryManager;
 import model.MemoryManager.MemoryEvent;
-import model.process.Process;
-import view.ProcessEntry;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class Root implements Initializable {
 
@@ -49,6 +35,9 @@ public class Root implements Initializable {
     private DataFields dataFieldsController;
     @FXML
     private RectVisualization rectVisualizationController;
+
+    @FXML
+    private MiniTerm miniTermController;
     ////
 
     @Override
@@ -63,6 +52,7 @@ public class Root implements Initializable {
     public void updateDisplay(MemoryEvent memEvent) {
         this.processTableController.update(memEvent);
         this.dataFieldsController.update(memEvent);
+        this.miniTermController.update(memEvent);
         this.rectVisualizationController.update(memEvent);
     }
 

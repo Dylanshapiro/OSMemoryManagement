@@ -40,6 +40,7 @@ public class Driver extends Application {
         scene.getStylesheets().add("css/split-pane.css"); // load css
         scene.getStylesheets().add("css/alloc-bar.css"); // load css
         scene.getStylesheets().add("css/table-view.css"); // load css
+        scene.getStylesheets().add("css/text-area.css"); // load css
 
         // set scene and show
         primaryStage.setScene(scene);

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<TextArea xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="view.component.MiniTerm"
+          fx:id="miniTerm"
+          editable="false" focusTraversable="false" minWidth="-Infinity" prefHeight="206.0" prefWidth="168.0"  />

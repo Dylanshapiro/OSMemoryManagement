@@ -1,0 +1,12 @@
+.text-area {
+    -fx-font-family: "Courier New";
+    -fx-font-size: 14;
+}
+.text-area:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.text-area .scroll-bar:vertical:disabled {
+    -fx-opacity: 0;
+}

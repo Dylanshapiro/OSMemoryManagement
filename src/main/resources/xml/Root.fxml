@@ -21,10 +21,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.Group?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.Root"
-      fx:id="root" prefHeight="400" prefWidth="640" minHeight="150">
+<VBox fx:id="root" minHeight="150" prefHeight="505.0" prefWidth="640" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.Root">
     <children>
-        <MenuBar fx:id="menuBar" VBox.vgrow="ALWAYS">
+        <MenuBar fx:id="menuBar" prefWidth="640.0" VBox.vgrow="ALWAYS">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -41,7 +40,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="689.0" minHeight="150" VBox.vgrow="ALWAYS">
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="150" prefHeight="434.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
             <children>
 
                 <AnchorPane layoutX="214.0" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="426.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -77,6 +76,7 @@
 
             </children>
         </AnchorPane>
+              <fx:include fx:id="miniTerm" source="MiniTerm.fxml" />
 
     </children>
 </VBox>
