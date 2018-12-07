@@ -29,8 +29,7 @@ public class ActionButtons implements Initializable {
     private boolean simEnabled;
 
     // init
-    public void init(Controller ctrl, Node table) {
-        this.ctrl = ctrl;
+    public void init(Node table) {
         this.procTable = (TableView<ProcessEntry>) table;
 
     }

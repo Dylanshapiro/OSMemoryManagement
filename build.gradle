@@ -33,13 +33,13 @@ task(run, type: JavaExec) {
     dependsOn classes
     dependsOn test
 
-    main = 'controller.Driver'
+    main = 'driver.Driver'
     classpath = sourceSets.main.runtimeClasspath
 }
 
 task(runMain, type: JavaExec) {
     dependsOn classes
 
-    main = 'controller.Driver'
+    main = 'driver.Driver'
     classpath = sourceSets.main.runtimeClasspath
 }

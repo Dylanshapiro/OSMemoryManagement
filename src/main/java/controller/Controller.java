@@ -31,7 +31,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     private final MemoryManager manager;
     private final Root view;
 
-    public Controller(MemoryManager manager, Root view, List<ProcessSource> pList) {
+    public Controller(MemoryManager manager,List<ProcessSource> pList) {
 
         this.handle = Optional.empty();
         this.execService = Executors.newScheduledThreadPool(1, r -> {
@@ -41,7 +41,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         });
 
         this.manager = manager;
-        this.view = view;
+        this.view = null;
         this.sourceList = pList;
 
         this.source = sourceList.get(0);

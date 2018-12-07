@@ -33,9 +33,8 @@ public class ProcessTable implements Initializable {
     // from init
     private Controller ctrl;
 
-    public void init(Controller ctrl) {
-        this.ctrl = ctrl;
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         this.initTable();
     }
 
@@ -102,8 +101,5 @@ public class ProcessTable implements Initializable {
         return this.processTable;
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    }
 }

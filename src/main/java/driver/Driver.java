@@ -1,12 +1,12 @@
-package controller;
+package driver;
 
+import controller.Controller;
 import model.Algos.FirstFitAlgo;
 import model.process.LocalSource;
 import model.MemoryManager;
 import model.process.ProcessSource;
 import model.process.ProcessSourceObservable;
 import model.process.SimSource;
-import view.component.Root;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,23 +25,15 @@ public class Driver extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // parse out saved preferences from config file
-
         FXMLLoader loader = new FXMLLoader(getClass()
                 .getResource("../xml/Root.fxml"));
 
+
+        Controller ctrl = initController();
+
+        loader.setControllerFactory(new ControllerFactory(ctrl));
+
         Parent root = loader.load();
-
-        MemoryManager manager = MemoryManager.getInstance();
-        manager.setAlgo(new FirstFitAlgo(600000));
-        List<ProcessSource> pList = initSources();
-
-        Root view = loader.getController();
-
-        Controller ctrl = new Controller(manager,view,pList);
-        manager.addObserver(ctrl);
-        ((ProcessSourceObservable) pList.get(0)).addObserver(ctrl);
-        view.init(ctrl);
         Scene scene = new Scene(root);
 
         scene.getStylesheets().add("css/root.css"); // load css
@@ -56,11 +48,24 @@ public class Driver extends Application {
         primaryStage.show();
     }
 
+    private Controller initController() {
+        MemoryManager manager = MemoryManager.getInstance();
+        manager.setAlgo(new FirstFitAlgo(600000));
 
-    public List<ProcessSource> initSources(){
+        List<ProcessSource> pList = initSources();
+
+        Controller ctrl = new Controller(manager, pList);
+
+        manager.addObserver(ctrl);
+        ((ProcessSourceObservable) pList.get(0)).addObserver(ctrl);
+        return ctrl;
+    }
+
+    public List<ProcessSource> initSources() {
         List<ProcessSource> procs = new ArrayList<>(4);
-        procs.add(new SimSource(100,1));
+        procs.add(new SimSource(100, 1));
         procs.add(new LocalSource(2));
         return procs;
     }
+
 }

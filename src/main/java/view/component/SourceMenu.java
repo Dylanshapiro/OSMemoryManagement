@@ -23,10 +23,9 @@ public class SourceMenu implements Initializable {
     private Controller ctrl;
 
     // init
-    public void init(Controller ctrl, DataFields dataFieldsController){
-        this.ctrl = ctrl;
-        this.loadSourceMenu();
+    public void init(DataFields dataFieldsController){
 
+        this.loadSourceMenu();
         this.dataFieldsController= dataFieldsController;
 
         this.dataFieldsController.setSourceText(this.sourceMenu.getItems().get(0).getText());

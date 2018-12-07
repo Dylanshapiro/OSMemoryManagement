@@ -51,21 +51,12 @@ public class Root implements Initializable {
     private RectVisualization rectVisualizationController;
     ////
 
-    // Init
-    public void init(Controller ctrl) {
-        this.ctrl = ctrl;
-
-        this.dataFieldsController.init(ctrl);
-        this.processTableController.init(ctrl);
-        this.actionButtonsController.init(ctrl, processTableController.getTable());
-        this.rectVisualizationController.init(ctrl,processTableController);
-        this.sourceMenuController.init(ctrl,dataFieldsController);
-        this.algoComboController.init(ctrl,dataFieldsController);
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.actionButtonsController.init(processTableController.getTable());
+        this.rectVisualizationController.init(processTableController);
+        this.sourceMenuController.init(dataFieldsController);
+        this.algoComboController.init(dataFieldsController);
     }
 
     // receive updates

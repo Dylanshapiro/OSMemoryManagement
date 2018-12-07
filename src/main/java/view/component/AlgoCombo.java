@@ -27,8 +27,7 @@ public class AlgoCombo implements Initializable {
 
 
     // init
-    public void init(Controller ctrl, DataFields dataFieldsController){
-        this.ctrl = ctrl;
+    public void init(DataFields dataFieldsController){
 
         // Algo Combo box
         algoCombo.getItems().addAll(this.ctrl.getAlgoList());

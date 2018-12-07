@@ -31,8 +31,7 @@ public class RectVisualization implements Initializable {
     private ProcessTable processTableController;
 
     // init
-    public void init(Controller ctrl, ProcessTable processTableController) {
-        this.ctrl = ctrl;
+    public void init(ProcessTable processTableController) {
         this.processTableController = processTableController;
     }
 

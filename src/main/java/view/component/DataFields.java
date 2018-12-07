@@ -32,18 +32,11 @@ public class DataFields implements Initializable {
     private Controller ctrl;
 
 
-    // init
-    public void init(Controller ctrl) {
-        this.ctrl = ctrl;
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         this.setProcNumText(0);
         this.setUsedMemoryText("0");
         this.setTotalMemoryText(String.valueOf(this.ctrl.getMemSize()));
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     public void update(MemoryEvent event){
