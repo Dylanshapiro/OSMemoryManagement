@@ -64,7 +64,7 @@ public class SimSource extends ProcessSourceObservable implements ProcessSource 
         long memSize = 0;
 
         memSize = getRandomIntBetweenRange(20, 1000) * 1048576;
-        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), processList.size(),
+        Process proc = new Process(procNames.get(rand.nextInt(procNames.size())), numOfProcess++ ,
                 System.currentTimeMillis(), memSize);
         processList.add(proc);
         return proc;

@@ -1,12 +1,16 @@
 package view.component;
 
 import controller.Controller;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
 import view.ProcessEntry;
@@ -37,7 +41,6 @@ public class RectVisualization implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 
     public void update(MemoryEvent memEvent) {
@@ -55,11 +58,19 @@ public class RectVisualization implements Initializable {
                 e.printStackTrace();
             }
 
+            memoryViewPane.getChildren().add(chunk);
+
             if (p.equals(memEvent.getLastChanged())) {
                 setActiveChunk(chunk);
+                ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(150), chunk);
+                scaleTransition.setFromX(1.4);
+                scaleTransition.setFromY(1.4);
+                scaleTransition.setToX(1);
+                scaleTransition.setToY(1);
+                scaleTransition.setInterpolator(Interpolator.EASE_IN);
+                scaleTransition.play();
             }
-            //TODO simulate mouse click to have newly added chunk already selected upon spawning.
-            memoryViewPane.getChildren().add(chunk);
+
         }
     }
 
