@@ -9,5 +9,6 @@ public interface Algo {
     public Long allocPs(Process unallocated);
     public boolean deallocate(Process allocated);
     public String getName();
+    public void setMemSize(long memSize);
     public void setRepresentation(List<Process> processes);
 }

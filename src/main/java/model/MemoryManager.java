@@ -105,6 +105,7 @@ public class MemoryManager extends MemoryObservable {
 
     public void setAlgo(Algo memoryAlgo) {
         this.memoryAlgo = memoryAlgo;
+        memoryAlgo.setMemSize(memSize);
         this.memoryAlgo.setRepresentation(processes);
     }
 

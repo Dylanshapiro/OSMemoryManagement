@@ -8,10 +8,10 @@ public abstract class FitAlgo implements Algo{
     public static long BlockSize;
     protected boolean[] memory;
     protected String name;
-
+    private long totalMem;
     public FitAlgo(long totalmem){
         BlockSize=Math.toIntExact(totalmem/ 1048576L);
-
+        this.totalMem=totalmem;
         memory = new boolean[1048576];
     }
     protected void filler(int index, long size, boolean change){
@@ -54,6 +54,13 @@ public abstract class FitAlgo implements Algo{
                 filler((int)(p.getBaseAddress().get().longValue()/ BlockSize),getProcessSize(p),true);
         }
     }
+
+    @Override
+    public void setMemSize(long memSize) {
+        BlockSize= memSize/ 1048576L;
+        this.totalMem=memSize;
+    }
+
     /**
      *
      * @param size the sizeof the process in megabytes

@@ -44,6 +44,11 @@ public class BuddyAlgo implements Algo {
     }
 
     @Override
+    public void setMemSize(long memSize) {
+        this.memSize=memSize;
+    }
+
+    @Override
     public void setRepresentation(List<Process> processes) {
         LinkedList<Block> memory=new LinkedList<>();
         if(processes.size()>0&&processes.get(0).getBaseAddress().get()!=0){
