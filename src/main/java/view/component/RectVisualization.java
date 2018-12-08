@@ -1,23 +1,19 @@
 package view.component;
 
 import controller.Controller;
-import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
-import view.ProcessEntry;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RectVisualization implements Initializable {

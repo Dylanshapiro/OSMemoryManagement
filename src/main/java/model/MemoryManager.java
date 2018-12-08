@@ -69,7 +69,7 @@ public class MemoryManager extends MemoryObservable {
         if(processes.contains(p)) {
             boolean result= processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p, Op.DELETE);
+            notifyObservers(p, Op.KILL);
             return result;
         }
         return false;
@@ -89,7 +89,7 @@ public class MemoryManager extends MemoryObservable {
         if((p = getProcess(procID)) != null) {
             processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p, Op.DELETE);
+            notifyObservers(p, Op.KILL);
             return true;
         }
         return false;
@@ -142,7 +142,7 @@ public class MemoryManager extends MemoryObservable {
 
    public enum Op{
         ADD,
-        DELETE,
+        KILL,
         RESET,
         ERROR,
     }

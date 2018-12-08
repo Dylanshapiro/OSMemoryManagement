@@ -1,7 +1,5 @@
 package view.component;
 
-import javafx.beans.property.SimpleStringProperty;
-import model.process.Process;
 import controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,17 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.MemoryManager.MemoryEvent;
-import view.ProcessEntry;
 import javafx.scene.shape.Rectangle;
+import model.MemoryManager.MemoryEvent;
+import model.process.Process;
+import view.ProcessEntry;
 
 import javax.management.InstanceNotFoundException;
-import java.awt.*;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 

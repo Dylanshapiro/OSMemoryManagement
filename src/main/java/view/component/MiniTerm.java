@@ -3,7 +3,6 @@ package view.component;
 import controller.Controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import model.MemoryManager.MemoryEvent;
 import model.MemoryManager.Op;
@@ -33,7 +32,7 @@ public class MiniTerm implements Initializable {
         Optional<Process> lastChanged = Optional.ofNullable(event.getLastChanged());
         Op opType = event.getOpType();
 
-        if ( opType ==  Op.ADD || opType == Op.DELETE ){
+        if ( opType ==  Op.ADD || opType == Op.KILL){
             final String procName = event.getLastChanged().getName();
             final String nameOut =  (procName.length() > nameLenSpace) ?
                                     procName.substring(0,nameLenSpace - 3 ).concat("...") : procName;

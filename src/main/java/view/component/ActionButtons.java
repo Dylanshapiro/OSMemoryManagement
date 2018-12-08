@@ -6,16 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
-import model.Algos.Algo;
+import javafx.scene.media.AudioClip;
 import view.ProcessEntry;
 
 import java.net.URL;
-import java.util.Optional;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class ActionButtons implements Initializable {
@@ -27,11 +23,12 @@ public class ActionButtons implements Initializable {
     private TableView<ProcessEntry> procTable;
 
     private boolean simEnabled;
+    private AudioClip buttonSound;
 
     // init
     public void init(Node table) {
         this.procTable = (TableView<ProcessEntry>) table;
-
+        buttonSound = new AudioClip(Paths.get("./src/main/resources/oof.mp3").toUri().toString());
     }
 
     @Override
@@ -46,6 +43,7 @@ public class ActionButtons implements Initializable {
 
             Integer id = procTable.getSelectionModel().getSelectedItem().getId();
             this.ctrl.killProc(id);
+            buttonSound.play();
         }
     }
 

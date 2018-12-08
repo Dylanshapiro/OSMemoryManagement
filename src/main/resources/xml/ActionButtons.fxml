@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.component.ActionButtons">
+<VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="view.component.ActionButtons" alignment="CENTER">
     <Button id="toggleSimButton" mnemonicParsing="false" text="Run Sim"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0" onAction="#toggleSim" />
+            AnchorPane.topAnchor="0.0" onAction="#toggleSim" styleClass="glass-grey" stylesheets="@../css/button.css" />
     <Button id="addButton" mnemonicParsing="false" text="Add Process"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0" onAction="#addProc" />
+            AnchorPane.topAnchor="0.0" onAction="#addProc" styleClass="glass-grey" stylesheets="@../css/button.css" />
     <Button id="killProcessButton" mnemonicParsing="false" text="Kill Process"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0" onAction="#killProc" />
+            AnchorPane.topAnchor="0.0" onAction="#killProc" styleClass="glass-grey" stylesheets="@../css/button.css" />
     <Button id="reset" mnemonicParsing="false" text="Reset Sim"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0" onAction="#reset" />
+            AnchorPane.topAnchor="0.0" onAction="#reset" styleClass="glass-grey" stylesheets="@../css/button.css"  />
 </VBox>

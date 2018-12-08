@@ -8,4 +8,4 @@
 
 
 <ComboBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-        fx:id="algoCombo" prefWidth="150.0" fx:controller="view.component.AlgoCombo" />
+        fx:id="algoCombo" prefWidth="180.0" fx:controller="view.component.AlgoCombo" />

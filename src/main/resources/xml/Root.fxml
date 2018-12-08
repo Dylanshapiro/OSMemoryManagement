@@ -48,7 +48,7 @@
                         <SplitPane fx:id="memorySplitPane" dividerPositions="0.5736842105263158" layoutX="-46.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="371.0" prefWidth="383.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-46.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
 
-                                <fx:include fx:id="rectVisualization" source="RectVisualization.fxml" />
+                                <fx:include fx:id="rectVisualization" source="ChunkVisualization.fxml" />
 
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="101.0" prefWidth="478.0">
                                     <children>

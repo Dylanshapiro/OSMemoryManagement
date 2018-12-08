@@ -2,10 +2,10 @@ package view;
 
 import model.process.Process;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.stream.Stream;
-import java.text.SimpleDateFormat;
 
 public class ProcessEntry {
 
