@@ -29,7 +29,6 @@
   <h4>
     <a href="#features">Features</a> |
     <a href="#build">Build</a> |
-    <a href="#options">Options</a> |
     <a href="https://www.rowan.edu/">Rowan</a>
   </h4>
 </div>
@@ -42,6 +41,7 @@
 
 *OSmemoryManagement* is a memory visualization tool that enables a user to see occupied and free chunks of memory. The tool will simulate the arrival and departure of processes. When a process terminates, the chunk of memory that it occupied must be freed. The visualization should provide statistics that pertain to memory usage.
 
+Project for *CS04380*
 ## Features
 
 * Visualize Simulated, Local, or Remote memory.
@@ -51,17 +51,14 @@
 
 ## Build
 
-* Build step1
-* Build step2 
-* Build step3
-
-
-## Options
-
-* option 1
-* option 2 
-* option 3 
-
+* clone the repo
+```
+git clone https://github.com/Dylanshapiro/OSMemoryManagement
+```
+* cd into repo & build
+```
+cd OSMemoryManagement && gradlew build
+```
 
 ## Team
 | [![Dylan Shapiro](https://vgy.me/kpjSUd.png?size=100)](https://github.com/Dylanshapiro) | [![Ed Kelin](https://vgy.me/kpjSUd.png?size=100)](https://github.com/Kleine3) | [![Jamie Walder](https://github.com/creamchzdragon.png?size=100)](https://github.com/creamchzdragon) | [![Jesse Malinosky](https://github.com/malinoskj2.png?size=100)](https://github.com/malinoskj2) | [![Joe Whittie](https://vgy.me/kpjSUd.png?size=100)](https://github.com/joeywhitt) | [![Randy Fisher](https://vgy.me/kpjSUd.png?size=100)](https://github.com/fisherr4) | 
