@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.media.AudioClip;
 import view.ProcessEntry;
+import driver.ComponentFactory.CTRL;
 
 import java.net.URL;
 import java.nio.file.Paths;
@@ -19,6 +20,7 @@ public class ActionButtons implements Initializable {
     // From fxml
 
     // From init
+    @CTRL
     private Controller ctrl;
     private TableView<ProcessEntry> procTable;
 

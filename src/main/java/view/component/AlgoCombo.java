@@ -1,12 +1,14 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import model.Algos.Algo;
+import driver.ComponentFactory.CTRL;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +21,7 @@ public class AlgoCombo implements Initializable {
     private ComboBox<Algo> algoCombo;
 
     // From init
+    @CTRL
     private Controller ctrl;
     private DataFields dataFieldsController;
 

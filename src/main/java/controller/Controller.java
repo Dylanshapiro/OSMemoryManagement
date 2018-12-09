@@ -1,5 +1,6 @@
 package controller;
 
+import driver.ComponentFactory.VIEW;
 import javafx.application.Platform;
 import model.Algos.*;
 import model.MemoryManager;
@@ -29,6 +30,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     private ProcessSource source;
 
     private final MemoryManager manager;
+    @VIEW
     private final Root view;
 
     public Controller(MemoryManager manager,List<ProcessSource> pList) {

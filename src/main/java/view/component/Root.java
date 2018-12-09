@@ -2,6 +2,7 @@ package view.component;
 
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,7 +20,7 @@ public class Root implements Initializable {
     @FXML
     private VBox rootBox;
 
-    @FXML
+    @CTRL
     private Controller ctrl;
 
     //Refactored

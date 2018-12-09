@@ -4,7 +4,12 @@ import controller.Controller;
 import javafx.util.Callback;
 import view.component.Root;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Optional;
 
 /* Gives all instances of classes in the component package that have the variable "ctrl"
@@ -18,17 +23,21 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
     public ComponentFactory(Controller ctrl) {
         this.ctrl = ctrl;
     }
-
     @Override
     public Object call(Class<?> controllerType) {
         if (controllerType == Root.class) {
 
             try {
                 // Set Ref to Controller in Root
-                Object root = initWithRef(controllerType, "ctrl", this.ctrl);
+                Object root = initWithRef(controllerType, CTRL.class, this.ctrl);
 
                 // Set Ref to Root in Controller
-                setIfPresent(ctrl,"view",root);
+
+                Arrays.stream(ctrl.getClass().getDeclaredFields())
+                        .filter(field -> field.isAnnotationPresent(VIEW.class))
+                        .findFirst()
+                        .ifPresent(field -> setPrivField(field, ctrl, root));
+
                 return root;
 
             } catch (NoSuchFieldException | IllegalAccessException | InstantiationException e) {
@@ -38,7 +47,7 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
 
         } else if (controllerType.getPackage().getName().contains("component")) {
             try {
-               return initWithRef(controllerType,"ctrl",ctrl);
+               return initWithRef(controllerType,CTRL.class,ctrl);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -52,14 +61,16 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
         }
     }
 
-    private Object initWithRef(Class<?> controllerType, String field, Object ref)
+    private Object initWithRef(Class<?> controllerType, Class<CTRL> annotation, Object ref)
             throws IllegalAccessException, InstantiationException, NoSuchFieldException {
 
         Object obj = controllerType.newInstance();
         Class objClass = obj.getClass();
 
-        Optional.ofNullable(objClass.getDeclaredField(field))
-                .ifPresent(presField -> setPrivField(presField, obj, ref));
+        Arrays.stream(objClass.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(annotation))
+                .findFirst()
+                .ifPresent(field -> setPrivField(field, obj, ref));
 
         return obj;
     }
@@ -83,6 +94,17 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
         }
     }
 
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface CTRL {
+
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.FIELD)
+    public @interface VIEW {
+
+    }
 }
 
 

@@ -11,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
+import driver.ComponentFactory.CTRL;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;
@@ -27,6 +28,7 @@ public class RectVisualization implements Initializable {
     private Rectangle activeChunk;
 
     // From init
+    @CTRL
     private Controller ctrl;
     private ProcessTable processTableController;
 

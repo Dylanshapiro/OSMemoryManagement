@@ -1,6 +1,7 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -29,6 +30,7 @@ public class DataFields implements Initializable {
     private Label totalMemoryText;
 
     // From init
+    @CTRL
     private Controller ctrl;
 
 

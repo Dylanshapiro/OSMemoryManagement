@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import driver.ComponentFactory.CTRL;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;
@@ -22,6 +23,7 @@ public class SourceMenu implements Initializable {
     // From init
 
     private DataFields dataFieldsController;
+    @CTRL
     private Controller ctrl;
 
     // init
