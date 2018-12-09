@@ -142,6 +142,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
                     return new InstanceNotFoundException();
                 });
 
+        this.resetSim();
         ((ProcessSourceObservable) this.source).addObserver(this);
     }
 

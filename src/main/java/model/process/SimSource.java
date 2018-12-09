@@ -93,4 +93,8 @@ public class SimSource extends ProcessSourceObservable implements ProcessSource 
     }
 
 
+    @Override
+    void onObserved() {
+
+    }
 }

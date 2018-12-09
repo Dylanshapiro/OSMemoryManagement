@@ -8,6 +8,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import driver.ComponentFactory.CTRL;
+import model.process.SimSource;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;
@@ -33,7 +34,6 @@ public class SourceMenu implements Initializable {
         this.dataFieldsController= dataFieldsController;
 
         this.dataFieldsController.setSourceText(this.sourceMenu.getItems().get(0).getText());
-
         CheckMenuItem  first =(CheckMenuItem) this.sourceMenu.getItems().get(0);
         first.setSelected(true);
     }

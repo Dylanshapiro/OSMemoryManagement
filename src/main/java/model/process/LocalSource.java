@@ -24,7 +24,6 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
 
     public LocalSource(int id) {
         this.id = id;
-
         this.localProcs = getAll();
     }
 
@@ -75,7 +74,6 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
 
 
     private void update() {
-        System.out.println("running update");
         List<Process> updatedList = this.getAll();
 
         List<Process> deleted = this.localProcs
@@ -110,7 +108,6 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
 
     }
 
-
     public void sim() {
         this.update();
     }
@@ -120,4 +117,12 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
         return "Local";
     }
 
+    @Override
+    void onObserved() {
+        localProcs = getAll();
+
+        for (Process p: this.localProcs){
+            notifyNewProcess(p);
+        }
+    }
 }
