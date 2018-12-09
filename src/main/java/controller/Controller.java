@@ -15,10 +15,12 @@ import view.component.Root;
 
 import javax.management.InstanceNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class Controller implements MemoryObserver, ProcessSourceObserver {
 
@@ -26,14 +28,15 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     private Optional<ScheduledFuture> handle;
     private ScheduledExecutorService execService;
 
-    private List<ProcessSource> sourceList;
+    private List<ProcessSourceObservable> sourceList;
     private ProcessSource source;
 
     private final MemoryManager manager;
-    @VIEW
-    private final Root view;
 
-    public Controller(MemoryManager manager,List<ProcessSource> pList) {
+    @VIEW
+    private Root view;
+
+    public Controller(MemoryManager manager) {
 
         this.handle = Optional.empty();
         this.execService = Executors.newScheduledThreadPool(1, r -> {
@@ -43,21 +46,20 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         });
 
         this.manager = manager;
-        this.view = null;
-        this.sourceList = pList;
+        this.sourceList = Arrays.asList(
+                 ProcessSourceObservable.getSimSource(),
+                ProcessSourceObservable.getLocalSource());
 
-        this.source = sourceList.get(0);
+        this.source =(ProcessSource) sourceList.get(0);
+        ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
-    // receive from Observable
-    public void update(MemoryObservable obs, MemoryEvent memEvent) {
-        Platform.runLater(() -> {
-            this.view.updateDisplay(memEvent);// send update to view
-        });
-    }
 
     public List<ProcessSource> getSourceList() {
-        return this.sourceList;
+
+        return this.sourceList.stream()
+                .map(source -> (ProcessSource) source)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -83,31 +85,6 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     // input api
-
-    public void setSource(String id) throws InstanceNotFoundException {
-        setSource(Integer.parseInt(id));
-    }
-
-    public void setSource(int id) throws InstanceNotFoundException {
-
-        ((ProcessSourceObservable) this.source).removeObserver(this);
-
-        this.manager.clearProc();
-
-        this.source = this.sourceList.stream()
-                .filter(proc -> proc.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> {
-                    return new InstanceNotFoundException("Process Source was not found");
-                });
-
-        ((ProcessSourceObservable) this.source).addObserver(this);
-    }
-
-    public void setAlgo(Algo a) {
-        this.manager.setAlgo(a);
-    }
-
     public void startSim() {
 
         ScheduledFuture<?> handle = this.execService.scheduleWithFixedDelay(() -> {
@@ -126,20 +103,14 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     public void resetSim() {
-        this.stopSim();
         CompletableFuture.runAsync(() -> {
             this.manager.reset();
-        });
+        }, execService);
     }
 
     public void addProc() {
         CompletableFuture.supplyAsync(() -> this.source.generateProcess(), execService)
                 .thenAccept(p -> this.manager.allocate(p));
-    }
-
-    @Override
-    public void newProcess(Process p) {
-        CompletableFuture.runAsync(() -> this.manager.allocate(p), execService);
     }
 
     public void killProc(int procID) {
@@ -153,6 +124,38 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }, execService);
     }
 
+    public void setSource(String id) throws InstanceNotFoundException {
+        setSource(Integer.parseInt(id));
+    }
+
+    public void setSource(int id) throws InstanceNotFoundException {
+
+        ((ProcessSourceObservable) this.source).removeObserver(this);
+
+        this.manager.clearProc();
+
+        this.source = this.sourceList.stream()
+                .filter(proc -> ((ProcessSource) proc).getId() == id)
+                .findFirst()
+                .map(source -> (ProcessSource) source)
+                .orElseThrow(() -> {
+                    return new InstanceNotFoundException();
+                });
+
+        ((ProcessSourceObservable) this.source).addObserver(this);
+    }
+
+    public void setAlgo(Algo a) {
+        this.manager.setAlgo(a);
+    }
+    // Callbacks
+    @Override
+    public void update(MemoryObservable obs, MemoryEvent memEvent) {
+        Platform.runLater(() -> {
+            this.view.updateDisplay(memEvent);// send update to view
+        });
+    }
+
     @Override
     public void killProcess(Process p) {
         CompletableFuture.runAsync(() -> {
@@ -160,4 +163,8 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         }, execService);
     }
 
+    @Override
+    public void newProcess(Process p) {
+        CompletableFuture.runAsync(() -> this.manager.allocate(p), execService);
+    }
 }

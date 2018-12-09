@@ -27,6 +27,9 @@ public class ActionButtons implements Initializable {
     private boolean simEnabled;
     private AudioClip buttonSound;
 
+    @FXML
+    private Button toggleSimButton;
+
     // init
     public void init(Node table) {
         this.procTable = (TableView<ProcessEntry>) table;
@@ -51,18 +54,25 @@ public class ActionButtons implements Initializable {
 
     @FXML
     private void toggleSim(ActionEvent actionEvent) {
-        Button button = (Button) actionEvent.getSource();
         if (this.simEnabled) {
-            button.setText("Run Sim! =)");
-            this.simEnabled = false;
-            this.ctrl.stopSim();
-            // enableSourceMenu(true);
+            this.stopSim();
         } else {
-            button.setText("Stop Sim! =0");
-            this.simEnabled = true;
-            this.ctrl.startSim();
-            //  enableSourceMenu(false);
+            this.startSim();
         }
+    }
+
+    @FXML
+    private void startSim(){
+        this.toggleSimButton.setText("Stop Sim! =0");
+        this.simEnabled = true;
+        this.ctrl.startSim();
+    }
+
+    @FXML
+    private void stopSim(){
+        this.toggleSimButton.setText("Run Sim! =)");
+        this.simEnabled = false;
+        this.ctrl.stopSim();
     }
 
     @FXML
@@ -72,7 +82,7 @@ public class ActionButtons implements Initializable {
 
     @FXML
     public void reset(ActionEvent event) {
+        this.stopSim();
         this.ctrl.resetSim();
     }
-
 }

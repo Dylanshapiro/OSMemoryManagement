@@ -36,11 +36,12 @@ public class Driver extends Application {
         Parent root = loader.load();
         Scene scene = new Scene(root);
 
-        scene.getStylesheets().add("css/root.css"); // load css
-        scene.getStylesheets().add("css/split-pane.css"); // load css
-        scene.getStylesheets().add("css/alloc-bar.css"); // load css
-        scene.getStylesheets().add("css/table-view.css"); // load css
-        scene.getStylesheets().add("css/text-area.css"); // load css
+        scene.getStylesheets().addAll(
+                "css/root.css",
+                "css/split-pane.css",
+                "css/alloc-bar.css",
+                "css/table-view.css",
+                "css/text-area.css"); // load css
 
         // set scene and show
         primaryStage.setScene(scene);
@@ -55,20 +56,10 @@ public class Driver extends Application {
         MemoryManager manager = MemoryManager.getInstance();
         manager.setAlgo(new FirstFitAlgo(600000));
 
-        List<ProcessSource> pList = initSources();
-
-        Controller ctrl = new Controller(manager, pList);
+        Controller ctrl = new Controller(manager);
 
         manager.addObserver(ctrl);
-        ((ProcessSourceObservable) pList.get(0)).addObserver(ctrl);
         return ctrl;
-    }
-
-    public List<ProcessSource> initSources() {
-        List<ProcessSource> procs = new ArrayList<>(4);
-        procs.add(new SimSource(100, 1));
-        procs.add(new LocalSource(2));
-        return procs;
     }
 
 }

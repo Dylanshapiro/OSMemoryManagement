@@ -9,6 +9,9 @@ import java.util.List;
 import static javafx.scene.input.KeyCode.O;
 
 public class ProcessSourceObservable {
+
+    private static int id = 1;
+
     private List<ProcessSourceObserver> observers;
     public ProcessSourceObservable(){
         observers=new LinkedList<>();
@@ -28,5 +31,17 @@ public class ProcessSourceObservable {
         for(ProcessSourceObserver o:observers){
             o.killProcess(p);
         }
+    }
+
+    public static ProcessSourceObservable getSimSource(){
+        final SimSource simSource = new SimSource(100, id);
+        id++;
+        return simSource;
+    }
+
+    public static ProcessSourceObservable getLocalSource(){
+        final LocalSource localSource = new LocalSource(id);
+        id++;
+        return localSource;
     }
 }

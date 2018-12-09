@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="view.component.ActionButtons" alignment="CENTER">
-    <Button id="toggleSimButton" mnemonicParsing="false" text="Run Sim"
+    <Button fx:id="toggleSimButton" mnemonicParsing="false" text="Run Sim"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
             AnchorPane.topAnchor="0.0" onAction="#toggleSim" styleClass="glass-grey" stylesheets="@../css/button.css" />
     <Button id="addButton" mnemonicParsing="false" text="Add Process"

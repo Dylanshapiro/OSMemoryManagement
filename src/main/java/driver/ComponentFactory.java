@@ -12,17 +12,18 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Optional;
 
-/* Gives all instances of classes in the component package that have the variable "ctrl"
- * declared a reference to ctrl (the Controller passed into this factory's constructor).
- * Gives the Controller passed into this factory a ref to the root gui component (Root) if it
- * has the variable "view" declared*/
-public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.Object> {
+/* - If the controller passed in has a field annotated with @VIEW, the field will be
+ * assigned a ref to the Root ui component.
+ *  - If a Class is in the component package and has a field annotated with @CTRL,
+ * the field will be assigned a ref to the Controller that is passed in to this factory*/
+public class ComponentFactory implements Callback<Class<?>, Object> {
 
     private final Controller ctrl;
 
     public ComponentFactory(Controller ctrl) {
         this.ctrl = ctrl;
     }
+
     @Override
     public Object call(Class<?> controllerType) {
         if (controllerType == Root.class) {
@@ -47,7 +48,7 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
 
         } else if (controllerType.getPackage().getName().contains("component")) {
             try {
-               return initWithRef(controllerType,CTRL.class,ctrl);
+                return initWithRef(controllerType, CTRL.class, ctrl);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -75,20 +76,11 @@ public class ComponentFactory implements Callback<java.lang.Class<?>, java.lang.
         return obj;
     }
 
-    private void setIfPresent(Object classInstance, String field, Object val)
-            throws NoSuchFieldException {
-        Class classObj = classInstance.getClass();
-
-        Optional.ofNullable(classObj.getDeclaredField(field))
-                .ifPresent(presField -> setPrivField(presField,classInstance,val));
-    }
-
     private void setPrivField(Field f, Object o, Object val) {
         try {
             f.setAccessible(true);
             f.set(o, val);
             f.setAccessible(false);
-            // f.setAccessible(false);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
