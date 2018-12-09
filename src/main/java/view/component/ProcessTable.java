@@ -62,7 +62,7 @@ public class ProcessTable implements Initializable {
         processTable.getColumns().addAll(name, id, startTime, base, size);
     }
 
-    public void update(MemoryEvent event) {
+    public synchronized void  update(MemoryEvent event) {
 
         ObservableList<ProcessEntry> processEntries =
                 FXCollections.observableArrayList(event.getProcesses().stream().map(proc -> {

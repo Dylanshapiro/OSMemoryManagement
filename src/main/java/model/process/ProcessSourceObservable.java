@@ -1,5 +1,7 @@
 package model.process;
 
+import javafx.application.Platform;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ abstract public class ProcessSourceObservable {
 
     final public void addObserver(ProcessSourceObserver obs){
         observers.add(obs);
-        this.onObserved();
+        Platform.runLater(() -> this.onObserved());
     }
 
     abstract void onObserved();

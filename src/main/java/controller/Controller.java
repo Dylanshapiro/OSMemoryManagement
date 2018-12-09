@@ -47,10 +47,10 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
         this.manager = manager;
         this.sourceList = Arrays.asList(
-                 ProcessSourceObservable.getSimSource(),
+                ProcessSourceObservable.getSimSource(),
                 ProcessSourceObservable.getLocalSource());
 
-        this.source =(ProcessSource) sourceList.get(0);
+        this.source = (ProcessSource) sourceList.get(0);
         ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
@@ -143,15 +143,17 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
                 });
 
         this.resetSim();
+
         ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
     public void setAlgo(Algo a) {
         this.manager.setAlgo(a);
     }
+
     // Callbacks
     @Override
-    public void update(MemoryObservable obs, MemoryEvent memEvent) {
+    public synchronized void update(MemoryObservable obs, MemoryEvent memEvent) {
         Platform.runLater(() -> {
             this.view.updateDisplay(memEvent);// send update to view
         });
@@ -160,12 +162,14 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     @Override
     public void killProcess(Process p) {
         CompletableFuture.runAsync(() -> {
-            manager.deallocate(p.getProcId());
+            Platform.runLater(() -> manager.deallocate(p.getProcId()));
         }, execService);
     }
 
     @Override
-    public void newProcess(Process p) {
-        CompletableFuture.runAsync(() -> this.manager.allocate(p), execService);
+    public synchronized void newProcess(Process p) {
+        CompletableFuture.runAsync(() ->
+                        Platform.runLater(() -> this.manager.allocate(p))
+                , execService);
     }
 }
