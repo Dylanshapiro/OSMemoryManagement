@@ -63,14 +63,14 @@ public class ActionButtons implements Initializable {
 
     @FXML
     private void startSim(){
-        this.toggleSimButton.setText("Stop Sim! =0");
+        this.toggleSimButton.setText("Stop! =0");
         this.simEnabled = true;
         this.ctrl.startSim();
     }
 
     @FXML
     private void stopSim(){
-        this.toggleSimButton.setText("Run Sim! =)");
+        this.toggleSimButton.setText("Start! =)");
         this.simEnabled = false;
         this.ctrl.stopSim();
     }

@@ -52,6 +52,7 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
         return Arrays.stream(getOSProcs())
                 .map(this::adaptOshi)
                 .filter(p -> !p.getName().toLowerCase().equals("ps"))
+                .filter(p -> p.getSize() > 0)
                 .collect(Collectors.toList());
     }
 
@@ -67,45 +68,27 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
         return this.id;
     }
 
-    private boolean oldProc(Process p1) {
-        return this.localProcs.stream()
-                .anyMatch(p2 -> p2.getProcId() == p1.getProcId());
+    private boolean containsProc(List<Process> procList , Process proc){
+        return procList.stream()
+                .anyMatch(p2 -> proc.getProcId() == p2.getProcId());
     }
-
 
     private void update() {
         List<Process> updatedList = this.getAll();
 
-        List<Process> deleted = this.localProcs
-                .stream()
-                .filter(p -> {
-                    return updatedList.
-                            stream()
-                            .noneMatch(p2 -> p.getProcId() == p2.getProcId());
+        // if updatedList does not contain a process that the old list had,
+        // notify controller that the process was deleted
+        this.localProcs.stream()
+                .filter(p ->  !(containsProc(updatedList,p)))
+                .forEach(p -> notifyKillProcess(p));
 
-                })
-                .collect(Collectors.toList());
-
-
-        List<Process> added = updatedList
-                .stream()
-                .filter(p -> {
-                    return this.localProcs
-                            .stream()
-                            .noneMatch(p2 -> p.getProcId() == p2.getProcId());
-                }).collect(Collectors.toList());
+        // if updatedList contains a process that the old list did not,
+        // notify controller that a process was added
+        updatedList.stream()
+                .filter(p -> !(containsProc(this.localProcs,p)))
+                .forEach(p -> notifyNewProcess(p));
 
         this.localProcs = updatedList;
-
-
-        for (Process p : deleted){
-            notifyKillProcess(p);
-        }
-
-        for(Process p : added){
-            notifyNewProcess(p);
-        }
-
     }
 
     public void sim() {
@@ -121,8 +104,6 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
     void onObserved() {
         localProcs = getAll();
 
-        for (Process p: this.localProcs){
-            notifyNewProcess(p);
-        }
+       this.localProcs.forEach(p -> notifyNewProcess(p));
     }
 }

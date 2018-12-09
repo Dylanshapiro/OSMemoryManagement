@@ -44,6 +44,7 @@ public class DataFields implements Initializable {
     public void update(MemoryEvent event){
         this.setProcNumText(event.getProcesses().size());
         this.setUsedMemoryText("" + calcUsedMem(event));
+        this.setTotalMemoryText(String.valueOf(this.ctrl.getMemSize()));
     }
 
     public void setProcNumText(int num){

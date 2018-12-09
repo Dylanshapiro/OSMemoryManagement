@@ -29,7 +29,9 @@ public class ProcessEntry {
         }
 
         public String convertPretty(long init) {
-            return init / this.val + " " + this.symbol;
+
+            return (init < this.val && init != 0) ?
+                    "< 1 " + this.symbol : init / this.val + " " + this.symbol;
         }
     }
 
@@ -59,8 +61,7 @@ public class ProcessEntry {
 
         this.name = name;
         this.id = id;
-        this.startTime = sdf.format(new Date(startTime)) ;
-;;;
+        this.startTime = sdf.format(new Date(startTime));
         this.base = curUnit.convertPretty(base);
         this.size = curUnit.convertPretty(size);
     }

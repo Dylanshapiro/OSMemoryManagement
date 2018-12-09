@@ -7,11 +7,10 @@ import model.MemoryManager;
 import model.MemoryManager.MemoryEvent;
 import model.MemoryObservable;
 import model.MemoryObserver;
+import model.process.*;
 import model.process.Process;
-import model.process.ProcessSource;
-import model.process.ProcessSourceObservable;
-import model.process.ProcessSourceObserver;
 import view.component.Root;
+import oshi.SystemInfo;
 
 import javax.management.InstanceNotFoundException;
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     @VIEW
     private Root view;
 
-    public Controller(MemoryManager manager) {
+    public Controller(MemoryManager manager, ProcessSourceObservable... sourceList) {
 
         this.handle = Optional.empty();
         this.execService = Executors.newScheduledThreadPool(1, r -> {
@@ -46,11 +45,9 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
         });
 
         this.manager = manager;
-        this.sourceList = Arrays.asList(
-                ProcessSourceObservable.getSimSource(),
-                ProcessSourceObservable.getLocalSource());
+        this.sourceList = Arrays.asList(sourceList);
 
-        this.source = (ProcessSource) sourceList.get(0);
+        this.source = (ProcessSource) this.sourceList.get(0);
         ((ProcessSourceObservable) this.source).addObserver(this);
     }
 
@@ -138,11 +135,14 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
                 .filter(proc -> ((ProcessSource) proc).getId() == id)
                 .findFirst()
                 .map(source -> (ProcessSource) source)
-                .orElseThrow(() -> {
-                    return new InstanceNotFoundException();
-                });
+                .orElseThrow(() -> new InstanceNotFoundException());
 
         this.resetSim();
+
+        if(this.source instanceof LocalSource) {
+            final long total = new SystemInfo().getHardware().getMemory().getTotal();
+            this.manager.setMemSize(total);
+        }
 
         ((ProcessSourceObservable) this.source).addObserver(this);
     }
@@ -153,7 +153,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
 
     // Callbacks
     @Override
-    public synchronized void update(MemoryObservable obs, MemoryEvent memEvent) {
+    public void update(MemoryObservable obs, MemoryEvent memEvent) {
         Platform.runLater(() -> {
             this.view.updateDisplay(memEvent);// send update to view
         });
@@ -167,7 +167,7 @@ public class Controller implements MemoryObserver, ProcessSourceObserver {
     }
 
     @Override
-    public synchronized void newProcess(Process p) {
+    public void newProcess(Process p) {
         CompletableFuture.runAsync(() ->
                         Platform.runLater(() -> this.manager.allocate(p))
                 , execService);

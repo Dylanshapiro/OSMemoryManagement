@@ -1,20 +1,13 @@
 package driver;
 
 import controller.Controller;
-import model.Algos.FirstFitAlgo;
-import model.process.LocalSource;
-import model.MemoryManager;
-import model.process.ProcessSource;
-import model.process.ProcessSourceObservable;
-import model.process.SimSource;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.List;
+import model.MemoryManager;
+import model.process.ProcessSourceObservable;
 
 public class Driver extends Application {
 
@@ -49,15 +42,16 @@ public class Driver extends Application {
 
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(640);
+        primaryStage.setMaxWidth(640);
 
         primaryStage.show();
     }
 
     private Controller initController() {
         MemoryManager manager = MemoryManager.getInstance();
-        manager.setAlgo(new FirstFitAlgo(600000));
 
-        Controller ctrl = new Controller(manager);
+        Controller ctrl = new Controller(manager, ProcessSourceObservable.getSimSource(),
+                                                  ProcessSourceObservable.getLocalSource());
 
         manager.addObserver(ctrl);
         return ctrl;
