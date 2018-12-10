@@ -49,6 +49,7 @@ public class Driver extends Application {
 
         primaryStage.setMinHeight(400);
         primaryStage.setMinWidth(640);
+
         primaryStage.show();
     }
 

@@ -61,7 +61,7 @@
                 </AnchorPane>
                 <AnchorPane layoutX="-1.0" maxWidth="206.0" minHeight="150" prefHeight="371.0" prefWidth="170.0" VBox.vgrow="SOMETIMES">
                     <children>
-                        <VBox prefHeight="371.0" prefWidth="168.0">
+                        <VBox prefHeight="346.0" prefWidth="168.0">
                             <children>
                                 <fx:include fx:id="algoCombo" source="AlgoCombo.fxml" />
 
