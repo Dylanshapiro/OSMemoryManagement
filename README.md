@@ -44,13 +44,13 @@
 Project for *CS04380*
 ## Features
 
-* Visualize Simulated, Local, or Remote memory.
+* Visualize Simulated or Local memory.
 * Kill processes. 
 * Is the best project
 
 
 ## Build
-
+* requires jdk + javafx sdk. oracle jdk8 or openjdk8+openjfx8 should work.
 * clone the repo
 ```
 git clone https://github.com/Dylanshapiro/OSMemoryManagement
