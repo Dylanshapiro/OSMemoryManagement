@@ -1,13 +1,13 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import model.MemoryManager.MemoryEvent;
 import model.MemoryManager.Op;
 import model.process.Process;
-import driver.ComponentFactory.CTRL;
 
 import java.net.URL;
 import java.util.Optional;
@@ -21,7 +21,7 @@ public class MiniTerm implements Initializable {
     @CTRL
     private Controller ctrl;
 
-    private final int nameLenSpace = 15;
+    private final int nameLenSpace = 30;
     private final int titleLenSpace = 7;
 
     @Override

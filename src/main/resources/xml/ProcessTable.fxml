@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 <TableView xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1"
-           fx:id="processTable"  fx:controller="view.component.ProcessTable" editable="true" layoutX="2.0" prefHeight="161.0" prefWidth="476.0"
+           fx:id="processTable" fx:controller="view.component.ProcessTable" editable="true" layoutX="2.0" prefHeight="161.0" prefWidth="476.0"
            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
     <columns>
     </columns>

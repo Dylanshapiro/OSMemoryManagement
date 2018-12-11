@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.*?>
-
 <VBox xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" spacing="7"
       fx:controller="view.component.ActionButtons" alignment="CENTER">
     <Button fx:id="toggleSimButton" mnemonicParsing="false" text="Run Sim"

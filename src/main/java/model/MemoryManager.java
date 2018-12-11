@@ -1,7 +1,7 @@
 package model;
 
 import model.Algos.Algo;
-import model.Algos.*;
+import model.Algos.FirstFitAlgo;
 import model.process.Process;
 
 import java.util.*;

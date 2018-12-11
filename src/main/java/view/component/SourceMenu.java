@@ -1,14 +1,13 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import driver.ComponentFactory.CTRL;
-import model.process.SimSource;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;

@@ -1,6 +1,7 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.media.AudioClip;
 import view.ProcessEntry;
-import driver.ComponentFactory.CTRL;
 
 import java.net.URL;
 import java.nio.file.Paths;

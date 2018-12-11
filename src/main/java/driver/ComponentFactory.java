@@ -10,7 +10,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Optional;
 
 /* - If the controller passed in has a field annotated with @VIEW, the field will be
  * assigned a ref to the Root ui component.

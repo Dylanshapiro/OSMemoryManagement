@@ -1,6 +1,7 @@
 package view.component;
 
 import controller.Controller;
+import driver.ComponentFactory.CTRL;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
@@ -11,7 +12,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
-import driver.ComponentFactory.CTRL;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;

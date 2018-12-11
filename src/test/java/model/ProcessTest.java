@@ -1,15 +1,10 @@
 package model;
 
-import model.MemoryManager.MemoryEvent;
 import model.Algos.Algo;
 import model.Algos.FirstFitAlgo;
 import model.process.Process;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
 

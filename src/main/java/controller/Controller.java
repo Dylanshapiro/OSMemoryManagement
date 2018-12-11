@@ -9,12 +9,11 @@ import model.MemoryObservable;
 import model.MemoryObserver;
 import model.process.*;
 import model.process.Process;
-import view.component.Root;
 import oshi.SystemInfo;
+import view.component.Root;
 
 import javax.management.InstanceNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

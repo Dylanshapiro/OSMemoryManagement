@@ -3,6 +3,7 @@ package view.component;
 
 import controller.Controller;
 import driver.ComponentFactory.CTRL;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,5 +68,11 @@ public class Root implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    @FXML
+    public void exitApplication(ActionEvent actionEvent) {
+        Platform.exit();
+        System.exit(0);
     }
 }

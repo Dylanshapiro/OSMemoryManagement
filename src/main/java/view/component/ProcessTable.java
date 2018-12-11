@@ -1,7 +1,7 @@
 package view.component;
 
 import controller.Controller;
-import driver.ComponentFactory;
+import driver.ComponentFactory.CTRL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import javafx.scene.shape.Rectangle;
 import model.MemoryManager.MemoryEvent;
 import model.process.Process;
 import view.ProcessEntry;
-import driver.ComponentFactory.CTRL;
 
 import javax.management.InstanceNotFoundException;
 import java.net.URL;

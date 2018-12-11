@@ -1,11 +1,7 @@
 package model;
 
-import model.Algos.FirstFitAlgo;
 import model.process.Process;
-import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

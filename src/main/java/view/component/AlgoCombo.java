@@ -1,14 +1,13 @@
 package view.component;
 
 import controller.Controller;
-import driver.ComponentFactory;
+import driver.ComponentFactory.CTRL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import model.Algos.Algo;
-import driver.ComponentFactory.CTRL;
 
 import java.net.URL;
 import java.util.ResourceBundle;
