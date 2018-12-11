@@ -41,8 +41,8 @@ public class Driver extends Application {
         primaryStage.setTitle("OSMM");
 
         primaryStage.setMinHeight(400);
-        primaryStage.setMinWidth(640);
-        primaryStage.setMaxWidth(640);
+        primaryStage.setMinWidth(656);
+        primaryStage.setMaxWidth(656);
 
         primaryStage.show();
     }
