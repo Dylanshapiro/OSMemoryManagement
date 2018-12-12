@@ -66,6 +66,6 @@ cd OSMemoryManagement && gradlew build
 | [Dylan Shapiro](https://github.com/Dylanshapiro) | [Ed Klein](https://github.com/Kleine3) | [Jamie Walder](https://github.com/creamchzdragon) | [Jesse Malinosky](https://github.com/malinoskj2) | [Joe Whittie](https://github.com/joeywhitt) | [Randy Fisher](https://github.com/fisherr4) |
 
 ## UML
-<img src="UML.png">
+![uml](https://user-images.githubusercontent.com/43762253/49850554-f0716b80-fdab-11e8-8e8b-9e4c590ca4cc.PNG)
 
 
