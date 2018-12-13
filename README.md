@@ -29,6 +29,7 @@
   <h4>
     <a href="#features">Features</a> |
     <a href="#build">Build</a> |
+    <a href="docs/README.md">Docs</a> |
     <a href="https://www.rowan.edu/">Rowan</a>
   </h4>
 </div>
@@ -61,11 +62,6 @@ cd OSMemoryManagement && gradlew build
 ```
 
 ## Team
-| [![Dylan Shapiro](https://vgy.me/kpjSUd.png?size=100)](https://github.com/Dylanshapiro) | [![Ed Kelin](https://vgy.me/kpjSUd.png?size=100)](https://github.com/Kleine3) | [![Jamie Walder](https://github.com/creamchzdragon.png?size=100)](https://github.com/creamchzdragon) | [![Jesse Malinosky](https://github.com/malinoskj2.png?size=100)](https://github.com/malinoskj2) | [![Joe Whittie](https://vgy.me/kpjSUd.png?size=100)](https://github.com/joeywhitt) | [![Randy Fisher](https://vgy.me/kpjSUd.png?size=100)](https://github.com/fisherr4) | 
+| [![Dylan Shapiro](https://github.com/Dylanshapiro.png?size=100)](https://github.com/Dylanshapiro) | [![Ed Kelin](https://vgy.me/kpjSUd.png?size=100)](https://github.com/Kleine3) | [![Jamie Walder](https://github.com/creamchzdragon.png?size=100)](https://github.com/creamchzdragon) | [![Jesse Malinosky](https://github.com/malinoskj2.png?size=100)](https://github.com/malinoskj2) | [![Joe Whittie](https://vgy.me/kpjSUd.png?size=100)](https://github.com/joeywhitt) | [![Randy Fisher](https://vgy.me/kpjSUd.png?size=100)](https://github.com/fisherr4) | 
 | :---: | :---: | :---: | :---: | :---: | :---: |
 | [Dylan Shapiro](https://github.com/Dylanshapiro) | [Ed Klein](https://github.com/Kleine3) | [Jamie Walder](https://github.com/creamchzdragon) | [Jesse Malinosky](https://github.com/malinoskj2) | [Joe Whittie](https://github.com/joeywhitt) | [Randy Fisher](https://github.com/fisherr4) |
-
-## UML
-![uml](https://user-images.githubusercontent.com/43762253/49850554-f0716b80-fdab-11e8-8e8b-9e4c590ca4cc.PNG)
-
-

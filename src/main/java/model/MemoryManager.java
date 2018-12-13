@@ -54,7 +54,7 @@ public class MemoryManager extends MemoryObservable {
                     }
                 }
             });
-            notifyObservers(p,Op.ADD);
+            createMemEvent(p,Op.ADD);
             return true;
         }
         else{
@@ -69,7 +69,7 @@ public class MemoryManager extends MemoryObservable {
         if(processes.contains(p)) {
             boolean result= processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p, Op.KILL);
+            createMemEvent(p, Op.KILL);
             return result;
         }
         return false;
@@ -89,7 +89,7 @@ public class MemoryManager extends MemoryObservable {
         if((p = getProcess(procID)) != null) {
             processes.remove(p);
             memoryAlgo.deallocate(p);
-            notifyObservers(p, Op.KILL);
+            createMemEvent(p, Op.KILL);
             return true;
         }
         return false;
@@ -117,11 +117,11 @@ public class MemoryManager extends MemoryObservable {
         MemoryManager.memSize = memSize;
     }
 
-    private void notifyObservers(Process p,Op type){
+    private void createMemEvent(Process p, Op type){
         this.notifyObservers(new MemoryEvent(processes,p,memSize, type));
     }
 
-    private void notifyObservers(Process p, Op type, String message){
+    private void createMemEvent(Process p, Op type, String message){
         final MemoryEvent event = new MemoryEvent(processes, p, memSize, type);
         event.setStatusMessage(message);
         this.notifyObservers(event);
@@ -131,13 +131,13 @@ public class MemoryManager extends MemoryObservable {
         this.processes.clear();
         Process temp=null;
         memoryAlgo.setRepresentation(new ArrayList<>());
-        notifyObservers(temp, Op.RESET, "sim reset");
+        createMemEvent(temp, Op.RESET, "sim reset");
     }
 
     public void clearProc() {
         this.processes.clear();
         Process temp=null;
-        notifyObservers(temp,Op.RESET);
+        createMemEvent(temp,Op.RESET);
     }
 
    public enum Op{

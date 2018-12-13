@@ -68,31 +68,28 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
         return this.id;
     }
 
-    private boolean containsProc(List<Process> procList , Process proc){
+    private boolean containsProc(List<Process> procList, Process proc) {
         return procList.stream()
                 .anyMatch(p2 -> proc.getProcId() == p2.getProcId());
     }
 
-    private void update() {
+    @Override
+    public void sim() {
         List<Process> updatedList = this.getAll();
 
         // if updatedList does not contain a process that the old list had,
         // notify controller that the process was deleted
         this.localProcs.stream()
-                .filter(p ->  !(containsProc(updatedList,p)))
+                .filter(p -> !(containsProc(updatedList, p)))
                 .forEach(p -> notifyKillProcess(p));
 
         // if updatedList contains a process that the old list did not,
         // notify controller that a process was added
         updatedList.stream()
-                .filter(p -> !(containsProc(this.localProcs,p)))
+                .filter(p -> !(containsProc(this.localProcs, p)))
                 .forEach(p -> notifyNewProcess(p));
 
         this.localProcs = updatedList;
-    }
-
-    public void sim() {
-        this.update();
     }
 
     @Override
@@ -104,6 +101,6 @@ public class LocalSource extends ProcessSourceObservable implements ProcessSourc
     void onObserved() {
         localProcs = getAll();
 
-       this.localProcs.forEach(p -> notifyNewProcess(p));
+        this.localProcs.forEach(p -> notifyNewProcess(p));
     }
 }
